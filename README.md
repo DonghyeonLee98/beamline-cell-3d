@@ -10,7 +10,7 @@ Donghyeon Lee, Pusan National University, 2026-10-30. 3D viewer of the beamline 
 APS 2-ID-D 빔라인 시료 셀 v3.3 — 25 mm 셀을 자르지 않고 통째로 장착. 뒷면 스프링 핀 4 + 앞면 바늘 탐침 4 (3T: 6). 몸체 뒷면 M4 4개, 48 × 48 mm = Nextron RBC-2EP와 같은 구멍 배치 → 판 하나로 둘 다 단다. CPI/PET 필름 텐트 안에 He. PCB 없음.
 
 - **기체·탐침**: He는 윗면 (+x)으로 들어가 아랫면 피팅으로 나가 SHT45가 든 배기 T로 간다. 텐트 11.9 mL, 50 mL/min에서 3τ = 43 s. 웨이퍼 아래 NTC. 바늘 EverBeing BC20-2000 BeCu Ø0.5 (0.5 mm에서 0.2 N).
-- **v4 albedo (옵션)**: 뒤 창 Ø16 + 940 nm LED 퍽(Grace 판 Ø32 구멍 필요), 기본은 어두운 마개. 보기: “뒤 빛 퍽 ↔ 마개” 토글, “v4 뒤에서” 버튼 (탠덤 2T만).
+- **v4.1 albedo (옵션)**: 뒤 창 Ø16 + 940 nm LED 퍽(Grace 판 Ø32 구멍 필요), 기본은 어두운 마개. 핀 꼬리를 잘라 바닥 핀 자리 0.3 — 창 Ø16 둘레에 1 mm 미만 벽 없음. 보기: “뒤 빛 퍽 ↔ 마개” 토글, “v4.1 뒤에서” 버튼 (탠덤 2T만).
 - **PL N₂ 셀**: FS5 SC-10 자리용 56 × 62 × 8, 같은 인서트·틀·블록·DB15, N₂ 위 입구·옆 출구, 높이 85 mm. 점선 상자 = FS5형 시료 칸 개략 120 × 180 × 100 (사진 추정 ±30 %), 옆벽 타원 = 거울 자리 (가정).
 - **점검 (CAD)**: 간섭 0, 검출기 315 광선 차단 0, 바늘 여유 0.51 mm, 우물 0.70 (웨이퍼 0.3–0.6 mm).
 - **모델**: 탠덤 2T (KIER, 핀 4 + 바늘 4), 싱글 (유리 1.1 mm용 인서트, 핀 없음, 바늘 4), 탠덤 3T (mid 2바늘 블록 추가, 바늘 6), RBC-2EP 챔버를 같은 Grace 판·브래킷에 단 모습, 이전안 평판 셀 v2 (10/27, 회색, v3.3로 대체). v3.3 (최종): SHT45를 셀 밖 배기 T (40 mm 아래)로, 출구 홈 없앰, 웨이퍼 아래 NTC, BC20-2000 바늘 + V홈 블록·2 mm 덮개. DB15: 1–4 뒷면 핀, 5–8 앞 바늘, 9–10 NTC, 11–12 PD 예비, 13–14 mid, 15 실드.
@@ -25,7 +25,7 @@ APS 2-ID-D 빔라인 시료 셀 v3.3 — 25 mm 셀을 자르지 않고 통째로
 APS 2-ID-D beamline sample cell v3.3 — 25 mm cell mounted whole; rear 4 spring pins + front 4 (3T: 6) needle probes; back face 4 × M4 on 48 × 48 mm = same pattern as the Nextron RBC-2EP → one holder plate for both; CPI/PET film tent with He; no PCB.
 
 - **Gas, probes**: He in at the top (+x), out through a bottom fitting to an exhaust tee carrying the SHT45; tent 11.9 mL, 3τ = 43 s at 50 mL/min; NTC under the wafer; needles EverBeing BC20-2000 BeCu Ø0.5 (0.2 N at 0.5 mm).
-- **v4 albedo (option)**: rear window Ø16 + 940 nm LED puck (needs a Ø32 hole in Grace's plate); the default is the dark plug. Viewer: “rear puck ↔ plug” toggle and “v4 rear view” button (tandem 2T only).
+- **v4.1 albedo (option)**: rear window Ø16 + 940 nm LED puck (needs a Ø32 hole in Grace's plate); the default is the dark plug. Pin tails cut so the pin seats in the floor are 0.3 deep — no wall under 1 mm around the Ø16 window. Viewer: “rear puck ↔ plug” toggle and “v4.1 rear view” button (tandem 2T only).
 - **PL N₂ cell**: 56 × 62 × 8 for the FS5 SC-10 slot; same insert, frame, probe blocks and DB15; N₂ in at the top, out at the side; 85 mm tall. Dashed box = sketch of the FS5-type compartment 120 × 180 × 100 (photo estimate ±30 %), side-wall ovals = mirror positions (assumed).
 - **Checks (CAD)**: clash 0, 315 detector rays 0 blocked, needle margin 0.51 mm, well 0.70 for 0.3–0.6 mm wafers.
 - **Models**: tandem 2T (KIER, 4 pins + 4 needles), single cell (insert for 1.1 mm glass, no pins, 4 needles), tandem 3T (extra two-needle mid block, 6 needles), the RBC-2EP chamber on the same Grace plate and bracket, and the earlier flat cell v2 (10/27, greyed out, superseded by v3.3). v3.3 (final): SHT45 moved out to an exhaust tee 40 mm below, no slot, NTC under the wafer, BC20-2000 needles in V-groove blocks with 2 mm covers. DB15: 1–4 rear pins, 5–8 front needles, 9–10 NTC, 11–12 PD spare, 13–14 mid, 15 shield.
