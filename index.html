@@ -60,6 +60,10 @@ a { color: var(--accent); }
 .tagl { position: absolute; transform: translate(-50%, -100%); font-size: 12px; font-weight: 600; color: var(--fg); text-align: center;
   background: color-mix(in srgb, var(--panel) 88%, transparent); border: 1px solid var(--line); padding: 2px 8px; border-radius: 6px; white-space: nowrap; pointer-events: none; }
 .tagl.old { opacity: .7; font-weight: 400; }
+.tagl.flow { font-size: 11px; font-weight: 600; border-width: 1.5px; }
+.tip { position: absolute; font-size: 12px; font-weight: 600; background: var(--panel); color: var(--fg); border: 1px solid var(--line); border-radius: 6px; padding: 3px 8px; pointer-events: none; white-space: nowrap; transform: translate(12px, -120%); }
+.pinmap { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; font-size: 12px; margin-top: 6px; }
+.pinmap span:nth-child(odd) { font-family: var(--font-mono); white-space: nowrap; }
 .status { position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted); font-size: 13px; pointer-events: none; text-align: center; }
 @media (max-width: 760px) {
   .app { flex-direction: column; height: auto; }
@@ -73,6 +77,7 @@ a { color: var(--accent); }
     <canvas id="c" aria-label="빔라인 셀 3D 장면 / beamline cell 3D scene"></canvas>
     <div id="labels"></div>
     <div class="status" id="status">CAD 모델을 불러오는 중… / Loading CAD models…</div>
+    <div class="tip" id="tip" hidden></div>
     <div class="hint">끌어서 회전 · 휠/두 손가락 확대 · 부품을 누르면 이름 / drag to rotate · wheel or pinch to zoom · tap a part</div>
   </div>
 
@@ -111,6 +116,8 @@ a { color: var(--accent); }
         <button class="chipbtn" id="t-grace" aria-pressed="true">Grace 판·브래킷 / plate + bracket</button>
         <button class="chipbtn" id="t-beam" aria-pressed="true">빔·빛·검출기 / rays</button>
         <button class="chipbtn" id="t-gas" aria-pressed="true">기체 / gas</button>
+        <button class="chipbtn" id="t-wire" aria-pressed="false">전기 / wiring</button>
+        <button class="chipbtn" id="b-flows" style="border-color:var(--accent);color:var(--accent)">흐름 / flows ▶</button>
         <button class="chipbtn" id="t-spin" aria-pressed="false">회전 / spin</button>
       </div>
     </div>
@@ -120,6 +127,20 @@ a { color: var(--accent); }
       <div><span class="sw" style="background:var(--light)"></span><span>광 바이어스 −x 45° / light bias from −x at 45°</span></div>
       <div><span class="sw" style="background:var(--det)"></span><span>형광 검출기 +x 60° (가정) / XRF detector +x at 60° (assumed)</span></div>
       <div><span class="sw" style="background:var(--gas)"></span><span>He 흐름: 입구 (19, +22) → 웨이퍼 앞 → 아래 홈 / He flow: inlet (19, +22) → across the wafer → bottom slot</span></div>
+    </div>
+
+    <div class="box">
+      <p class="label" style="margin:0">배선 = DB15 핀 / wiring = DB15 pins</p>
+      <div class="pinmap">
+        <span style="color:#f07f13">■ 1–4</span><span>KIER 뒷면 핀 4 / rear spring pins (바닥 홈 → Ø3 / floor groove → Ø3)</span>
+        <span style="color:#c99700">■ 5–8</span><span>앞 바늘 4 / front needles (싱글: P1S, P2S, ITO aF, ITO cS)</span>
+        <span style="color:#2ca02c">■ 9–12</span><span>SHT45 VDD · GND · SDA · SCL</span>
+        <span style="color:#d62728">■ 13–14</span><span>3T M-F · M-S (mid)</span>
+        <span style="color:#555555">■ 15</span><span>PD (광 감시 / light monitor) · 줄기 → Ø4 → DB15 / trunk → Ø4 → DB15</span>
+        <span style="color:#1f77b4">■ SMA</span><span>SMA 1·2: 측정 화소 F/S (미정) / measured pixel F/S (TBD)</span>
+      </div>
+      <p class="sub">“흐름”은 기체·배선을 켜고 텐트·Grace 판을 숨겨 앞에서 본다. 분해하면 경로는 숨는다. 입자 속도는 보기용 (실제 유속 아님).</p>
+      <p class="sub en">“Flows” turns on gas + wiring, hides the tent and Grace plate and looks from the front. Paths hide while exploded. Particle speed is for display, not the real flow.</p>
     </div>
 
     <div class="box">
@@ -202,8 +223,93 @@ a { color: var(--accent); }
   bench.rotation.x = -Math.PI / 2; bench.position.y = -0.05; scene.add(bench);
   const grid = new THREE.GridHelper(600, 60, 0x9aa49c, 0xb7bfb8); grid.scale.z = 260 / 600; scene.add(grid);
   const world = new THREE.Group(); world.rotation.x = -Math.PI / 2; scene.add(world);   // CAD z-up -> three y-up
-  const meshes = [], beams = [], gasArrows = [];
-  let selected = null, tentOn = true, graceOn = true;
+  const meshes = [], beams = [];
+  let selected = null, tentOn = true, graceOn = true, gasOn = true, wireOn = false;
+  // ---- flows (v3.2): gas path + wiring routes in cell coordinates (CAD mm), after fig_wholecell_flows_261030.py and the v3.2 json
+  // ZC = wafer centre height; Y: wafer front 0.5, body front 0, back face 10; back grooves 2.0 deep (Y 9), trunk 3.5 deep (Y 8.25),
+  // pocket-floor groove for the pins 1.5 deep under the 4.5 pocket floor (Y 5.25)
+  const ZC = 111, P = (x, y, z) => new THREE.Vector3(x, y, ZC + z);
+  const YB = 9.0, YT = 8.25, YFG = 5.25, XS = -29.5, ZU = 31.0, ZL = -28.5, PZ = 12.0;
+  const FCOL = { gas: 0x0f9b8e, pin: 0xf07f13, needle: 0xc99700, mid: 0xd62728, sht: 0x2ca02c, trunk: 0x555555 };
+  function flowRoutes(key) {
+    const R = [];   // [group, label, points]
+    [[-6.45, 6.45], [-6.45, -6.45], [6.45, 6.45], [6.45, -6.45]].forEach(([x, z], i) => { if (key === 'wc_single') return;
+      R.push(['pin', 'DB15 pin ' + (i + 1) + ' · KIER 뒷면 핀 / rear pad (' + x + ', ' + z + ')',
+        [P(x, 1.0, z), P(x, YFG, z), P(x, YFG, PZ), P(0, YFG, PZ), P(0, YT, PZ)]]); });
+    const toRowUp = (hx, hz, viaSide) => viaSide ? [P(hx, YB, hz), P(XS, YB, hz), P(XS, YB, ZU), P(0, YB, ZU)] : [P(hx, YB, hz), P(hx, YB, ZU), P(0, YB, ZU)];
+    const toRowLow = (hx, hz) => [P(hx, YB, hz), P(hx, YB, ZL), P(0, YB, ZL)];
+    const needle = (tip, blk, hole) => [P(tip[0], 0.48, tip[1]), P(blk[0], -1.8, blk[1]), P(hole[0], -0.3, hole[1]), P(hole[0], YB, hole[1])];
+    if (key === 'wc_single') {
+      R.push(['needle', 'DB15 pin 5/6 · P1S / P2S (−X 바늘 / needle)', needle([-8.97, 3.6], [-23.5, 8], [-27.9, 9.7]).concat(toRowUp(-27.9, 9.7, true))]);
+      R.push(['needle', 'DB15 pin 5/6 · P1S / P2S (−X 바늘 / needle)', needle([-8.98, -3.59], [-23.5, -8], [-27.9, -9.7]).concat(toRowUp(-27.9, -9.7, true))]);
+      R.push(['needle', 'DB15 pin 7/8 · ITO aF / cS (+Z 바늘 / needle)', needle([-4.4, 9.98], [-4, 23], [-4.36, 27.6]).concat(toRowUp(-4.36, 27.6, false))]);
+      R.push(['needle', 'DB15 pin 7/8 · ITO aF / cS (−Z 바늘 / needle)', needle([-4.4, -9.97], [-4, -23], [-4.36, -27.6]).concat(toRowLow(-4.36, -27.6))]);
+    } else {
+      R.push(['needle', 'DB15 pin 5 · KIER 앞 패드 / front pad (−6.43, +6.43)', needle([-6.41, 6.43], [-23.5, 8], [-27.9, 9.7]).concat(toRowUp(-27.9, 9.7, true))]);
+      R.push(['needle', 'DB15 pin 6 · KIER 앞 패드 / front pad (−6.43, −6.43)', needle([-6.41, -6.43], [-23.5, -8], [-27.9, -9.7]).concat(toRowUp(-27.9, -9.7, true))]);
+      R.push(['needle', 'DB15 pin 7 · KIER 앞 패드 / front pad (+6.43, +6.43)', needle([6.31, 6.62], [6, 23], [5.41, 27.6]).concat(toRowUp(5.41, 27.6, false))]);
+      R.push(['needle', 'DB15 pin 8 · KIER 앞 패드 / front pad (+6.43, −6.43)', needle([6.31, -6.62], [6, -23], [5.41, -27.6]).concat(toRowLow(5.41, -27.6))]);
+    }
+    if (key === 'wc_3t') {
+      R.push(['mid', 'DB15 pin 13 · 3T M-F (mid)', needle([-10.4, -8.58], [-11.8, -23], [-11.24, -27.9]).concat(toRowLow(-11.24, -27.9))]);
+      R.push(['mid', 'DB15 pin 14 · 3T M-S (mid)', needle([-8.6, -10.38], [-10.0, -23], [-11.24, -27.9]).concat(toRowLow(-11.24, -27.9))]);
+    }
+    R.push(['sht', 'DB15 pin 9–12 · SHT45 VDD / GND / SDA / SCL', [P(-22.7, -0.5, -24.3), P(-19.4, -0.3, -22), P(-19.4, YB, -22), P(-19.4, YB, ZL), P(0, YB, ZL)]]);
+    R.push(['trunk', '줄기 / trunk: 아래 줄기 → 뒷면 줄기 → Ø4 → DB15 (pin 1–14)',
+      [P(0, YB, ZL), P(0, YB, PZ), P(0, YT, PZ), P(0, YT, 33), P(0, YT, 36.9), P(0, 12.3, 36.9), P(0, 12.3, 38.7)]]);
+    return R;
+  }
+  // gas: +X KQ2H04-M5 on the top face (X 19, Y 4.5) -> Ø2 bore down (inside the body, dashed) -> front exit (19, +22) -> across the wafer -> bottom slot -> out
+  const GAS_IN = [P(19, 4.5, 44), P(19, 4.5, 33)], GAS_BORE = [P(19, 4.5, 33), P(19, 4.5, 22), P(19, 0, 22)];
+  const GAS_TENT = [P(19, 0, 22), P(17.5, -2.6, 20.5), P(11, -2.6, 13), P(3, -2.6, 3), P(-1, -2.6, -8), P(0, -2.6, -24), P(0, -4.5, -28.5), P(0, -4.5, -38)];
+  const GAS_SPARE = [P(-19, 4.5, 44), P(-19, 4.5, 22), P(-19, 0, 22)];
+  const GAS_ALL = GAS_IN.concat(GAS_BORE.slice(1), GAS_TENT.slice(1));
+  function tubes(pts, r, mat, dash) {   // straight tube pieces along a polyline; dash = [on, off] mm
+    const grp = new THREE.Group();
+    for (let i = 0; i < pts.length - 1; i++) {
+      const a = pts[i], d = pts[i + 1].clone().sub(a), L = d.length(); if (L < 1e-6) continue;
+      const u = d.clone().normalize(), segs = dash ? [] : [[0, L]];
+      if (dash) for (let s = 0; s < L; s += dash[0] + dash[1]) segs.push([s, Math.min(L, s + dash[0])]);
+      for (const [s0, s1] of segs) { const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, s1 - s0, 10), mat);
+        m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), u); m.position.copy(a.clone().add(u.clone().multiplyScalar((s0 + s1) / 2))); grp.add(m); }
+      if (!dash && i > 0) { const k = new THREE.Mesh(new THREE.SphereGeometry(r, 10, 8), mat); k.position.copy(a); grp.add(k); }
+    }
+    return grp;
+  }
+  const flowSets = [], flowLabels = [], wirePicks = [];
+  let particlesT0 = performance.now();
+  function buildFlows(j, g) {
+    const gas = new THREE.Group(), wire = new THREE.Group(), gm = new THREE.MeshBasicMaterial({ color: FCOL.gas });
+    gas.add(tubes(GAS_IN, 0.6, gm), tubes(GAS_BORE, 0.6, gm, [1.6, 1.0]), tubes(GAS_TENT, 0.6, gm), tubes(GAS_SPARE, 0.45, gm, [1.2, 1.2]));
+    const tip = new THREE.Mesh(new THREE.ConeGeometry(1.6, 4, 16), gm);
+    tip.position.copy(P(0, -4.5, -40)); tip.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0, -1)); gas.add(tip);
+    const slot = new THREE.Mesh(new THREE.BoxGeometry(20, 1, 2.5), new THREE.MeshBasicMaterial({ color: FCOL.gas, transparent: true, opacity: 0.45, depthWrite: false }));
+    slot.position.copy(P(0, -4.5, -29.75)); gas.add(slot);
+    // particles: ~10 spheres looping along the whole path (inlet -> slot -> out)
+    const cum = [0]; for (let i = 1; i < GAS_ALL.length; i++) cum.push(cum[i - 1] + GAS_ALL[i].distanceTo(GAS_ALL[i - 1]));
+    const parts = []; const pm = new THREE.MeshBasicMaterial({ color: 0x7ff5e8 });
+    for (let i = 0; i < 10; i++) { const s = new THREE.Mesh(new THREE.SphereGeometry(1.0, 12, 8), pm); gas.add(s); parts.push(s); }
+    gas.userData.anim = { cum, parts };
+    for (const [grp, label, pts] of flowRoutes(j.key)) {
+      const mat = new THREE.MeshBasicMaterial({ color: FCOL[grp], transparent: true, depthTest: false }), t = tubes(pts, grp === 'trunk' ? 0.7 : 0.45, mat);   // drawn last, over the see-through body
+      t.traverse((o) => { if (o.isMesh) { o.renderOrder = 10; o.userData = { wire: label, grp, key: j.key }; wirePicks.push(o); } }); wire.add(t);
+    }
+    gas.visible = gasOn; wire.visible = wireOn; g.add(gas, wire);
+    flowSets.push({ key: j.key, gas, wire });
+    const L = (kind, p, ko, en) => flowLabels.push({ key: j.key, kind, p, text: ko + ' / ' + en, g });
+    L('gas', P(31, -3, 27), 'He 입구 (+X)', 'He in');
+    L('gas', P(-31, -3, 27), '예비 (−X)', 'spare');
+    L('gas', P(22, -4.5, -34), '출구 홈 20 × 1', 'outlet slot');
+    L('wire', P(24.5, 22, 44), 'SMA 1·2: 측정 화소 F/S (미정)', 'measured pixel F/S (TBD)');
+    L('wire', P(0, 25, 39), 'DB15', 'DB15');
+  }
+  function animGas(now) {
+    for (const f of flowSets) { if (!f.gas.visible) continue; const { cum, parts } = f.gas.userData.anim, T = cum[cum.length - 1];
+      parts.forEach((s, i) => { let d = ((now - particlesT0) / 1000 * 9 + i * T / parts.length) % T, k = 1;   // 9 mm/s (display speed, not the real flow)
+        while (k < cum.length - 1 && cum[k] < d) k++;
+        const a = GAS_ALL[k - 1], b = GAS_ALL[k]; s.position.copy(a).lerp(b, (d - cum[k - 1]) / Math.max(1e-6, cum[k] - cum[k - 1])); }); }
+  }
+
 
   function applyTheme() {
     const dark = matchMedia('(prefers-color-scheme: dark)').matches;
@@ -239,6 +345,7 @@ a { color: var(--accent); }
       root.traverse((o) => { if (o.isMesh && SAMPLE.test(lookup(o) || '')) sb.expandByObject(o); });
       const c = j.c ? new THREE.Vector3(...j.c) : sb.isEmpty() ? bb.getCenter(new THREE.Vector3()) : sb.getCenter(new THREE.Vector3());
       j.cz = g.position.z + bb.getCenter(new THREE.Vector3()).z;   // camera looks at the model centre
+      j.fz = g.position.z + 111 + 4;   // front (flows) view: wafer centre height
       g.add(root); world.add(g);
       root.traverse((o) => {
         if (!o.isMesh) return;
@@ -265,18 +372,8 @@ a { color: var(--accent); }
         cyl.position.copy(c.clone().add(dir.clone().multiplyScalar(L / 2)));
         g.add(cyl); beams.push(cyl);
       }
-      // He flow (v3.2 checks.gas): +X inlet exit on the body front (19, Z +22) -> across the wafer -> bottom-wall slot (X ±10, Y -5..-4, Z -31..-28.5)
-      if (j.gas) {
-        const ZC = 111, yA = -2.6, P = [[19, yA, ZC + 22], [0, yA, ZC], [0, yA, ZC - 24], [0, -4.5, ZC - 33]].map((q) => new THREE.Vector3(...q));
-        const gm = new THREE.MeshBasicMaterial({ color: 0x19b3a6, transparent: true, opacity: 0.85, depthWrite: false }), ga = new THREE.Group();
-        for (let i = 0; i < P.length - 1; i++) { const d = P[i + 1].clone().sub(P[i]), L = d.length() - (i === P.length - 2 ? 3 : 0);
-          const cy = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.7, L, 12), gm); cy.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), d.clone().normalize());
-          cy.position.copy(P[i].clone().add(d.clone().normalize().multiplyScalar(L / 2))); ga.add(cy); }
-        const dl = P[P.length - 1].clone().sub(P[P.length - 2]).normalize(), cone = new THREE.Mesh(new THREE.ConeGeometry(1.8, 4, 16), gm);
-        cone.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dl); cone.position.copy(P[P.length - 1].clone().sub(dl.clone().multiplyScalar(2))); ga.add(cone);
-        g.add(ga); gasArrows.push(ga);
-      }
-      if (++loaded === MODELS.length) { document.getElementById('status').hidden = true; applyTheme(); const h0 = location.hash.slice(1); frame(MODELS.some((m) => m.key === h0) || h0 === 'all' ? h0 : 'wc_2t', true);
+      if (j.gas) buildFlows(j, g);
+      if (++loaded === MODELS.length) { document.getElementById('status').hidden = true; applyTheme(); const [h0, h1] = location.hash.slice(1).split('&'); frame(MODELS.some((m) => m.key === h0) || h0 === 'all' ? h0 : 'wc_2t', true); if (h1 === 'flows') { flowsInstant = true; document.getElementById('b-flows').click(); flowsInstant = false; }   // e.g. #wc_3t&flows
         document.documentElement.dataset.ready = meshes.length; }
     }).catch((e) => { console.error(e); fail(j.ko + ' / ' + j.en + ': 읽지 못했습니다 / failed to load'); });
   });
@@ -286,19 +383,27 @@ a { color: var(--accent); }
     el.textContent = j.ko + ' / ' + j.en; labelBox.appendChild(el); return { j, el }; });
 
   let view = 'wc_2t', goal = null, animId = 0;
-  function applyExplode() { const t = document.getElementById('explode').value / 100;
+  function flowVis() { const t0 = document.getElementById('explode').value === '0';
+    for (const f of flowSets) { f.gas.visible = gasOn && t0; f.wire.visible = wireOn && t0; } }
+  // wiring on: body, insert, plates, wafer and Grace plate go see-through so the routes show (restored when off)
+  const SEE = /^셀 몸체|^PEEK 인서트|^누름 판|^멈춤 링|^KIER|^단일 셀|^탐침 블록|^텐트 틀|^Grace 새|^SHT45|^3T/;
+  function seeThrough(on) { for (const m of meshes) { if (!/^wc_/.test(m.userData.key) || !SEE.test(m.userData.name)) continue; const mt = m.material;
+      if (on) { if (!m.userData.mat0) m.userData.mat0 = [mt.transparent, mt.opacity, mt.depthWrite]; mt.transparent = true; mt.opacity = Math.min(mt.opacity, 0.35); mt.depthWrite = false; }
+      else if (m.userData.mat0) { [mt.transparent, mt.opacity, mt.depthWrite] = m.userData.mat0; m.userData.mat0 = null; }
+      mt.needsUpdate = true; } }
+  function applyExplode() { const t = document.getElementById('explode').value / 100; flowVis();
     for (const m of meshes) { const k = view === 'all' || m.userData.key === view ? t : 0, o = m.userData.off;
       m.position.y = m.userData.y0 + o[1] * k; m.position.z = m.userData.z0 + o[2] * k; } }
   const grow = (t) => 1 + 0.45 * t;
-  function frame(key, instant) {
+  function frame(key, instant, front) {
     view = key; applyExplode();
     document.querySelectorAll('.seg button').forEach((b) => b.setAttribute('aria-pressed', String(b.id === 'v-' + key)));
     const t = document.getElementById('explode').value / 100;
     const jj = key === 'all' ? { x: 0, cz: 80 } : MODELS.find((j) => j.key === key);
-    const target = new THREE.Vector3(jj.x, jj.cz, key === 'all' ? 0 : 20 * t);
+    const target = new THREE.Vector3(jj.x, front ? jj.fz : jj.cz, key === 'all' ? 0 : 20 * t);
     const base = key === 'all' ? 640 : 330;
-    const dist = grow(t) * base * Math.max(1, (key === 'all' ? 1.7 : 1.1) / camera.aspect);
-    const pos = target.clone().add(new THREE.Vector3(-dist * 0.45, dist * 0.30, dist * 0.84));   // from the beam side (-y CAD = +z three), a little left
+    const dist = (front ? 200 : grow(t) * base) * Math.max(1, (key === 'all' ? 1.7 : 1.1) / camera.aspect);
+    const pos = front ? target.clone().add(new THREE.Vector3(0, dist * 0.04, dist * 0.8)) : target.clone().add(new THREE.Vector3(-dist * 0.45, dist * 0.30, dist * 0.84));   // from the beam side (-y CAD = +z three), a little left
     const id = ++animId;
     if (instant || matchMedia('(prefers-reduced-motion: reduce)').matches) { goal = null; camera.position.copy(pos); controls.target.copy(target); return; }
     const p0 = camera.position.clone(), t0 = controls.target.clone(), start = performance.now();
@@ -320,7 +425,14 @@ a { color: var(--accent); }
   toggle('t-tent', (on) => { tentOn = on; vis(); });
   toggle('t-grace', (on) => { graceOn = on; vis(); });
   toggle('t-beam', (on) => beams.forEach((b) => { b.visible = on; }));
-  toggle('t-gas', (on) => gasArrows.forEach((a) => { a.visible = on; }));
+  toggle('t-gas', (on) => { gasOn = on; flowVis(); });
+  toggle('t-wire', (on) => { wireOn = on; flowVis(); seeThrough(on); if (!on) tip.hidden = true; });
+  const press = (id, on) => document.getElementById(id).setAttribute('aria-pressed', String(on));
+  document.getElementById('b-flows').addEventListener('click', () => {
+    gasOn = wireOn = true; tentOn = graceOn = false; press('t-gas', true); press('t-wire', true); press('t-tent', false); press('t-grace', false); press('t-beam', false); beams.forEach((b) => { b.visible = false; });
+    ex.value = 0; exv.textContent = '0 %'; tPrev = 0; vis(); seeThrough(true);
+    frame(/^wc_/.test(view) ? view : 'wc_3t', flowsInstant, true); });
+  let flowsInstant = false;
   toggle('t-spin', (on) => { controls.autoRotate = on; controls.autoRotateSpeed = 0.8; });
 
   const ray = new THREE.Raycaster(), ptr = new THREE.Vector2(); let down = null;
@@ -329,11 +441,25 @@ a { color: var(--accent); }
     if (!down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 5) return;
     const r = canvas.getBoundingClientRect(); ptr.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
     ray.setFromCamera(ptr, camera);
+    const w = wireHit(); if (w) { selectWire(w); return; }
     const hit = ray.intersectObjects(meshes.filter((m) => m.visible), false)[0];
     select(hit ? hit.object : null);
   });
+  const tip = document.getElementById('tip');
+  const wireHit = () => { if (!wireOn || document.getElementById('explode').value !== '0') return null;
+    const h = ray.intersectObjects(wirePicks.filter((o) => view === 'all' || o.userData.key === view), false)[0];
+    return h ? h.object.userData : null; };
+  canvas.addEventListener('pointermove', (e) => {
+    if (!wireOn || e.pointerType === 'touch' || e.buttons) { tip.hidden = true; return; }
+    const r = canvas.getBoundingClientRect(); ptr.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+    ray.setFromCamera(ptr, camera); const w = wireHit();
+    tip.hidden = !w; if (w) { tip.textContent = w.wire; tip.style.left = (e.clientX - r.left) + 'px'; tip.style.top = (e.clientY - r.top) + 'px'; } });
+  canvas.addEventListener('pointerleave', () => { tip.hidden = true; });
   const info = document.getElementById('info');
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  function selectWire(w) {
+    if (selected) selected.material.emissive.setHex(0x000000); selected = null;
+    info.innerHTML = '<h2>' + esc(w.wire) + '</h2><p class="pn">배선 경로 (홈·구멍 중심선) / wire route along the grooves and holes</p>'; }
   function select(m) {
     if (selected) selected.material.emissive.setHex(0x000000);
     selected = m; if (m) m.material.emissive.setHex(0x3a2a00);
@@ -348,8 +474,14 @@ a { color: var(--accent); }
   new ResizeObserver(resize).observe(canvas.parentElement); resize();
   const v = new THREE.Vector3();
   (function tick() {
-    controls.update(); renderer.render(scene, camera);
-    const r = canvas.getBoundingClientRect();
+    controls.update(); animGas(performance.now()); renderer.render(scene, camera);
+    const r = canvas.getBoundingClientRect(), ex0 = document.getElementById('explode').value === '0';
+    for (const fl of flowLabels) {
+      if (!fl.el) { fl.el = document.createElement('div'); fl.el.className = 'tagl flow'; fl.el.textContent = fl.text;
+        fl.el.style.borderColor = fl.kind === 'gas' ? '#0f9b8e' : fl.text.startsWith('SMA') ? '#1f77b4' : '#555555'; labelBox.appendChild(fl.el); }
+      const show = loaded === MODELS.length && ex0 && view === fl.key && (fl.kind === 'gas' ? gasOn : wireOn); fl.el.hidden = !show; if (!show) continue;
+      v.copy(fl.p); fl.g.localToWorld(v); v.project(camera);
+      fl.el.style.left = ((v.x + 1) / 2 * r.width) + 'px'; fl.el.style.top = ((1 - v.y) / 2 * r.height) + 'px'; }
     for (const { j, el } of labels) {
       const show = loaded === MODELS.length && (view === 'all' || view === j.key); el.hidden = !show; if (!show) continue;
       v.set(j.x, j.lh, 0).project(camera);

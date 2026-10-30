@@ -12,6 +12,7 @@ APS 2-ID-D 빔라인 시료 셀 v3.2 — 25 mm 셀을 자르지 않고 통째로
 - **기체**: He는 위에서 들어가고 (+x 피팅, −x 예비) 텐트 아래 벽의 20 × 1 mm 홈으로 나간다. 텐트 11.9 mL, 50 mL/min에서 3τ = 43 s. 출구 옆 SHT45 (8 × 6 미니 기판).
 - **점검 (CAD)**: 간섭 0, 검출기 315 광선 차단 0, 바늘 여유 0.59 mm, 우물 0.70 (웨이퍼 0.3–0.6 mm).
 - **모델**: 탠덤 2T (KIER, 핀 4 + 바늘 4), 싱글 (유리 1.1 mm용 인서트, 핀 없음, 바늘 4), 탠덤 3T (mid 2바늘 블록 추가, 바늘 6), RBC-2EP 챔버를 같은 Grace 판·브래킷에 단 모습, 이전안 평판 셀 v2 (10/27, 회색, v3.2로 대체). v3.2 = v3.1 + 텐트 아래 벽 출구 홈 20 × 1.0, SHT45 자리, 아래 줄기 홈.
+- **흐름 시각화**: 기체 입구→출구 애니메이션, 배선 경로 색 = DB15 핀 그룹 (“흐름” 버튼, 주소 끝 #wc_3t&flows).
 - **보기**: 끌어서 회전, 분해 슬라이더, 필름 텐트 / Grace 판·브래킷 켜고 끄기, 빔·빛·검출기 방향 (X선 +y 수평, 광 −x 45°, 검출기 +x 60°), He 흐름 화살표 (기체), 부품을 누르면 이름.
 - **RBC-2EP 챔버**: 업체 외형의 바깥 크기만 상자로 그린 포락선이다 (몸체 62 × 62 × 34.6 mm + 위·아래 포트 자리, 뒷면 M4 탭 4개 48 × 48). 업체 STP의 내부·창·측면 관은 넣지 않았다.
 - **가정·미확인**: KIER 뒷면 패드 크기·웨이퍼 두께, Grace 새 판 도면, 검출기 각도·거리, 셀 중심 높이 111 mm.
@@ -24,6 +25,7 @@ APS 2-ID-D beamline sample cell v3.2 — 25 mm cell mounted whole; rear 4 spring
 - **Gas**: He in at the top (+x fitting, −x spare), out through a 20 × 1 mm slot in the bottom wall; tent 11.9 mL, 3τ = 43 s at 50 mL/min; SHT45 (8 × 6 mini-board) beside the outlet.
 - **Checks (CAD)**: clash 0, 315 detector rays 0 blocked, needle margin 0.59 mm, well 0.70 for 0.3–0.6 mm wafers.
 - **Models**: tandem 2T (KIER, 4 pins + 4 needles), single cell (insert for 1.1 mm glass, no pins, 4 needles), tandem 3T (extra two-needle mid block, 6 needles), the RBC-2EP chamber on the same Grace plate and bracket, and the earlier flat cell v2 (10/27, greyed out, superseded by v3.2). v3.2 = v3.1 + 20 × 1.0 outlet slot in the tent's bottom wall, SHT45 pocket and a lower wiring groove.
+- **Flow view**: animated He path from inlet to outlet; wiring routes coloured by DB15 pin group (“flows” button, or #wc_3t&flows in the URL).
 - **Viewer**: drag to rotate, explode slider, film tent / Grace plate + bracket toggles, ray directions (X-ray along +y, light from −x at 45°, detector +x at 60°), He flow arrow (gas toggle), tap a part for its name.
 - **RBC-2EP chamber**: drawn only as the vendor's outer envelope (body 62 × 62 × 34.6 mm plus top/bottom port zones as boxes, 4 × M4 taps on 48 × 48 at the back). No internal detail, window or side tubes from the vendor model.
 - **Assumed / not yet confirmed**: KIER rear pad size and wafer thickness, Grace's new plate drawing, detector angle and distance, cell centre height 111 mm.
