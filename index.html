@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>빔라인 시료 셀 v4.6m</title>
-<meta name="description" content="APS 2-ID-D beamline sample cell v4.6m (final) — 3D viewer with real materials, section cut and close-ups.">
+<title>빔라인 시료 셀 v4.7</title>
+<meta name="description" content="APS 2-ID-D beamline sample cell v4.7 (3T + bifacial + PL fit) — 3D viewer with real materials, section cut and close-ups.">
 <style>
 :root {
   --bg1: #eef0f2; --bg2: #c9ced4; --ink: #15181c; --ink2: #4a525c; --panel: rgba(255,255,255,0.86); --line: rgba(20,24,28,0.12);
@@ -59,9 +59,9 @@ button[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-i
 <canvas id="c"></canvas>
 <header>
   <div class="t">
-    <h1 data-ko="빔라인 시료 셀 v4.6m (최종)" data-en="Beamline sample cell v4.6m (final)"></h1>
-    <div class="sub" data-ko="APS 2-ID-D · 2026년 12월 · 누름 판 rev B · 부산대 이동현 · <a href='v33.html'>이전 v3.3 / v4.3.1</a>"
-      data-en="APS 2-ID-D · Dec 2026 · hold-down plate rev B · Donghyeon Lee, PNU · <a href='v33.html'>earlier v3.3 / v4.3.1</a>"></div>
+    <h1 data-ko="빔라인 시료 셀 v4.7 (3T 기본 · 양면 · PL 맞춤)" data-en="Beamline sample cell v4.7 (3T base · bifacial · PL fit)"></h1>
+    <div class="sub" data-ko="APS 2-ID-D · 2026년 12월 · rev A · 부산대 이동현 · <a href='v33.html'>이전 v3.3 / v4.3.1</a>"
+      data-en="APS 2-ID-D · Dec 2026 · rev A · Donghyeon Lee, PNU · <a href='v33.html'>earlier v3.3 / v4.3.1</a>"></div>
   </div>
   <div class="top-r"><button id="lang">EN</button></div>
 </header>
@@ -101,11 +101,11 @@ let lang = 'ko';
 try { const s = localStorage.getItem('bc46-lang'); if (s === 'en' || s === 'ko') lang = s; } catch (e) {}
 
 const VARIANTS = [
+  { key: '3t', ko: '탠덤 3T (기본)', en: 'Tandem 3T (base)' },
   { key: '2t', ko: '탠덤 2T', en: 'Tandem 2T' },
-  { key: '2t_dark', ko: '탠덤 2T · 마개', en: 'Tandem 2T · dark plug' },
+  { key: '2t_dark', ko: '2T · 마개', en: '2T · dark plug' },
   { key: 'single', ko: '싱글 ITO', en: 'Single ITO' },
   { key: 'single_b2', ko: '싱글 FTO', en: 'Single FTO' },
-  { key: '3t', ko: '탠덤 3T', en: 'Tandem 3T' },
 ];
 const C0 = [0, 2, 111];   // cell centre (CAD)
 const VIEWS = [
@@ -173,7 +173,7 @@ const EN = [[/^셀 몸체/, 'cell body'], [/^PEEK 인서트/, 'PEEK insert'], [/
   [/^Grace 새 세로판/, 'Grace plate (reprint)'], [/^Grace 2025/, 'Grace 2025 angle bracket'], [/^뒤 빛 퍽/, 'rear 940 nm light puck'], [/^퍽 /, 'puck heat-spreader disc'],
   [/^940 nm/, '940 nm LED'], [/^VBPW/, 'monitor photodiode'], [/^확산판/, 'diffuser Ø20'], [/^JST/, 'JST connector'], [/^어두움 마개|^마개|^어두운 마개/, 'dark plug'],
   [/^KIER 웨이퍼/, 'KIER tandem wafer 25 × 25'], [/^KIER 뒷면/, 'KIER rear Ag pads'], [/^KIER 앞면 IZO/, 'KIER front IZO'], [/^KIER 앞면 Ag/, 'KIER front Ag'], [/^KIER 앞면 MgF2/, 'KIER front MgF₂'],
-  [/^단일 셀 유리/, 'single-cell glass'], [/^3T/, '3T mid contact'], [/^SMA 암/, 'SMA jacks'], [/^SMA 너트/, 'SMA nuts'], [/^가스/, 'gas push-in fittings'],
+  [/^단일 셀 유리/, 'single-cell glass'], [/^3T/, '3T mid contact'], [/^SMA 암/, 'SMA jacks'], [/^SMA 너트/, 'SMA nuts'], [/^가스 KQ2H04-M5 −X/, 'gas outlet, −X side (push-in M5)'], [/^가스/, 'gas push-in fittings'],
   [/^PTFE|^배선/, 'wiring'], [/^PU 관/, 'PU tube to exhaust block'], [/^1\.27/, 'pin socket'], [/^\[배기 블록/, 'exhaust sensor block'], [/^M\d/, 'screws']];
 const enOf = (n) => { for (const [re, s] of EN) if (re.test(n)) return s; return ''; };
 
@@ -218,7 +218,7 @@ const cutPlane = new THREE.Plane(new THREE.Vector3(-1, 0, 0), 1e4);   // keep x 
 let cutOn = false;
 
 // ---------- loading
-const meta = await fetch('models/v46m_meta.json').then((r) => r.json());
+const meta = await fetch('models/v47_meta.json').then((r) => r.json());
 const loader = new GLTFLoader();
 const cache = {};
 let cur = null, curKey = null;
@@ -240,7 +240,7 @@ function specOf(name, kind) {
 async function load(k) {
   if (cache[k]) return cache[k];
   statusEl.hidden = false; statusEl.textContent = (lang === 'ko' ? '불러오는 중 … ' : 'Loading … ');
-  const gltf = await loader.loadAsync('models/v46m_' + k + '.glb', (e) => { if (e.total) statusEl.textContent = (lang === 'ko' ? '불러오는 중 ' : 'Loading ') + Math.round(100 * e.loaded / e.total) + ' %'; });
+  const gltf = await loader.loadAsync('models/v47_' + k + '.glb', (e) => { if (e.total) statusEl.textContent = (lang === 'ko' ? '불러오는 중 ' : 'Loading ') + Math.round(100 * e.loaded / e.total) + ' %'; });
   const g = new THREE.Group(); const rows = meta[k]; const parts = [];
   gltf.scene.updateMatrixWorld(true);
   const nodes = gltf.scene.children.slice();
@@ -358,7 +358,7 @@ function applyLang() {
   document.documentElement.lang = lang;
   document.querySelectorAll('[data-ko]').forEach((el) => { const s = el.dataset[lang]; if (/</.test(s)) el.innerHTML = s; else el.textContent = s; });
   document.getElementById('lang').textContent = lang === 'ko' ? 'EN' : '한국어';
-  document.title = lang === 'ko' ? '빔라인 시료 셀 v4.6m' : 'Beamline cell v4.6m';
+  document.title = lang === 'ko' ? '빔라인 시료 셀 v4.7' : 'Beamline cell v4.7';
   applyCut(); if (sel) select(sel);
 }
 document.getElementById('lang').onclick = () => { lang = lang === 'ko' ? 'en' : 'ko'; try { localStorage.setItem('bc46-lang', lang); } catch (e) {} applyLang(); };
@@ -379,7 +379,7 @@ window.addEventListener('resize', resize);
 if (window.innerWidth < 600 || window.innerHeight < 700) { panel.classList.add('min'); const hb = document.getElementById('hide'); hb.dataset.ko = '더 보기'; hb.dataset.en = 'More'; }
 applyLang(); resize();
 const [h0, h1] = location.hash.slice(1).split('&');
-const startK = VARIANTS.some((v) => v.key === h0) ? h0 : '2t', startV = VIEWS.find((v) => v.key === h1) || VIEWS[0];
+const startK = VARIANTS.some((v) => v.key === h0) ? h0 : '3t', startV = VIEWS.find((v) => v.key === h1) || VIEWS[0];
 await show(startK); fly(startV, true); writeHash(startV.key);
 
 window.__bc = { camera, controls, root, get cur() { return cur; } };   // for console inspection

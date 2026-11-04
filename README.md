@@ -2,13 +2,18 @@
 
 보기 / View: https://donghyeonlee98.github.io/beamline-cell-3d/
 
-부산대 이동현. APS 2-ID-D (2026년 12월) 빔라인 시료 셀 **v4.6m (최종, 누름 판 rev B, 2026-11-04)**의 3D 보기.
-Donghyeon Lee, Pusan National University. 3D viewer of the beamline sample cell **v4.6m (final, hold-down plate rev B, 2026-11-04)** for APS 2-ID-D (December 2026).
+부산대 이동현. APS 2-ID-D (2026년 12월) 빔라인 시료 셀 **v4.7 rev A (2026-11-04: 3T 기본 + 양면 뒤 빛 + PL(FS5) 맞춤, 2T는 mid 블록만 뺌, 가스 출구 −X 옆면, Fable 검토 반영)**의 3D 보기.
+Donghyeon Lee, Pusan National University. 3D viewer of the beamline sample cell **v4.7 rev A (2026-11-04: 3T base + bifacial rear light + fits the FS5 PL compartment; 2T = mid block removed; gas outlet on the −X side; Fable review applied)** for APS 2-ID-D (December 2026).
 
-## v4.6m (최종 / final)
+## v4.7 rev A
+
+- 3T 누름 판(홈 11)·멈춤 링을 2T와 같이 쓴다. FS5용 Al 변환판 60×60×6 (M4 48×48 + M3 40×40). 배기 관 경로(엘보 → 배기 블록)는 미해결.
+- 3T hold-down plate (11 grooves) and stop ring shared by 2T and 3T; Al adapter plate 60×60×6 for the FS5 (M4 48×48 + M3 40×40). Exhaust-tube route (elbow → exhaust block) still open.
+
+## v4.6m 기준 설명 / notes from v4.6m
 
 - **재질 표현**: 몸체 Al 6061 흑색 아노다이징, 인서트·탐침 블록·덮개·멈춤 링 PEEK 자연색, 누름 판·텐트 틀 Al, BeCu 바늘, 금 도금 스프링 핀, Ag 패드, PET 12 µm 필름 텐트. 색·질감은 재질 기준 표현이고 형상은 설계 모델(STEP 치수)이다.
-- **보기**: 셀 5종 (탠덤 2T 뒤 빛 퍽 / 탠덤 2T 어두운 마개 / 싱글 ITO / 싱글 FTO / 탠덤 3T), 비스듬히·정면·탐침 확대·웨이퍼 확대·단면·뒷면·판·브래킷, 분해 슬라이더, X 단면 슬라이더, 필름 텐트·Grace 판·배기 블록·커넥터 브래킷·선 켜고 끄기, 부품을 누르면 CAD 이름과 재질, 두 번 누르면 그 점을 중심으로 회전. 주소 끝 `#3t&probe`처럼 셀과 보기를 지정할 수 있다.
+- **보기**: 셀 5종 (탠덤 3T 기본 / 탠덤 2T 뒤 빛 퍽 / 2T 어두운 마개 / 싱글 ITO / 싱글 FTO), 비스듬히·정면·탐침 확대·웨이퍼 확대·단면·뒷면·판·브래킷, 분해 슬라이더, X 단면 슬라이더, 필름 텐트·Grace 판·배기 블록·커넥터 브래킷·선 켜고 끄기, 부품을 누르면 CAD 이름과 재질, 두 번 누르면 그 점을 중심으로 회전. 주소 끝 `#3t&probe`처럼 셀과 보기를 지정할 수 있다.
 - **점검 (CAD)**: 검출기 315 광선 차단 0, 검출기 쪽 최소 여유 0.517 mm (누름 판).
 - **Materials**: black-anodised Al 6061 body; natural PEEK insert, probe blocks, covers and stop ring; Al hold-down plate and tent frame; BeCu needles; gold-plated spring pins; Ag pads; PET 12 µm film tent. Colours follow the real materials; geometry is the design model (STEP dimensions).
 - **Viewer**: 5 cells (tandem 2T with rear light puck / tandem 2T with dark plug / single ITO / single FTO / tandem 3T); 3/4, front, probe close-up, wafer close-up, section, back and plate + bracket views; explode and X-section sliders; toggles for the film tent, Grace plate, exhaust block, connector bracket and wires; tap a part for its CAD name and material, double-tap to orbit around it. URL hash such as `#3t&probe` picks cell and view.
@@ -58,7 +63,7 @@ APS 2-ID-D beamline sample cell v3.3 — 25 mm cell mounted whole; rear 4 spring
 ## 파일 / Files
 
 - `index.html` — v4.6m 보기 (three.js 0.160) / v4.6m viewer (three.js 0.160)
-- `models/v46m_*.glb`, `models/v46m_meta.json` — v4.6m 셀 5종 GLB와 부품 재질·층 / the five v4.6m GLBs and per-part material and layer
+- `models/v47_*.glb`, `models/v47_meta.json` — v4.7 셀 5종 GLB와 부품 재질·층 / the five v4.6m GLBs and per-part material and layer
 - `v33.html` — 이전 판 보기 (three.js r128) / earlier viewer (three.js r128)
 - `models.js` — base64 GLB 모델 (`window.BC_GLB`). 싱글·3T·RBC-2EP는 탠덤 2T와 다른 부품만 담고 나머지는 2T에서 가져온다 / base64 GLB models; the single, 3T and RBC-2EP entries hold only the parts that differ from tandem 2T, the rest is reused from it
 - `README.md` — 이 문서 / this file
