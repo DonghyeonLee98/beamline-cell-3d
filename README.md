@@ -2,8 +2,20 @@
 
 보기 / View: https://donghyeonlee98.github.io/beamline-cell-3d/
 
-부산대 이동현, 2026-10-30. APS 2-ID-D (2026년 12월) 빔라인 시료 셀 v3.3의 3D 보기. 부품 이름은 CAD 그대로(한글, 주요 부품은 영문 병기).
-Donghyeon Lee, Pusan National University, 2026-10-30. 3D viewer of the beamline sample cell v3.3 for APS 2-ID-D (December 2026). Part names come straight from the CAD (Korean, main parts with English).
+부산대 이동현. APS 2-ID-D (2026년 12월) 빔라인 시료 셀 **v4.6m (최종, 누름 판 rev B, 2026-11-04)**의 3D 보기.
+Donghyeon Lee, Pusan National University. 3D viewer of the beamline sample cell **v4.6m (final, hold-down plate rev B, 2026-11-04)** for APS 2-ID-D (December 2026).
+
+## v4.6m (최종 / final)
+
+- **재질 표현**: 몸체 Al 6061 흑색 아노다이징, 인서트·탐침 블록·덮개·멈춤 링 PEEK 자연색, 누름 판·텐트 틀 Al, BeCu 바늘, 금 도금 스프링 핀, Ag 패드, PET 12 µm 필름 텐트. 색·질감은 재질 기준 표현이고 형상은 설계 모델(STEP 치수)이다.
+- **보기**: 셀 5종 (탠덤 2T 뒤 빛 퍽 / 탠덤 2T 어두운 마개 / 싱글 ITO / 싱글 FTO / 탠덤 3T), 비스듬히·정면·탐침 확대·웨이퍼 확대·단면·뒷면·판·브래킷, 분해 슬라이더, X 단면 슬라이더, 필름 텐트·Grace 판·배기 블록·커넥터 브래킷·선 켜고 끄기, 부품을 누르면 CAD 이름과 재질, 두 번 누르면 그 점을 중심으로 회전. 주소 끝 `#3t&probe`처럼 셀과 보기를 지정할 수 있다.
+- **점검 (CAD)**: 검출기 315 광선 차단 0, 검출기 쪽 최소 여유 0.517 mm (누름 판).
+- **Materials**: black-anodised Al 6061 body; natural PEEK insert, probe blocks, covers and stop ring; Al hold-down plate and tent frame; BeCu needles; gold-plated spring pins; Ag pads; PET 12 µm film tent. Colours follow the real materials; geometry is the design model (STEP dimensions).
+- **Viewer**: 5 cells (tandem 2T with rear light puck / tandem 2T with dark plug / single ITO / single FTO / tandem 3T); 3/4, front, probe close-up, wafer close-up, section, back and plate + bracket views; explode and X-section sliders; toggles for the film tent, Grace plate, exhaust block, connector bracket and wires; tap a part for its CAD name and material, double-tap to orbit around it. URL hash such as `#3t&probe` picks cell and view.
+- **Checks (CAD)**: 315 detector rays, 0 blocked; minimum detector-side clearance 0.517 mm (hold-down plate).
+
+이전 판 (v3.3, v4.3.1 albedo, PL N₂ 셀, RBC-2EP): [v33.html](https://donghyeonlee98.github.io/beamline-cell-3d/v33.html). 아래는 그 판의 설명이다.
+Earlier versions (v3.3, v4.3.1 albedo, PL N₂ cell, RBC-2EP): [v33.html](https://donghyeonlee98.github.io/beamline-cell-3d/v33.html). The notes below describe that page.
 
 ## 한국어
 
@@ -45,6 +57,8 @@ APS 2-ID-D beamline sample cell v3.3 — 25 mm cell mounted whole; rear 4 spring
 
 ## 파일 / Files
 
-- `index.html` — 보기 페이지 (three.js r128) / viewer page (three.js r128)
+- `index.html` — v4.6m 보기 (three.js 0.160) / v4.6m viewer (three.js 0.160)
+- `models/v46m_*.glb`, `models/v46m_meta.json` — v4.6m 셀 5종 GLB와 부품 재질·층 / the five v4.6m GLBs and per-part material and layer
+- `v33.html` — 이전 판 보기 (three.js r128) / earlier viewer (three.js r128)
 - `models.js` — base64 GLB 모델 (`window.BC_GLB`). 싱글·3T·RBC-2EP는 탠덤 2T와 다른 부품만 담고 나머지는 2T에서 가져온다 / base64 GLB models; the single, 3T and RBC-2EP entries hold only the parts that differ from tandem 2T, the rest is reused from it
 - `README.md` — 이 문서 / this file
