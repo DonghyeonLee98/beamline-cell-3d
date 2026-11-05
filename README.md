@@ -2,8 +2,13 @@
 
 보기 / View: https://donghyeonlee98.github.io/beamline-cell-3d/
 
-부산대 이동현. APS 2-ID-D (2026년 12월) 빔라인 시료 셀 **v4.7 rev A (2026-11-04: 3T 기본 + 양면 뒤 빛 + PL(FS5) 맞춤, 2T는 mid 블록만 뺌, 가스 출구 −X 옆면, Fable 검토 반영)**의 3D 보기.
-Donghyeon Lee, Pusan National University. 3D viewer of the beamline sample cell **v4.7 rev A (2026-11-04: 3T base + bifacial rear light + fits the FS5 PL compartment; 2T = mid block removed; gas outlet on the −X side; Fable review applied)** for APS 2-ID-D (December 2026).
+부산대 이동현. APS 2-ID-D (2026년 12월) 빔라인 시료 셀 **v4.8 (2026-11-05: 3T 기본 + 양면 뒤 빛 + PL(FS5) 맞춤, 가라앉은 필름 창, 건조 N₂, 틈 수정)**의 3D 보기.
+Donghyeon Lee, Pusan National University. 3D viewer of the beamline sample cell **v4.8 (2026-11-05: 3T base + bifacial rear light + fits the FS5 PL compartment; sunken film window; dry N₂; gap fix)** for APS 2-ID-D (December 2026).
+
+## v4.8 (2026-11-05)
+
+- 텐트 틀 Al 지붕 0.8, 틀 5.8 mm. PET 필름은 가라앉은 창 안 Y −2.3, 턱 뒤에 붙여 가스가 필름을 턱에 누른다. 검출기 20–40°, 2–3 mm 접근용. −X 우물 벽 45° 경사. 가스는 건조 N₂ (Ø4 PU 피팅 그대로, 1/4"→Ø4 어댑터 필요). 11/05 14:00 텐트 틀 +X 틈 수정(블록 + 어깨, 기밀). 가스 포트는 v4.7과 같다. 형상 확정은 주문 검토 뒤.
+- Tent frame Al roof 0.8, frame 5.8 mm. The PET film sits in a sunken window at Y −2.3, glued behind the ledge so the gas presses it onto the ledge. Allows the detector snout at 20–40°, 2–3 mm. The −X well wall is cut at 45°. Gas is dry N₂ (Ø4 PU fittings unchanged; a 1/4"→Ø4 adapter is needed). 11/05 14:00: +X gap of the tent frame fixed (block + shoulders, gas-tight). Gas ports are the same as v4.7. Final geometry waits for the order review.
 
 ## v4.7 rev A
 
@@ -62,8 +67,8 @@ APS 2-ID-D beamline sample cell v3.3 — 25 mm cell mounted whole; rear 4 spring
 
 ## 파일 / Files
 
-- `index.html` — v4.6m 보기 (three.js 0.160) / v4.6m viewer (three.js 0.160)
-- `models/v47_*.glb`, `models/v47_meta.json` — v4.7 셀 5종 GLB와 부품 재질·층 / the five v4.6m GLBs and per-part material and layer
+- `index.html` — v4.8 보기 (three.js 0.160) / v4.8 viewer (three.js 0.160)
+- `models/v48_*.glb`, `models/v48_meta.json` — v4.8 셀 5종 GLB와 부품 재질·층 / the five v4.8 GLBs and per-part material and layer
 - `v33.html` — 이전 판 보기 (three.js r128) / earlier viewer (three.js r128)
 - `models.js` — base64 GLB 모델 (`window.BC_GLB`). 싱글·3T·RBC-2EP는 탠덤 2T와 다른 부품만 담고 나머지는 2T에서 가져온다 / base64 GLB models; the single, 3T and RBC-2EP entries hold only the parts that differ from tandem 2T, the rest is reused from it
 - `README.md` — 이 문서 / this file
