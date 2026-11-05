@@ -67,3 +67,8 @@ APS 2-ID-D beamline sample cell v3.3 — 25 mm cell mounted whole; rear 4 spring
 - `v33.html` — 이전 판 보기 (three.js r128) / earlier viewer (three.js r128)
 - `models.js` — base64 GLB 모델 (`window.BC_GLB`). 싱글·3T·RBC-2EP는 탠덤 2T와 다른 부품만 담고 나머지는 2T에서 가져온다 / base64 GLB models; the single, 3T and RBC-2EP entries hold only the parts that differ from tandem 2T, the rest is reused from it
 - `README.md` — 이 문서 / this file
+
+
+## v4.8 (2026-11-05)
+
+Grace(빔라인) 답: 검출기는 시료 법선에서 20–40°, 시료에서 2–3 mm. 그래서 필름을 가라앉혔다: 블록 위는 Al 지붕 0.8, 창 X −12.5…24.9 × Z ±17만 Y −2.3까지 파고 PET 12 µm를 턱 뒤에 양면 테이프로 붙인다(니들 생크 꼭대기 −1.86). 스나우트(원통) 최소 거리 20°에서 Ø10 5.1 / Ø20 6.9 mm(v4.7 7.9 / 9.0). He 대신 건조 N₂. 모델 `models/v48_*.glb`.

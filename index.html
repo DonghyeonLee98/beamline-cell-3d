@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>빔라인 시료 셀 v4.7</title>
-<meta name="description" content="APS 2-ID-D beamline sample cell v4.7 (3T + bifacial + PL fit) — 3D viewer with real materials, section cut and close-ups.">
+<title>빔라인 시료 셀 v4.8</title>
+<meta name="description" content="APS 2-ID-D beamline sample cell v4.8 (3T + bifacial + PL fit) — 3D viewer with real materials, section cut and close-ups.">
 <style>
 :root {
   --bg1: #eef0f2; --bg2: #c9ced4; --ink: #15181c; --ink2: #4a525c; --panel: rgba(255,255,255,0.86); --line: rgba(20,24,28,0.12);
@@ -59,7 +59,7 @@ button[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-i
 <canvas id="c"></canvas>
 <header>
   <div class="t">
-    <h1 data-ko="빔라인 시료 셀 v4.7 (3T 기본 · 양면 · PL 맞춤)" data-en="Beamline sample cell v4.7 (3T base · bifacial · PL fit)"></h1>
+    <h1 data-ko="빔라인 시료 셀 v4.8 (3T 기본 · 양면 · PL 맞춤 · 가라앉은 필름 창 Y −2.3)" data-en="Beamline sample cell v4.8 (3T base · bifacial · PL fit · sunken film window Y -2.3)"></h1>
     <div class="sub" data-ko="APS 2-ID-D · 2026년 12월 · rev A · 부산대 이동현 · <a href='v33.html'>이전 v3.3 / v4.3.1</a>"
       data-en="APS 2-ID-D · Dec 2026 · rev A · Donghyeon Lee, PNU · <a href='v33.html'>earlier v3.3 / v4.3.1</a>"></div>
   </div>
@@ -218,7 +218,7 @@ const cutPlane = new THREE.Plane(new THREE.Vector3(-1, 0, 0), 1e4);   // keep x 
 let cutOn = false;
 
 // ---------- loading
-const meta = await fetch('models/v47_meta.json').then((r) => r.json());
+const meta = await fetch('models/v48_meta.json').then((r) => r.json());
 const loader = new GLTFLoader();
 const cache = {};
 let cur = null, curKey = null;
@@ -240,7 +240,7 @@ function specOf(name, kind) {
 async function load(k) {
   if (cache[k]) return cache[k];
   statusEl.hidden = false; statusEl.textContent = (lang === 'ko' ? '불러오는 중 … ' : 'Loading … ');
-  const gltf = await loader.loadAsync('models/v47_' + k + '.glb', (e) => { if (e.total) statusEl.textContent = (lang === 'ko' ? '불러오는 중 ' : 'Loading ') + Math.round(100 * e.loaded / e.total) + ' %'; });
+  const gltf = await loader.loadAsync('models/v48_' + k + '.glb', (e) => { if (e.total) statusEl.textContent = (lang === 'ko' ? '불러오는 중 ' : 'Loading ') + Math.round(100 * e.loaded / e.total) + ' %'; });
   const g = new THREE.Group(); const rows = meta[k]; const parts = [];
   gltf.scene.updateMatrixWorld(true);
   const nodes = gltf.scene.children.slice();
@@ -358,7 +358,7 @@ function applyLang() {
   document.documentElement.lang = lang;
   document.querySelectorAll('[data-ko]').forEach((el) => { const s = el.dataset[lang]; if (/</.test(s)) el.innerHTML = s; else el.textContent = s; });
   document.getElementById('lang').textContent = lang === 'ko' ? 'EN' : '한국어';
-  document.title = lang === 'ko' ? '빔라인 시료 셀 v4.7' : 'Beamline cell v4.7';
+  document.title = lang === 'ko' ? '빔라인 시료 셀 v4.8' : 'Beamline cell v4.8';
   applyCut(); if (sel) select(sel);
 }
 document.getElementById('lang').onclick = () => { lang = lang === 'ko' ? 'en' : 'ko'; try { localStorage.setItem('bc46-lang', lang); } catch (e) {} applyLang(); };
