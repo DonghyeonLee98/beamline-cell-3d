@@ -399,10 +399,10 @@ function syncRot() {
   rotOut.title = `checked range ${lo}…${hi}°`;
 }
 rotEl.addEventListener('input', () => { if (!curSite) return; rotDeg[curSite] = +rotEl.value; syncRot(); applyPose(); });
-function flyToSite(k) {
+function flyToSite(k, instant) {
   const S = (meta.sites[vOf(curKey)] || {})[k]; if (!S) return;
   const [x, y, z] = S.B0, sz = z > 111 ? 1 : -1;
-  fly({ key: 'block', t: [x, y - 1, z], c: [x + 34, y - 62, z + 44 * sz], lid: false });
+  fly({ key: 'block', t: [x, y - 1, z], c: [x + 34, y - 62, z + 44 * sz], lid: false }, instant);
 }
 
 let anim = 0;
@@ -478,7 +478,7 @@ canvas.addEventListener('pointerup', (e) => {
 // ---------- UI
 const vRow = document.getElementById('variants'), wRow = document.getElementById('views'), tRow = document.getElementById('toggles');
 for (const v of VARIANTS) { const b = document.createElement('button'); b.dataset.k = v.key; b.dataset.ko = v.ko; b.dataset.en = v.en; b.onclick = () => show(v.key); vRow.append(b); }
-for (const v of VIEWS) { const b = document.createElement('button'); b.dataset.k = v.key; b.dataset.ko = v.ko; b.dataset.en = v.en; b.onclick = () => { if (v.cut === undefined && cutOn) { cutEl.value = 41; applyCut(); } fly(v); writeHash(v.key); }; wRow.append(b); }
+for (const v of VIEWS) { const b = document.createElement('button'); b.dataset.k = v.key; b.dataset.ko = v.ko; b.dataset.en = v.en; b.onclick = () => { if (v.cut === undefined && cutOn) { cutEl.value = 41; applyCut(); } if (v.key === 'block' && curSite) flyToSite(curSite); else fly(v); writeHash(v.key); }; wRow.append(b); }
 for (const g of GROUPS) { const b = document.createElement('button'); b.dataset.k = g.key; b.dataset.ko = g.ko; b.dataset.en = g.en; b.onclick = () => { groupOn[g.key] = !groupOn[g.key]; syncToggles(); applyGroups(); }; tRow.append(b); }
 function syncToggles() { tRow.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(groupOn[b.dataset.k]))); }
 syncToggles();
@@ -510,7 +510,7 @@ if (window.innerWidth < 600 || window.innerHeight < 700) { panel.classList.add('
 applyLang(); resize();
 const [h0, h1] = location.hash.slice(1).split('&');
 const startK = VARIANTS.some((v) => v.key === h0) ? h0 : '3t', startV = VIEWS.find((v) => v.key === h1) || VIEWS[0];
-await show(startK); fly(startV, true); writeHash(startV.key);
+await show(startK); if (startV.key === 'block' && curSite) flyToSite(curSite, true); else fly(startV, true); writeHash(startV.key);
 
 window.__bc = { camera, controls, root, renderer, scene, meta, rotDeg, applyPose, get cur() { return cur; } };   // for console inspection
 renderer.setAnimationLoop(() => { controls.update(); renderer.render(scene, camera); });
