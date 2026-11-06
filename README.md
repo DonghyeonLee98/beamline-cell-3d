@@ -2,10 +2,20 @@
 
 보기 / View: https://donghyeonlee98.github.io/beamline-cell-3d/
 
-부산대 이동현. APS 2-ID-D (2026년 12월) 빔라인 시료 셀 **v6.0 rev B (2026-11-06 발주판: Ossila 곧은 바늘 + ±Z 경사 받침 위 세트스크류 클램프 블록, 분리형 뚜껑 + 필름 창, 셀 안 SHT45)**의 3D 보기. 이전 v4.8은 [v48.html](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
-Donghyeon Lee, Pusan National University. 3D viewer of the beamline sample cell **v6.0 rev B (ordered 2026-11-06: straight Ossila needles in set-screw clamp blocks on ±Z inclined ledges, detachable lid with film window, SHT45 inside)** for APS 2-ID-D (December 2026). The earlier v4.8 viewer is [v48.html](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
+부산대 이동현. APS 2-ID-D (2026년 12월) 빔라인 시료 셀 **v6.2 (2026-11-07 초안: 2025 셀 방식 — 곧은 바늘 + 회전 클램프 블록 + 뒷면 PCB 포고, 선·납땜 없음)**의 3D 보기. 이전 판: [v6.0 rev B](https://donghyeonlee98.github.io/beamline-cell-3d/v60.html), [v4.8](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
+Donghyeon Lee, Pusan National University. 3D viewer of the beamline sample cell **v6.2 (draft 2026-11-07: 2025-cell style — straight needles + turnable clamp blocks + rear-PCB spring pins, no wires or solder)** for APS 2-ID-D (December 2026). Earlier viewers: [v6.0 rev B](https://donghyeonlee98.github.io/beamline-cell-3d/v60.html), [v4.8](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
 
-## v6.0 rev B (2026-11-06)
+## v6.2 (2026-11-07, 초안 · draft)
+
+- 바늘마다 블록 하나: 곧은 Ossila 바늘(W A1·B1, BeCu C1)을 SUS 303 블록 8 × 6 × 2 윗면 홈에 놓고 SUS 누름판 8 × 6 × 1과 M2 × 6 하나로 같이 누른다. 그 나사가 회전 축이다 — 풀고 손으로 ±15° 돌려 팁을 패드에 맞춘 뒤 조인다. 블록은 몸체 바닥 리세스 Ø6.2 안의 PEEK 경사 시트 Ø6.0(12° 또는 10°) 위에 앉아 Al에 닿지 않는다.
+- 전기: 뒷면 PCB(FR-4 1.6)의 Mill-Max 0929-7 스프링 핀이 몸체·시트 구멍을 지나 블록 밑면을 누른다 → 블록 → 바늘 → 패드. 셀 안에 선·납땜 없음. 웨이퍼 뒷면은 Mill-Max 0908-7 4개, 출구는 SMA 6(CH1–6)과 JST-SH 6핀(I2C + NTC), SHT45는 PCB에 바로 실장(몸체 뒷면 포켓).
+- 자리 10곳(2T 4 + 3T mid 2 + 싱글 4); 스프링 핀은 10개 다 심고 시트·블록·바늘만 셀 종류별로 끼운다. 보기 페이지의 '블록'·'회전'으로 각 블록을 나사 축(시트 법선) 기준으로 돌려 볼 수 있고, 검사 범위(옆 바늘·바닥 0.3 mm) 밖은 주황색으로 표시한다.
+- 재질: Al 6061(몸체·뚜껑·뒷판 흑색 아노다이징), SUS 303(블록·누름판), PEEK(시트·인서트), FR-4(PCB), BeCu/W(바늘), 금 도금(스프링 핀). 발주 전 초안이다.
+- One block per needle: a straight Ossila needle (W A1/B1, BeCu C1) lies in the top groove of a SUS 303 block 8 × 6 × 2 and is clamped by a SUS plate 8 × 6 × 1 and a single M2 × 6 screw, which is also the rotation axis: loosen, turn the block by hand (±15°) to put the tip on the pad, tighten. The block sits on a sloped PEEK seat Ø6.0 (12° or 10°) in a Ø6.2 recess of the cavity floor, clear of the aluminium.
+- Current path: a Mill-Max 0929-7 spring pin on the rear PCB (FR-4 1.6) passes through the body and seat and presses the block bottom → block → needle → pad. No wires or solder inside the cell. Wafer rear: four Mill-Max 0908-7; outputs: six SMA (CH1–6) and JST-SH 6-pin (I2C + NTC); SHT45 soldered on the PCB (rear pocket of the body).
+- Ten sites (2T 4 + 3T mid 2 + single 4); all ten spring pins stay on the PCB and only seats, blocks and needles change per cell. In the viewer, 'Block' + 'Turn' rotate a block about its screw axis (seat normal); values outside the checked range (neighbour needle or floor 0.3 mm) turn orange. Draft, not ordered.
+
+## v6.0 rev B (2026-11-06) — 이전 판 / earlier version ([v60.html](https://donghyeonlee98.github.io/beamline-cell-3d/v60.html))
 
 - 몸체 Al 80 × 77 × 19 (X −45…35), 뚜껑 3 → 전체 22. 바늘은 Ossila T3008 곧은 핀 Ø0.508 × 32를 PEEK 클램프 블록(구멍 Ø0.55 +0.03/0, M2 세트스크류 + 황동 패드)에 꽂아 ±Z 경사 받침(12°, M2 탭 2열 × 11, 피치 3) 위에 M2×10으로 고정한다. 블록 4종(U 1구멍, M3 3구멍, S2U/S2L 2구멍)으로 2T·3T·싱글을 다 덮는다. 예압은 바늘을 밀어 넣는 양으로 준다(0.3 mm 눌림 = 1.44 mm). 바늘 꼬리는 ±Z 벽 통로로 바깥 주머니에 나와 거기서 연결한다(통로는 진공 그리스로 밀봉 예정).
 - 뚜껑은 M3×8 손나사 4 + 다월 2 + 실리콘 0.5 가스켓으로 떼어 낸다. PET 12 µm 필름은 뚜껑 창 턱 뒷면(Y −2.3, v4.8과 같은 위치)에 3M 467MP로 한 번만 붙인다. 뚜껑 +X 쪽은 검출기 스나우트 50° 포락으로 깎았다(Ø10 × 12 끝 + Ø20 몸통, 시료에서 3 mm, +X 수평 20–50°에서 겹침 0).
@@ -78,8 +88,9 @@ APS 2-ID-D beamline sample cell v3.3 — 25 mm cell mounted whole; rear 4 spring
 
 ## 파일 / Files
 
-- `index.html` — v6.0 rev B 보기 (three.js 0.160) / v6.0 rev B viewer (three.js 0.160)
-- `models/v60_*.glb`, `models/v60_meta.json` — v6.0 셀 5종 GLB와 부품 재질·층 (`make_viewer_meta_v60_261106.py`가 설계 폴더의 json에서 만듦) / the five v6.0 GLBs and per-part material and layer
+- `index.html` — v6.2 보기 (three.js 0.160) / v6.2 viewer (three.js 0.160)
+- `models/v62_*.glb`, `models/v62_meta.json` — v6.2 셀 5종 GLB, 부품 재질·층, 자리별 회전 축(B0, U)과 검사 범위 (`make_viewer_meta_v62_261107.py`가 설계 폴더의 json에서 만듦) / the five v6.2 GLBs, per-part material and layer, per-site rotation axis and checked range
+- `v60.html`, `models/v60_*.glb`, `models/v60_meta.json` — 이전 v6.0 rev B 보기 / earlier v6.0 rev B viewer
 - `v48.html`, `models/v48_*.glb`, `models/v48_meta.json` — 이전 v4.8 보기 / earlier v4.8 viewer
 - `v33.html` — 이전 판 보기 (three.js r128) / earlier viewer (three.js r128)
 - `models.js` — base64 GLB 모델 (`window.BC_GLB`). 싱글·3T·RBC-2EP는 탠덤 2T와 다른 부품만 담고 나머지는 2T에서 가져온다 / base64 GLB models; the single, 3T and RBC-2EP entries hold only the parts that differ from tandem 2T, the rest is reused from it
