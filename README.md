@@ -2,10 +2,21 @@
 
 보기 / View: https://donghyeonlee98.github.io/beamline-cell-3d/
 
-부산대 이동현. APS 2-ID-D (2026년 12월) 빔라인 시료 셀 **v4.8 (2026-11-05: 3T 기본 + 양면 뒤 빛 + PL(FS5) 맞춤, 가라앉은 필름 창, 건조 N₂, 틈 수정)**의 3D 보기.
-Donghyeon Lee, Pusan National University. 3D viewer of the beamline sample cell **v4.8 (2026-11-05: 3T base + bifacial rear light + fits the FS5 PL compartment; sunken film window; dry N₂; gap fix)** for APS 2-ID-D (December 2026).
+부산대 이동현. APS 2-ID-D (2026년 12월) 빔라인 시료 셀 **v6.0 rev B (2026-11-06 발주판: Ossila 곧은 바늘 + ±Z 경사 받침 위 세트스크류 클램프 블록, 분리형 뚜껑 + 필름 창, 셀 안 SHT45)**의 3D 보기. 이전 v4.8은 [v48.html](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
+Donghyeon Lee, Pusan National University. 3D viewer of the beamline sample cell **v6.0 rev B (ordered 2026-11-06: straight Ossila needles in set-screw clamp blocks on ±Z inclined ledges, detachable lid with film window, SHT45 inside)** for APS 2-ID-D (December 2026). The earlier v4.8 viewer is [v48.html](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
 
-## v4.8 (2026-11-05)
+## v6.0 rev B (2026-11-06)
+
+- 몸체 Al 80 × 77 × 19 (X −45…35), 뚜껑 3 → 전체 22. 바늘은 Ossila T3008 곧은 핀 Ø0.508 × 32를 PEEK 클램프 블록(구멍 Ø0.55 +0.03/0, M2 세트스크류 + 황동 패드)에 꽂아 ±Z 경사 받침(12°, M2 탭 2열 × 11, 피치 3) 위에 M2×10으로 고정한다. 블록 4종(U 1구멍, M3 3구멍, S2U/S2L 2구멍)으로 2T·3T·싱글을 다 덮는다. 예압은 바늘을 밀어 넣는 양으로 준다(0.3 mm 눌림 = 1.44 mm). 바늘 꼬리는 ±Z 벽 통로로 바깥 주머니에 나와 거기서 연결한다(통로는 진공 그리스로 밀봉 예정).
+- 뚜껑은 M3×8 손나사 4 + 다월 2 + 실리콘 0.5 가스켓으로 떼어 낸다. PET 12 µm 필름은 뚜껑 창 턱 뒷면(Y −2.3, v4.8과 같은 위치)에 3M 467MP로 한 번만 붙인다. 뚜껑 +X 쪽은 검출기 스나우트 50° 포락으로 깎았다(Ø10 × 12 끝 + Ø20 몸통, 시료에서 3 mm, +X 수평 20–50°에서 겹침 0).
+- SHT45(Adafruit 5665) 보드가 셀 안 −X 쪽(X −30.1)에 들어가고, 배기 블록 v2의 같은 자리에는 MS8607(압력)이 간다. N₂ 입·출구는 −X 옆면 M5(원터치 Ø4).
+- 검사(json `checks`): 새 간섭 0, 가스 홍수 누설 0, 빔 9 광선·검출기 315 광선 차단 0, −X 빛 45° 열린 각 51°, 바늘–필름(테이프 포함) ≥ 0.34, 뚜껑–클램프 나사 머리 1.0, 벽 < 1 mm 없음, 가스 21.4 mL, 셀 317 g. 발주 세트 15종(V60 9 + v4.8 그대로 6). 열린 것: Grace 스나우트 각(20–40 vs 45–50)·끝 형상, N₂ 입·출구가 둘 다 −X, 텅스텐 꼬리 크림프, 가스켓 띠 재단.
+- Body Al 80 × 77 × 19 (X −45…35) + 3 mm lid = 22 overall. Needles are straight Ossila T3008 pins Ø0.508 × 32 held in PEEK clamp blocks (Ø0.55 +0.03/0 hole, M2 set screw on a brass pad) that sit on ±Z inclined ledges (12°, two rows of 11 M2 taps at 3 mm pitch) with an M2×10 screw. Four block types (U one hole, M3 three holes, S2U/S2L two holes) cover 2T, 3T and single cells. Preload is set by how far the needle is pushed through the clamp (0.3 mm deflection = 1.44 mm). The needle tails leave through Ø1 passages in the ±Z walls into outer pockets, where they are connected (passages to be sealed with vacuum grease).
+- The lid comes off with four M3×8 thumb screws, two dowels and a 0.5 mm silicone gasket. The PET 12 µm film is taped once (3M 467MP) to the rear face of the lid's window ledge (Y −2.3, same plane as v4.8). The +X side of the lid is cut to the 50° detector-snout envelope (Ø10 × 12 tip + Ø20 body, 3 mm from the sample, horizontal on +X, no overlap at 20–50°).
+- An SHT45 board (Adafruit 5665) sits inside the cell at −X (X −30.1); the exhaust block v2 takes an MS8607 (pressure) in the same footprint. N₂ in and out through M5 push-in fittings on the −X face.
+- Checks (json `checks`): no new clash, gas flood fill with 0 leaking cells, 9 beam rays and 315 detector rays unblocked, −X light at 45° open to 51°, needle–film margin ≥ 0.34 incl. tape, lid–clamp-screw-head 1.0, no wall under 1 mm, gas volume 21.4 mL, cell 317 g. Order set of 15 CNC parts (9 new V60 + 6 unchanged from v4.8). Open: Grace's snout angle (20–40 vs 45–50) and tip shape, both N₂ ports on −X, crimps for tungsten tails, gasket-strip cutting.
+
+## v4.8 (2026-11-05) — 이전 판 / earlier version ([v48.html](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html))
 
 - 텐트 틀 Al 지붕 0.8, 틀 5.8 mm. PET 필름은 가라앉은 창 안 Y −2.3, 턱 뒤에 붙여 가스가 필름을 턱에 누른다. 검출기 20–40°, 2–3 mm 접근용. −X 우물 벽 45° 경사. 가스는 건조 N₂ (Ø4 PU 피팅 그대로, 1/4"→Ø4 어댑터 필요). 11/05 14:00 텐트 틀 +X 틈 수정(블록 + 어깨, 기밀). 가스 포트는 v4.7과 같다. 형상 확정은 주문 검토 뒤.
 - Tent frame Al roof 0.8, frame 5.8 mm. The PET film sits in a sunken window at Y −2.3, glued behind the ledge so the gas presses it onto the ledge. Allows the detector snout at 20–40°, 2–3 mm. The −X well wall is cut at 45°. Gas is dry N₂ (Ø4 PU fittings unchanged; a 1/4"→Ø4 adapter is needed). 11/05 14:00: +X gap of the tent frame fixed (block + shoulders, gas-tight). Gas ports are the same as v4.7. Final geometry waits for the order review.
@@ -67,8 +78,9 @@ APS 2-ID-D beamline sample cell v3.3 — 25 mm cell mounted whole; rear 4 spring
 
 ## 파일 / Files
 
-- `index.html` — v4.8 보기 (three.js 0.160) / v4.8 viewer (three.js 0.160)
-- `models/v48_*.glb`, `models/v48_meta.json` — v4.8 셀 5종 GLB와 부품 재질·층 / the five v4.8 GLBs and per-part material and layer
+- `index.html` — v6.0 rev B 보기 (three.js 0.160) / v6.0 rev B viewer (three.js 0.160)
+- `models/v60_*.glb`, `models/v60_meta.json` — v6.0 셀 5종 GLB와 부품 재질·층 (`make_viewer_meta_v60_261106.py`가 설계 폴더의 json에서 만듦) / the five v6.0 GLBs and per-part material and layer
+- `v48.html`, `models/v48_*.glb`, `models/v48_meta.json` — 이전 v4.8 보기 / earlier v4.8 viewer
 - `v33.html` — 이전 판 보기 (three.js r128) / earlier viewer (three.js r128)
 - `models.js` — base64 GLB 모델 (`window.BC_GLB`). 싱글·3T·RBC-2EP는 탠덤 2T와 다른 부품만 담고 나머지는 2T에서 가져온다 / base64 GLB models; the single, 3T and RBC-2EP entries hold only the parts that differ from tandem 2T, the rest is reused from it
 - `README.md` — 이 문서 / this file

@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>빔라인 시료 셀 v4.8</title>
+<meta name="description" content="APS 2-ID-D beamline sample cell v4.8 (3T + bifacial + PL fit) — 3D viewer with real materials, section cut and close-ups.">
+<style>
+:root {
+  --bg1: #eef0f2; --bg2: #c9ced4; --ink: #15181c; --ink2: #4a525c; --panel: rgba(255,255,255,0.86); --line: rgba(20,24,28,0.12);
+  --chip: rgba(20,24,28,0.06); --chip-on: #15181c; --chip-on-ink: #fff; --accent: #c2410c;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg1: #2a2e34; --bg2: #0e1013; --ink: #eef1f4; --ink2: #a3acb7; --panel: rgba(22,25,29,0.86); --line: rgba(255,255,255,0.12);
+  --chip: rgba(255,255,255,0.08); --chip-on: #eef1f4; --chip-on-ink: #111; --accent: #fb923c; } }
+:root[data-theme="dark"] {
+  --bg1: #2a2e34; --bg2: #0e1013; --ink: #eef1f4; --ink2: #a3acb7; --panel: rgba(22,25,29,0.86); --line: rgba(255,255,255,0.12);
+  --chip: rgba(255,255,255,0.08); --chip-on: #eef1f4; --chip-on-ink: #111; --accent: #fb923c; }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; overflow: hidden; }
+body { background: radial-gradient(120% 90% at 50% 30%, var(--bg1), var(--bg2)); color: var(--ink);
+  font: 14px/1.45 system-ui, -apple-system, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; }
+#c { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+header { position: fixed; top: 12px; left: 16px; right: 16px; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; pointer-events: none; }
+header .t { pointer-events: auto; }
+h1 { margin: 0; font-size: 18px; letter-spacing: -0.01em; }
+.sub { color: var(--ink2); font-size: 12.5px; margin-top: 2px; }
+.sub a { color: inherit; }
+.top-r { display: flex; gap: 6px; pointer-events: auto; }
+button { font: inherit; color: var(--ink); background: var(--chip); border: 1px solid var(--line); border-radius: 999px; padding: 5px 11px; cursor: pointer; white-space: nowrap; }
+button[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-ink); border-color: transparent; }
+#panel { position: fixed; left: 50%; bottom: 12px; transform: translateX(-50%); width: min(860px, calc(100% - 24px)); background: var(--panel);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; }
+.row { display: flex; gap: 6px; align-items: center; overflow-x: auto; scrollbar-width: none; padding: 2px 0; }
+.row::-webkit-scrollbar { display: none; }
+.row + .row { margin-top: 6px; }
+.lab { color: var(--ink2); font-size: 12px; min-width: 34px; flex: none; }
+.sl { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 150px; }
+.sl input { flex: 1; accent-color: var(--accent); }
+.sl output { font-variant-numeric: tabular-nums; color: var(--ink2); font-size: 12px; width: 52px; text-align: right; }
+#hide { margin-left: auto; }
+#panel.min .more { display: none; }
+#info { position: fixed; right: 16px; top: 64px; width: min(340px, calc(100% - 32px)); background: var(--panel); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; font-size: 13px; }
+#info .k { font-weight: 650; }
+#info .m { color: var(--accent); font-size: 12px; margin: 2px 0 4px; }
+#info .n { color: var(--ink2); font-size: 12px; word-break: keep-all; }
+#info .x { float: right; padding: 0 8px; border-radius: 6px; }
+#status { position: fixed; left: 50%; top: 45%; transform: translate(-50%, -50%); color: var(--ink2); background: var(--panel); padding: 8px 14px; border-radius: 10px; border: 1px solid var(--line); }
+.hint { color: var(--ink2); font-size: 11.5px; margin-top: 6px; }
+@media (max-width: 600px) {
+  h1 { font-size: 16px; } .sub { font-size: 11.5px; }
+  #info { top: auto; bottom: calc(var(--ph, 160px) + 20px); left: 16px; right: 16px; width: auto; }
+  .hint { display: none; }
+}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<header>
+  <div class="t">
+    <h1 data-ko="빔라인 시료 셀 v4.8 (3T 기본 · 양면 · PL 맞춤 · 가라앉은 필름 창 Y −2.3; 11/05 14:00 텐트 틀 +X 틈 수정)" data-en="Beamline sample cell v4.8 (3T base · bifacial · PL fit · sunken film window Y -2.3; 11/05 14:00 +X gap fix)"></h1>
+    <div class="sub" data-ko="APS 2-ID-D · 2026년 12월 · rev A · 부산대 이동현 · <b>이전 판</b> (11/06 v6.0으로 대체) · <a href='index.html'>현재 v6.0</a> · <a href='v33.html'>v3.3 / v4.3.1</a>"
+      data-en="APS 2-ID-D · Dec 2026 · rev A · Donghyeon Lee, PNU · <b>superseded</b> by v6.0 on 11/06 · <a href='index.html'>current v6.0</a> · <a href='v33.html'>v3.3 / v4.3.1</a>"></div>
+  </div>
+  <div class="top-r"><button id="lang">EN</button></div>
+</header>
+<div id="status">…</div>
+<div id="info" hidden></div>
+<div id="panel">
+  <div class="row" id="variants"><span class="lab" data-ko="셀" data-en="Cell"></span></div>
+  <div class="row" id="views"><span class="lab" data-ko="보기" data-en="View"></span></div>
+  <div class="more">
+    <div class="row">
+      <div class="sl"><span class="lab" data-ko="분해" data-en="Explode"></span><input id="explode" type="range" min="0" max="100" value="0"><output id="o-ex">0 %</output></div>
+      <div class="sl"><span class="lab" data-ko="단면" data-en="Section"></span><input id="cut" type="range" min="-40" max="41" value="41" step="0.5"><output id="o-cut">–</output></div>
+    </div>
+    <div class="row" id="toggles"><span class="lab" data-ko="표시" data-en="Show"></span></div>
+    <div class="hint" data-ko="끌어서 회전 · 두 손가락/휠 확대 · 부품을 누르면 이름과 재질 · 두 번 누르면 그 부품 중심으로 돌림. 색·질감은 재질 기준 표현이며 형상은 설계 모델(STEP 치수)이다."
+      data-en="Drag to rotate · pinch/wheel to zoom · tap a part for its name and material · double-tap to orbit around it. Colours follow the real materials; geometry is the design model (STEP dimensions)."></div>
+  </div>
+  <div class="row" style="margin-top:6px"><button id="hide" data-ko="접기" data-en="Less"></button></div>
+</div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { toCreasedNormals } from 'three/addons/utils/BufferGeometryUtils.js';
+
+// CAD frame: X right (seen from the beam), Y = beam direction (front of the cell is −Y), Z up. three.js: (x, z, −y).
+const cad = (x, y, z) => new THREE.Vector3(x, z, -y);
+let lang = 'ko';
+try { const s = localStorage.getItem('bc46-lang'); if (s === 'en' || s === 'ko') lang = s; } catch (e) {}
+
+const VARIANTS = [
+  { key: '3t', ko: '탠덤 3T (기본)', en: 'Tandem 3T (base)' },
+  { key: '2t', ko: '탠덤 2T', en: 'Tandem 2T' },
+  { key: '2t_dark', ko: '2T · 마개', en: '2T · dark plug' },
+  { key: 'single', ko: '싱글 ITO', en: 'Single ITO' },
+  { key: 'single_b2', ko: '싱글 FTO', en: 'Single FTO' },
+];
+const C0 = [0, 2, 111];   // cell centre (CAD)
+const VIEWS = [
+  { key: 'iso', ko: '비스듬히', en: '3/4', t: [0, 4, 96], c: [250, -330, 230] },
+  { key: 'front', ko: '정면 (빔 쪽)', en: 'Front (beam side)', t: [0, 0, 111], c: [0, -260, 118] },
+  { key: 'probe', ko: '탐침 확대', en: 'Probe close-up', t: [-7.5, -2.5, 117.5], c: [-50, -66, 152] },
+  { key: 'wafer', ko: '웨이퍼 확대', en: 'Wafer close-up', t: [0, -1, 111], c: [22, -62, 132] },
+  { key: 'section', ko: '단면', en: 'Section', t: [0, 3, 111], c: [105, -48, 130], cut: 0 },
+  { key: 'back', ko: '뒷면', en: 'Back', t: [0, 8, 105], c: [-90, 210, 150] },
+  { key: 'mount', ko: '판·브래킷', en: 'Plate + bracket', t: [0, 10, 70], c: [210, -200, 150] },
+];
+
+// real-material look per CAD "kind" (from the build script) — physically based
+const M = {
+  al_black: { color: 0x17181b, metalness: 0.55, roughness: 0.42, clearcoat: 0.25, clearcoatRoughness: 0.5, ko: 'Al 6061 흑색 아노다이징', en: 'Al 6061, black anodised' },
+  al: { color: 0x9a9fa6, metalness: 1, roughness: 0.3, anis: true, ko: 'Al 6061 (가공면)', en: 'Al 6061 (machined)' },
+  peek: { color: 0xc6a97f, metalness: 0, roughness: 0.52, sheen: 0.2, ko: 'PEEK (자연색, 연갈색)', en: 'PEEK (natural, pale brown)' },
+  screw: { color: 0xb8bcc2, metalness: 1, roughness: 0.28, ko: '스테인리스 나사', en: 'stainless screw' },
+  steel: { color: 0xb8bcc2, metalness: 1, roughness: 0.3, ko: '스테인리스', en: 'stainless steel' },
+  pin: { color: 0xdcb55c, metalness: 1, roughness: 0.22, ko: '금 도금', en: 'gold-plated' },
+  gold: { color: 0xdcb55c, metalness: 1, roughness: 0.22, ko: '금 도금', en: 'gold-plated' },
+  sma: { color: 0xdcb55c, metalness: 1, roughness: 0.25, ko: '금 도금 황동', en: 'gold-plated brass' },
+  silver: { color: 0xdedfe2, metalness: 1, roughness: 0.3, ko: 'Ag', en: 'Ag' },
+  becu: { color: 0xc99760, metalness: 1, roughness: 0.26, ko: 'BeCu (베릴륨 구리)', en: 'BeCu' },
+  si: { color: 0x1c2131, metalness: 0.2, roughness: 0.32, clearcoat: 0.7, clearcoatRoughness: 0.15, ko: '탠덤 웨이퍼', en: 'tandem wafer' },
+  layer: { color: 0x3a4a78, metalness: 0, roughness: 0.15, opacity: 0.14, ko: '투명 전극층', en: 'transparent electrode' },
+  cpi: { color: 0x5a4a8a, metalness: 0, roughness: 0.08, opacity: 0.1, ko: '반사방지막', en: 'anti-reflection layer' },
+  pet: { color: 0xffffff, metalness: 0, roughness: 0.04, opacity: 0.1, film: true, ko: 'PET 필름 12 µm', en: 'PET film 12 µm' },
+  kapton: { color: 0xc8771c, metalness: 0, roughness: 0.15, opacity: 0.6, ko: 'Kapton', en: 'Kapton' },
+  glass: { color: 0xf4f6f8, metalness: 0, roughness: 0.85, opacity: 0.72, ko: '확산판', en: 'diffuser' },
+  glass_cell: { color: 0xcde3e3, metalness: 0, roughness: 0.05, opacity: 0.4, ko: '유리 (ITO/FTO)', en: 'glass (ITO/FTO)' },
+  db9: { color: 0x1f2023, metalness: 0, roughness: 0.55, ko: '수지 (전자 부품)', en: 'plastic (electronic part)' },
+  jst: { color: 0xf1ede2, metalness: 0, roughness: 0.5, ko: '나일론 커넥터', en: 'nylon connector' },
+  strip: { color: 0x1f2023, metalness: 0, roughness: 0.55, ko: '핀 헤더', en: 'pin header' },
+  wire: { color: 0xece5d8, metalness: 0, roughness: 0.6, ko: 'PTFE 피복 선', en: 'PTFE-insulated wire' },
+  cable: { color: 0x1a1a1b, metalness: 0, roughness: 0.6, ko: 'USB 케이블', en: 'USB cable' },
+  cablew: { color: 0x2d3036, metalness: 0, roughness: 0.6, ko: '선', en: 'wire' },
+  barb: { color: 0x2a2c30, metalness: 0.1, roughness: 0.45, ko: '원터치 피팅 (수지 + 황동 니켈)', en: 'push-in fitting' },
+  fitg: { color: 0x2a2c30, metalness: 0.1, roughness: 0.45, ko: '원터치 피팅', en: 'push-in fitting' },
+  tube: { color: 0x3b7fd4, metalness: 0, roughness: 0.3, opacity: 0.8, ko: 'PU 관 Ø4', en: 'PU tube Ø4' },
+  petg: { color: 0xcfd0cb, metalness: 0, roughness: 0.72, ko: 'PETG (3D 프린트)', en: 'PETG (3D print)' },
+  cover: { color: 0xcfd0cb, metalness: 0, roughness: 0.72, ko: 'PETG (3D 프린트)', en: 'PETG (3D print)' },
+  resin: { color: 0x2b2d31, metalness: 0, roughness: 0.6, ko: 'PETG (검정)', en: 'PETG (black)' },
+  grace: { color: 0x8d9197, metalness: 0, roughness: 0.7, ko: '레진 (Grace 판, 가정)', en: 'resin (Grace plate, assumed)' },
+  grace2: { color: 0xa3a8ae, metalness: 0.2, roughness: 0.6, ko: 'Grace 2025 브래킷', en: 'Grace 2025 bracket' },
+  lox: { color: 0xb8bcc2, metalness: 1, roughness: 0.3, ko: 'O₂ 센서 (스테인리스)', en: 'O₂ sensor (stainless)' },
+  d6f: { color: 0x2a2c31, metalness: 0, roughness: 0.5, ko: '유량 센서', en: 'flow sensor' },
+  pcb: { color: 0x1d6b3c, metalness: 0, roughness: 0.45, ko: 'PCB', en: 'PCB' },
+  pcbr: { color: 0x15161a, metalness: 0, roughness: 0.45, ko: 'PCB (검정)', en: 'PCB (black)' },
+  adsb: { color: 0x15161a, metalness: 0, roughness: 0.45, ko: 'PCB (검정)', en: 'PCB (black)' },
+  perf: { color: 0x2f7a3e, metalness: 0, roughness: 0.5, ko: '만능 기판', en: 'perfboard' },
+  pico: { color: 0x1d6b3c, metalness: 0, roughness: 0.45, ko: 'Raspberry Pi Pico', en: 'Raspberry Pi Pico' },
+  usbm: { color: 0xc7cacf, metalness: 1, roughness: 0.3, ko: '금속', en: 'metal' },
+  sil: { color: 0xf0eee6, metalness: 0, roughness: 0.75, opacity: 0.88, ko: '실리콘', en: 'silicone' },
+  misc: { color: 0x8a9099, metalness: 0, roughness: 0.6, ko: '', en: '' },
+};
+const OVR = [   // name-based refinements over kind
+  [/^KIER (뒷면|앞면) Ag/, 'silver'], [/^NTC 구슬/, { color: 0x3b2418, metalness: 0, roughness: 0.25, clearcoat: 0.8, ko: 'NTC 유리 구슬', en: 'NTC glass bead' }],
+  [/^PU 관/, 'tube'], [/^배선 묶음/, { color: 0x24262a, metalness: 0, roughness: 0.7, ko: '선 묶음 (편조 슬리브)', en: 'wire bundle (braided sleeve)' }],
+  [/^SMA 너트/, 'gold'], [/^스프링 핀/, 'pin'],
+];
+const EN = [[/^셀 몸체/, 'cell body'], [/^PEEK 인서트/, 'PEEK insert'], [/^누름 판/, 'hold-down plate'], [/^멈춤 링/, 'PEEK stop ring'],
+  [/^탐침 블록 덮개/, 'probe block covers'], [/^탐침 블록/, 'probe blocks (V-groove)'], [/^BeCu/, 'needle probes BC20-2000 Ø0.5'], [/^NTC/, 'NTC thermistor'],
+  [/^스프링 핀/, 'spring pins Mill-Max 0906-1'], [/^PET 필름/, 'film tent window, PET 12 µm'], [/^텐트 틀/, 'film tent frame, Al'], [/^커넥터 브래킷/, 'connector bracket, Al'],
+  [/^Grace 새 세로판/, 'Grace plate (reprint)'], [/^Grace 2025/, 'Grace 2025 angle bracket'], [/^뒤 빛 퍽/, 'rear 940 nm light puck'], [/^퍽 /, 'puck heat-spreader disc'],
+  [/^940 nm/, '940 nm LED'], [/^VBPW/, 'monitor photodiode'], [/^확산판/, 'diffuser Ø20'], [/^JST/, 'JST connector'], [/^어두움 마개|^마개|^어두운 마개/, 'dark plug'],
+  [/^KIER 웨이퍼/, 'KIER tandem wafer 25 × 25'], [/^KIER 뒷면/, 'KIER rear Ag pads'], [/^KIER 앞면 IZO/, 'KIER front IZO'], [/^KIER 앞면 Ag/, 'KIER front Ag'], [/^KIER 앞면 MgF2/, 'KIER front MgF₂'],
+  [/^단일 셀 유리/, 'single-cell glass'], [/^3T/, '3T mid contact'], [/^SMA 암/, 'SMA jacks'], [/^SMA 너트/, 'SMA nuts'], [/^가스 KQ2H04-M5 −X/, 'gas outlet, −X side (push-in M5)'], [/^가스/, 'gas push-in fittings'],
+  [/^PTFE|^배선/, 'wiring'], [/^PU 관/, 'PU tube to exhaust block'], [/^1\.27/, 'pin socket'], [/^\[배기 블록/, 'exhaust sensor block'], [/^M\d/, 'screws']];
+const enOf = (n) => { for (const [re, s] of EN) if (re.test(n)) return s; return ''; };
+
+// exploded offsets at 100 % (CAD mm) by build-script layer
+const EXPL = { 0: [0, 0, 0], 2: [0, -16, 0], 3: [0, -32, 0], 4: [0, -48, 0], 5: [0, -66, 0], 6: [0, -92, 0], 7: [0, -94, 0], 8: [0, 0, 0],
+  9: [0, 0, 26], 10: [0, 0, -30], 12: [0, 34, 0], [-2]: [0, 48, 0], [-3]: [0, 48, 0] };
+const GROUPS = [
+  { key: 'tent', ko: '필름 텐트', en: 'Film tent', on: true, test: (m) => m.layer === 6 || m.layer === 7 || /^M2x4 냄비머리 x4 \(텐트/.test(m.name) },
+  { key: 'mount', ko: 'Grace 판·브래킷', en: 'Grace plate + bracket', on: true, test: (m) => m.layer === -2 || m.layer === -3 },
+  { key: 'exhaust', ko: '배기 블록', en: 'Exhaust block', on: true, test: (m) => m.layer === 10 },
+  { key: 'bracket', ko: '커넥터 브래킷', en: 'Connector bracket', on: true, test: (m) => m.layer === 9 },
+  { key: 'wires', ko: '선', en: 'Wires', on: true, test: (m) => /^PTFE|^배선 묶음/.test(m.name) },
+];
+const groupOn = Object.fromEntries(GROUPS.map((g) => [g.key, g.on]));
+
+// ---------- renderer / scene
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.localClippingEnabled = true;
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.04).texture;
+scene.environmentIntensity = 0.75;
+const camera = new THREE.PerspectiveCamera(30, 1, 0.5, 4000);
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true; controls.dampingFactor = 0.08; controls.minDistance = 12; controls.maxDistance = 900; controls.zoomSpeed = 1.1;
+
+const key = new THREE.DirectionalLight(0xffffff, 1.6); key.position.set(-160, 260, 220); key.castShadow = true;
+key.shadow.mapSize.set(2048, 2048); key.shadow.bias = -0.0004; key.shadow.normalBias = 0.25; key.shadow.radius = 4;
+Object.assign(key.shadow.camera, { left: -140, right: 140, top: 200, bottom: -60, near: 50, far: 800 });
+key.target.position.set(0, 90, 0); scene.add(key, key.target);
+const rim = new THREE.DirectionalLight(0xdfe8ff, 0.5); rim.position.set(200, 120, -220); scene.add(rim);
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(1400, 1400), new THREE.ShadowMaterial({ opacity: 0.22 }));
+ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+
+const root = new THREE.Group(); root.rotation.x = -Math.PI / 2; scene.add(root);   // CAD → three
+const cutPlane = new THREE.Plane(new THREE.Vector3(-1, 0, 0), 1e4);   // keep x ≤ cut
+let cutOn = false;
+
+// ---------- loading
+const meta = await fetch('models/v48_meta.json').then((r) => r.json());
+const loader = new GLTFLoader();
+const cache = {};
+let cur = null, curKey = null;
+const statusEl = document.getElementById('status');
+
+function makeMat(spec) {
+  const p = { color: spec.color, metalness: spec.metalness ?? 0, roughness: spec.roughness ?? 0.6, envMapIntensity: 1, clippingPlanes: [cutPlane] };
+  if (spec.clearcoat) { p.clearcoat = spec.clearcoat; p.clearcoatRoughness = spec.clearcoatRoughness ?? 0.3; }
+  if (spec.sheen) { p.sheen = spec.sheen; p.sheenRoughness = 0.8; p.sheenColor = new THREE.Color(0xffffff); }
+  if (spec.opacity !== undefined) { p.transparent = true; p.opacity = spec.opacity; p.depthWrite = false; p.side = THREE.DoubleSide; }
+  if (spec.film) { p.specularIntensity = 1; p.ior = 1.57; }
+  return new THREE.MeshPhysicalMaterial(p);
+}
+function specOf(name, kind) {
+  for (const [re, o] of OVR) if (re.test(name)) return typeof o === 'string' ? M[o] : o;
+  return M[kind] || M.misc;
+}
+
+async function load(k) {
+  if (cache[k]) return cache[k];
+  statusEl.hidden = false; statusEl.textContent = (lang === 'ko' ? '불러오는 중 … ' : 'Loading … ');
+  const gltf = await loader.loadAsync('models/v48_' + k + '.glb', (e) => { if (e.total) statusEl.textContent = (lang === 'ko' ? '불러오는 중 ' : 'Loading ') + Math.round(100 * e.loaded / e.total) + ' %'; });
+  const g = new THREE.Group(); const rows = meta[k]; const parts = [];
+  gltf.scene.updateMatrixWorld(true);
+  const nodes = gltf.scene.children.slice();
+  nodes.forEach((n, i) => {
+    const mesh = n.isMesh ? n : n.getObjectByProperty('isMesh', true); if (!mesh) return;
+    let geo = mesh.geometry; geo.deleteAttribute('color'); geo.deleteAttribute('normal');
+    geo = toCreasedNormals(geo, THREE.MathUtils.degToRad(32));
+    const as = gltf.parser.associations.get(n), jn = as && as.nodes !== undefined ? gltf.parser.json.nodes[as.nodes] : null;
+    const name = (jn && jn.name) || (n.name || mesh.name).replace(/_/g, ' '), [kind, layer] = rows[i] || ['misc', 0], spec = specOf(name, kind);
+    const m = new THREE.Mesh(geo, makeMat(spec));
+    m.applyMatrix4(n.matrixWorld);
+    const opaque = spec.opacity === undefined;
+    m.castShadow = opaque; m.receiveShadow = opaque;
+    m.userData = { name, kind, layer, spec, base: m.position.clone(), opaque };
+    if (opaque) {   // back faces drawn flat = solid-looking cut face when the section plane is on
+      const capC = new THREE.Color(spec.color).multiplyScalar(0.62);
+      const cap = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: capC, side: THREE.BackSide, clippingPlanes: [cutPlane] }));
+      cap.visible = false; cap.userData.cap = true; m.add(cap);
+    }
+    g.add(m); parts.push(m);
+  });
+  cache[k] = { g, parts };
+  statusEl.hidden = true;
+  return cache[k];
+}
+
+async function show(k) {
+  const c = await load(k);
+  if (cur) root.remove(cur.g);
+  cur = c; curKey = k; root.add(c.g);
+  select(null); applyExplode(); applyGroups(); applyCut();
+  document.querySelectorAll('#variants button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.k === k)));
+  writeHash();
+  // warm the others in the background (phone: one at a time)
+  setTimeout(() => { for (const v of VARIANTS) if (!cache[v.key]) { load(v.key); break; } }, 1500);
+}
+
+// ---------- controls
+const exEl = document.getElementById('explode'), cutEl = document.getElementById('cut');
+function applyExplode() {
+  const t = exEl.value / 100, e = t * t * (3 - 2 * t);
+  document.getElementById('o-ex').textContent = exEl.value + ' %';
+  if (!cur) return;
+  for (const m of cur.parts) { const o = EXPL[m.userData.layer] || [0, 0, 0]; m.position.set(m.userData.base.x + o[0] * e, m.userData.base.y + o[1] * e, m.userData.base.z + o[2] * e); }
+}
+function applyGroups() {
+  if (!cur) return;
+  for (const m of cur.parts) { let vis = true; for (const g of GROUPS) if (!groupOn[g.key] && g.test(m.userData)) vis = false; m.visible = vis; }
+}
+function applyCut() {
+  const v = +cutEl.value; cutOn = v <= 40;
+  cutPlane.constant = cutOn ? v : 1e4;
+  document.getElementById('o-cut').textContent = cutOn ? 'X ' + v.toFixed(1) : (lang === 'ko' ? '끔' : 'off');
+  if (cur) for (const m of cur.parts) for (const ch of m.children) if (ch.userData.cap) ch.visible = cutOn;
+}
+exEl.addEventListener('input', applyExplode);
+cutEl.addEventListener('input', applyCut);
+
+let anim = 0;
+function fly(v, instant) {
+  const t1 = cad(...v.t), c1 = cad(...v.c);
+  const f = Math.min(2.2, Math.max(1, 0.95 / camera.aspect)); c1.sub(t1).multiplyScalar(f).add(t1);   // portrait (phone) screen: step back
+  if (v.cut !== undefined) { cutEl.value = v.cut; applyCut(); }
+  if (v.key === 'mount') { groupOn.mount = true; syncToggles(); applyGroups(); }
+  document.querySelectorAll('#views button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.k === v.key)));
+  const t0 = controls.target.clone(), c0 = camera.position.clone(), id = ++anim, start = performance.now();
+  if (instant) { controls.target.copy(t1); camera.position.copy(c1); controls.update(); return; }
+  (function step(now) { if (id !== anim) return; const k = Math.min(1, (now - start) / 700), e = k * k * (3 - 2 * k);
+    controls.target.lerpVectors(t0, t1, e); camera.position.lerpVectors(c0, c1, e); controls.update(); if (k < 1) requestAnimationFrame(step); })(start);
+}
+
+// ---------- picking
+const ray = new THREE.Raycaster(), ptr = new THREE.Vector2(), info = document.getElementById('info');
+let sel = null, down = null, lastTap = 0;
+function hit(ev) {
+  const r = canvas.getBoundingClientRect(); ptr.set(((ev.clientX - r.left) / r.width) * 2 - 1, -((ev.clientY - r.top) / r.height) * 2 + 1);
+  ray.setFromCamera(ptr, camera);
+  const hs = ray.intersectObjects(cur ? cur.parts.filter((m) => m.visible) : [], false);
+  for (const h of hs) { if (cutOn && h.point.x > cutPlane.constant + 1e-3) continue; if (h.object.userData.spec.film) continue; return h; }
+  return null;
+}
+function select(m) {
+  if (sel) { sel.material.emissive.setHex(0x000000); }
+  sel = m;
+  if (!m) { info.hidden = true; return; }
+  m.material.emissive.setHex(0x2a4cff); m.material.emissiveIntensity = 0.35;
+  const u = m.userData, short = u.name.split(' (')[0].split(':')[0], en = enOf(u.name);
+  info.innerHTML = '<button class="x" aria-label="close">×</button><div class="k"></div><div class="m"></div><div class="n"></div>';
+  info.querySelector('.k').textContent = lang === 'en' && en ? en : short;
+  info.querySelector('.m').textContent = u.spec[lang] || '';
+  info.querySelector('.n').textContent = u.name;
+  info.querySelector('.x').onclick = () => select(null);
+  info.hidden = false;
+}
+canvas.addEventListener('pointerdown', (e) => { down = [e.clientX, e.clientY]; });
+canvas.addEventListener('pointerup', (e) => {
+  if (!down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 6) return;
+  const h = hit(e), now = performance.now();
+  if (h && now - lastTap < 350 && sel === h.object) {   // double tap: orbit around the point
+    const t0 = controls.target.clone(), d = h.point.clone().sub(t0), c0 = camera.position.clone(), id = ++anim, start = now;
+    (function step(n) { if (id !== anim) return; const k = Math.min(1, (n - start) / 500), e2 = k * k * (3 - 2 * k);
+      controls.target.copy(t0).addScaledVector(d, e2); camera.position.copy(c0).addScaledVector(d, e2); controls.update(); if (k < 1) requestAnimationFrame(step); })(start);
+  } else select(h ? h.object : null);
+  lastTap = now;
+});
+
+// ---------- UI
+const vRow = document.getElementById('variants'), wRow = document.getElementById('views'), tRow = document.getElementById('toggles');
+for (const v of VARIANTS) { const b = document.createElement('button'); b.dataset.k = v.key; b.dataset.ko = v.ko; b.dataset.en = v.en; b.onclick = () => show(v.key); vRow.append(b); }
+for (const v of VIEWS) { const b = document.createElement('button'); b.dataset.k = v.key; b.dataset.ko = v.ko; b.dataset.en = v.en; b.onclick = () => { if (v.cut === undefined && cutOn) { cutEl.value = 41; applyCut(); } fly(v); writeHash(v.key); }; wRow.append(b); }
+for (const g of GROUPS) { const b = document.createElement('button'); b.dataset.k = g.key; b.dataset.ko = g.ko; b.dataset.en = g.en; b.onclick = () => { groupOn[g.key] = !groupOn[g.key]; syncToggles(); applyGroups(); }; tRow.append(b); }
+function syncToggles() { tRow.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(groupOn[b.dataset.k]))); }
+syncToggles();
+function applyLang() {
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-ko]').forEach((el) => { const s = el.dataset[lang]; if (/</.test(s)) el.innerHTML = s; else el.textContent = s; });
+  document.getElementById('lang').textContent = lang === 'ko' ? 'EN' : '한국어';
+  document.title = lang === 'ko' ? '빔라인 시료 셀 v4.8' : 'Beamline cell v4.8';
+  applyCut(); if (sel) select(sel);
+}
+document.getElementById('lang').onclick = () => { lang = lang === 'ko' ? 'en' : 'ko'; try { localStorage.setItem('bc46-lang', lang); } catch (e) {} applyLang(); };
+const panel = document.getElementById('panel');
+document.getElementById('hide').onclick = () => { panel.classList.toggle('min'); const b = document.getElementById('hide'); b.dataset.ko = panel.classList.contains('min') ? '더 보기' : '접기'; b.dataset.en = panel.classList.contains('min') ? 'More' : 'Less'; applyLang(); resize(); };
+let curView = 'iso';
+function writeHash(view) { if (view) curView = view; try { history.replaceState(null, '', '#' + curKey + '&' + curView); } catch (e) {} }
+
+function resize() {
+  const w = window.innerWidth, h = window.innerHeight;
+  renderer.setSize(w, h, false); camera.aspect = w / h;
+  camera.setViewOffset(w, h, 0, Math.min(h * 0.12, panel.offsetHeight * 0.45), w, h);   // keep the model above the panel
+  camera.updateProjectionMatrix();
+  document.documentElement.style.setProperty('--ph', panel.offsetHeight + 'px');
+}
+window.addEventListener('resize', resize);
+
+if (window.innerWidth < 600 || window.innerHeight < 700) { panel.classList.add('min'); const hb = document.getElementById('hide'); hb.dataset.ko = '더 보기'; hb.dataset.en = 'More'; }
+applyLang(); resize();
+const [h0, h1] = location.hash.slice(1).split('&');
+const startK = VARIANTS.some((v) => v.key === h0) ? h0 : '3t', startV = VIEWS.find((v) => v.key === h1) || VIEWS[0];
+await show(startK); fly(startV, true); writeHash(startV.key);
+
+window.__bc = { camera, controls, root, get cur() { return cur; } };   // for console inspection
+renderer.setAnimationLoop(() => { controls.update(); renderer.render(scene, camera); });
+</script>
+</body>
+</html>

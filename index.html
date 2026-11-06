@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>빔라인 시료 셀 v4.8</title>
-<meta name="description" content="APS 2-ID-D beamline sample cell v4.8 (3T + bifacial + PL fit) — 3D viewer with real materials, section cut and close-ups.">
+<title>빔라인 시료 셀 v6.0</title>
+<meta name="description" content="APS 2-ID-D beamline sample cell v6.0 rev B (straight Ossila needles in set-screw clamp blocks on ±Z inclined ledges, detachable lid with film window, SHT45 inside) — 3D viewer with real materials, section cut and close-ups.">
 <style>
 :root {
   --bg1: #eef0f2; --bg2: #c9ced4; --ink: #15181c; --ink2: #4a525c; --panel: rgba(255,255,255,0.86); --line: rgba(20,24,28,0.12);
@@ -59,9 +59,9 @@ button[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-i
 <canvas id="c"></canvas>
 <header>
   <div class="t">
-    <h1 data-ko="빔라인 시료 셀 v4.8 (3T 기본 · 양면 · PL 맞춤 · 가라앉은 필름 창 Y −2.3; 11/05 14:00 텐트 틀 +X 틈 수정)" data-en="Beamline sample cell v4.8 (3T base · bifacial · PL fit · sunken film window Y -2.3; 11/05 14:00 +X gap fix)"></h1>
-    <div class="sub" data-ko="APS 2-ID-D · 2026년 12월 · rev A · 부산대 이동현 · <a href='v33.html'>이전 v3.3 / v4.3.1</a>"
-      data-en="APS 2-ID-D · Dec 2026 · rev A · Donghyeon Lee, PNU · <a href='v33.html'>earlier v3.3 / v4.3.1</a>"></div>
+    <h1 data-ko="빔라인 시료 셀 v6.0 rev B (Ossila 곧은 바늘 · ±Z 경사 받침 12° 위 세트스크류 클램프 블록 · 분리형 뚜껑 + 필름 창 Y −2.3 · 셀 안 SHT45; 11/06 발주판)" data-en="Beamline sample cell v6.0 rev B (straight Ossila needles · set-screw clamp blocks on ±Z 12° ledges · detachable lid with film window Y -2.3 · SHT45 inside; ordered 11/06)"></h1>
+    <div class="sub" data-ko="APS 2-ID-D · 2026년 12월 · 몸체 80 × 77 × 19 + 뚜껑 3 · 부산대 이동현 · <a href='v48.html'>이전 v4.8</a> · <a href='v33.html'>v3.3 / v4.3.1</a>"
+      data-en="APS 2-ID-D · Dec 2026 · body 80 × 77 × 19 + lid 3 · Donghyeon Lee, PNU · <a href='v48.html'>earlier v4.8</a> · <a href='v33.html'>v3.3 / v4.3.1</a>"></div>
   </div>
   <div class="top-r"><button id="lang">EN</button></div>
 </header>
@@ -73,11 +73,11 @@ button[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-i
   <div class="more">
     <div class="row">
       <div class="sl"><span class="lab" data-ko="분해" data-en="Explode"></span><input id="explode" type="range" min="0" max="100" value="0"><output id="o-ex">0 %</output></div>
-      <div class="sl"><span class="lab" data-ko="단면" data-en="Section"></span><input id="cut" type="range" min="-40" max="41" value="41" step="0.5"><output id="o-cut">–</output></div>
+      <div class="sl"><span class="lab" data-ko="단면" data-en="Section"></span><input id="cut" type="range" min="-47" max="41" value="41" step="0.5"><output id="o-cut">–</output></div>
     </div>
     <div class="row" id="toggles"><span class="lab" data-ko="표시" data-en="Show"></span></div>
-    <div class="hint" data-ko="끌어서 회전 · 두 손가락/휠 확대 · 부품을 누르면 이름과 재질 · 두 번 누르면 그 부품 중심으로 돌림. 색·질감은 재질 기준 표현이며 형상은 설계 모델(STEP 치수)이다."
-      data-en="Drag to rotate · pinch/wheel to zoom · tap a part for its name and material · double-tap to orbit around it. Colours follow the real materials; geometry is the design model (STEP dimensions)."></div>
+    <div class="hint" data-ko="끌어서 회전 · 두 손가락/휠 확대 · 부품을 누르면 이름과 재질 · 두 번 누르면 그 부품 중심으로 돌림. '뚜껑 + 필름'을 끄면 받침 위 클램프 블록과 바늘이 보인다. 색·질감은 재질 기준 표현이며 형상은 발주 모델(STEP rev B 치수)이다."
+      data-en="Drag to rotate · pinch/wheel to zoom · tap a part for its name and material · double-tap to orbit around it. Switch off 'Lid + film' to see the clamp blocks and needles on the ledges. Colours follow the real materials; geometry is the ordered model (STEP rev B dimensions)."></div>
   </div>
   <div class="row" style="margin-top:6px"><button id="hide" data-ko="접기" data-en="Less"></button></div>
 </div>
@@ -107,15 +107,16 @@ const VARIANTS = [
   { key: 'single', ko: '싱글 ITO', en: 'Single ITO' },
   { key: 'single_b2', ko: '싱글 FTO', en: 'Single FTO' },
 ];
-const C0 = [0, 2, 111];   // cell centre (CAD)
-const VIEWS = [
-  { key: 'iso', ko: '비스듬히', en: '3/4', t: [0, 4, 96], c: [250, -330, 230] },
-  { key: 'front', ko: '정면 (빔 쪽)', en: 'Front (beam side)', t: [0, 0, 111], c: [0, -260, 118] },
-  { key: 'probe', ko: '탐침 확대', en: 'Probe close-up', t: [-7.5, -2.5, 117.5], c: [-50, -66, 152] },
-  { key: 'wafer', ko: '웨이퍼 확대', en: 'Wafer close-up', t: [0, -1, 111], c: [22, -62, 132] },
-  { key: 'section', ko: '단면', en: 'Section', t: [0, 3, 111], c: [105, -48, 130], cut: 0 },
-  { key: 'back', ko: '뒷면', en: 'Back', t: [0, 8, 105], c: [-90, 210, 150] },
-  { key: 'mount', ko: '판·브래킷', en: 'Plate + bracket', t: [0, 10, 70], c: [210, -200, 150] },
+const C0 = [0, 2, 111];   // cell centre (CAD): sample face Y +0.5, 111 mm above the bracket base; body X −45…35, Z ±38.5, Y −9…10, lid to Y −12
+const VIEWS = [   // lid: true/false switches the 'Lid + film' group so the blocks on the ledges can be seen
+  { key: 'iso', ko: '비스듬히', en: '3/4', t: [-5, 0, 100], c: [265, -345, 240], lid: true },
+  { key: 'front', ko: '정면 (빔 쪽)', en: 'Front (beam side)', t: [-5, 0, 111], c: [-5, -290, 118], lid: true },
+  { key: 'probe', ko: '바늘·블록 (뚜껑 열음)', en: 'Needles + blocks (lid off)', t: [0, -3, 118], c: [55, -95, 190], lid: false },
+  { key: 'wafer', ko: '웨이퍼 확대', en: 'Wafer close-up', t: [0, -1, 111], c: [22, -64, 132] },
+  { key: 'section', ko: '단면 X 6.45 (바늘 면)', en: 'Section X 6.45 (needle plane)', t: [0, 0, 111], c: [112, -62, 134], cut: 6.45 },
+  { key: 'sensor', ko: '센서 보드 (뚜껑 열음)', en: 'Sensor board (lid off)', t: [-30, -4, 111], c: [-72, -66, 150], lid: false },
+  { key: 'back', ko: '뒷면', en: 'Back', t: [0, 8, 105], c: [-100, 220, 155] },
+  { key: 'mount', ko: '판·브래킷', en: 'Plate + bracket', t: [0, 10, 70], c: [220, -210, 150], lid: true },
 ];
 
 // real-material look per CAD "kind" (from the build script) — physically based
@@ -160,16 +161,25 @@ const M = {
   pico: { color: 0x1d6b3c, metalness: 0, roughness: 0.45, ko: 'Raspberry Pi Pico', en: 'Raspberry Pi Pico' },
   usbm: { color: 0xc7cacf, metalness: 1, roughness: 0.3, ko: '금속', en: 'metal' },
   sil: { color: 0xf0eee6, metalness: 0, roughness: 0.75, opacity: 0.88, ko: '실리콘', en: 'silicone' },
+  silicone: { color: 0xe8e4da, metalness: 0, roughness: 0.8, opacity: 0.9, ko: '실리콘 (RTV · 가스켓 시트 0.5)', en: 'silicone (RTV / 0.5 gasket sheet)' },
+  brass: { color: 0xc8a052, metalness: 1, roughness: 0.34, ko: '황동', en: 'brass' },
   misc: { color: 0x8a9099, metalness: 0, roughness: 0.6, ko: '', en: '' },
 };
 const OVR = [   // name-based refinements over kind
   [/^KIER (뒷면|앞면) Ag/, 'silver'], [/^NTC 구슬/, { color: 0x3b2418, metalness: 0, roughness: 0.25, clearcoat: 0.8, ko: 'NTC 유리 구슬', en: 'NTC glass bead' }],
   [/^PU 관/, 'tube'], [/^배선 묶음/, { color: 0x24262a, metalness: 0, roughness: 0.7, ko: '선 묶음 (편조 슬리브)', en: 'wire bundle (braided sleeve)' }],
-  [/^SMA 너트/, 'gold'], [/^스프링 핀/, 'pin'],
+  [/^SMA 너트/, 'gold'], [/^스프링 핀/, 'pin'], [/^3T Ag mid/, 'silver'], [/^뚜껑/, 'al_black'], [/^누름 판/, 'al_black'],   // lid and hold-down plates are ordered black-anodised (cnc_v60 list)
+  [/^Ossila 바늘/, { color: 0xc99760, metalness: 1, roughness: 0.26, ko: 'Ossila T3008 Ø0.508 × 32 (C1 BeCu / A1·B1 텅스텐 — 모델은 BeCu 색)', en: 'Ossila T3008 Ø0.508 × 32 (C1 BeCu / A1·B1 tungsten — drawn in BeCu colour)' }],
+  [/^바늘 통로 밀봉/, { color: 0xd9d4c8, metalness: 0, roughness: 0.85, opacity: 0.8, ko: '통로 밀봉 (진공 그리스 예정; 모델은 RTV)', en: 'passage seal (vacuum grease planned; RTV in the model)' }],
 ];
-const EN = [[/^셀 몸체/, 'cell body'], [/^PEEK 인서트/, 'PEEK insert'], [/^누름 판/, 'hold-down plate'], [/^멈춤 링/, 'PEEK stop ring'],
+const EN = [[/^셀 몸체/, 'cell body, Al (±Z 12° ledges, M2 tap rows)'], [/^PEEK 인서트/, 'PEEK insert'], [/^누름 판/, 'hold-down plate'], [/^멈춤 링/, 'PEEK stop ring'],
+  [/^클램프 블록/, 'clamp block, PEEK (Ø0.55 hole + M2 set screw)'], [/^Ossila 바늘/, 'needle probe Ossila T3008 Ø0.508 × 32'], [/^M2x3 고정나사/, 'M2 set screw (flat point)'], [/^황동 패드/, 'brass pad under the set screw'],
+  [/^M2x10 냄비머리/, 'M2×10 clamp screw + washer (ledge tap)'], [/^바늘 통로 밀봉/, 'needle-passage seal'], [/^뚜껑/, 'lid, Al (window boss, film ledge Y −2.3)'], [/^M3 널링 손나사/, 'M3×8 thumb screws'],
+  [/^실리콘 가스켓/, 'silicone gasket strip 1.2 (0.5 sheet)'], [/^다월 핀/, 'dowel pins Ø2 × 7.5'], [/^센서 보드/, 'SHT45 sensor board (Adafruit 5665), inside the cell'], [/^SHT45 센서/, 'SHT45 sensor'],
+  [/^STEMMA QT/, 'STEMMA QT sockets'], [/^M2 황동 스탠드오프/, 'M2 brass standoffs 3'], [/^센서 4선/, 'sensor wires → Ø3 wall hole'], [/^센서 선 구멍/, 'sensor-wire hole seal'], [/^바깥 JST/, 'external STEMMA QT socket (−X face)'],
+  [/^가스 KQ2H04-M5 입구/, 'N₂ inlet, −X side (push-in M5)'], [/^가스 KQ2L04/, 'N₂ outlet elbow, −X side'],
   [/^탐침 블록 덮개/, 'probe block covers'], [/^탐침 블록/, 'probe blocks (V-groove)'], [/^BeCu/, 'needle probes BC20-2000 Ø0.5'], [/^NTC/, 'NTC thermistor'],
-  [/^스프링 핀/, 'spring pins Mill-Max 0906-1'], [/^PET 필름/, 'film tent window, PET 12 µm'], [/^텐트 틀/, 'film tent frame, Al'], [/^커넥터 브래킷/, 'connector bracket, Al'],
+  [/^스프링 핀/, 'spring pins Mill-Max 0906-1'], [/^PET 필름/, 'PET 12 µm film window (taped once on the lid ledge)'], [/^텐트 틀/, 'film tent frame, Al'], [/^커넥터 브래킷/, 'connector bracket, Al'],
   [/^Grace 새 세로판/, 'Grace plate (reprint)'], [/^Grace 2025/, 'Grace 2025 angle bracket'], [/^뒤 빛 퍽/, 'rear 940 nm light puck'], [/^퍽 /, 'puck heat-spreader disc'],
   [/^940 nm/, '940 nm LED'], [/^VBPW/, 'monitor photodiode'], [/^확산판/, 'diffuser Ø20'], [/^JST/, 'JST connector'], [/^어두움 마개|^마개|^어두운 마개/, 'dark plug'],
   [/^KIER 웨이퍼/, 'KIER tandem wafer 25 × 25'], [/^KIER 뒷면/, 'KIER rear Ag pads'], [/^KIER 앞면 IZO/, 'KIER front IZO'], [/^KIER 앞면 Ag/, 'KIER front Ag'], [/^KIER 앞면 MgF2/, 'KIER front MgF₂'],
@@ -178,14 +188,17 @@ const EN = [[/^셀 몸체/, 'cell body'], [/^PEEK 인서트/, 'PEEK insert'], [/
 const enOf = (n) => { for (const [re, s] of EN) if (re.test(n)) return s; return ''; };
 
 // exploded offsets at 100 % (CAD mm) by build-script layer
-const EXPL = { 0: [0, 0, 0], 2: [0, -16, 0], 3: [0, -32, 0], 4: [0, -48, 0], 5: [0, -66, 0], 6: [0, -92, 0], 7: [0, -94, 0], 8: [0, 0, 0],
-  9: [0, 0, 26], 10: [0, 0, -30], 12: [0, 34, 0], [-2]: [0, 48, 0], [-3]: [0, 48, 0] };
+// v6.0 layers: 0 body · 2 insert/pins · 3 sample · 4 hold-down · 5 clamp blocks + needles · 6 lid/thumb screws/gasket/dowels · 7 PET film · 8 gas fittings
+//   · 9 SMA bracket · 10 exhaust block · 11 dark plug · 12 rear light puck · 13 SHT45 board · −2/−3 Grace plate + bracket
+const EXPL = { 0: [0, 0, 0], 2: [0, -16, 0], 3: [0, -32, 0], 4: [0, -48, 0], 5: [0, -64, 0], 13: [0, -64, 0], 6: [0, -96, 0], 7: [0, -96, 0], 8: [-22, 0, 0],
+  9: [0, 0, 26], 10: [0, 0, -30], 11: [0, 34, 0], 12: [0, 34, 0], [-2]: [0, 48, 0], [-3]: [0, 48, 0] };
 const GROUPS = [
-  { key: 'tent', ko: '필름 텐트', en: 'Film tent', on: true, test: (m) => m.layer === 6 || m.layer === 7 || /^M2x4 냄비머리 x4 \(텐트/.test(m.name) },
+  { key: 'lid', ko: '뚜껑 + 필름', en: 'Lid + film', on: true, test: (m) => m.layer === 6 || m.layer === 7 },
+  { key: 'sensor', ko: '센서 보드', en: 'Sensor board', on: true, test: (m) => m.layer === 13 },
   { key: 'mount', ko: 'Grace 판·브래킷', en: 'Grace plate + bracket', on: true, test: (m) => m.layer === -2 || m.layer === -3 },
   { key: 'exhaust', ko: '배기 블록', en: 'Exhaust block', on: true, test: (m) => m.layer === 10 },
   { key: 'bracket', ko: '커넥터 브래킷', en: 'Connector bracket', on: true, test: (m) => m.layer === 9 },
-  { key: 'wires', ko: '선', en: 'Wires', on: true, test: (m) => /^PTFE|^배선 묶음/.test(m.name) },
+  { key: 'wires', ko: '선', en: 'Wires', on: true, test: (m) => /^PTFE|^배선 묶음|^센서 4선/.test(m.name) },
 ];
 const groupOn = Object.fromEntries(GROUPS.map((g) => [g.key, g.on]));
 
@@ -218,7 +231,7 @@ const cutPlane = new THREE.Plane(new THREE.Vector3(-1, 0, 0), 1e4);   // keep x 
 let cutOn = false;
 
 // ---------- loading
-const meta = await fetch('models/v48_meta.json').then((r) => r.json());
+const meta = await fetch('models/v60_meta.json').then((r) => r.json());
 const loader = new GLTFLoader();
 const cache = {};
 let cur = null, curKey = null;
@@ -240,7 +253,7 @@ function specOf(name, kind) {
 async function load(k) {
   if (cache[k]) return cache[k];
   statusEl.hidden = false; statusEl.textContent = (lang === 'ko' ? '불러오는 중 … ' : 'Loading … ');
-  const gltf = await loader.loadAsync('models/v48_' + k + '.glb', (e) => { if (e.total) statusEl.textContent = (lang === 'ko' ? '불러오는 중 ' : 'Loading ') + Math.round(100 * e.loaded / e.total) + ' %'; });
+  const gltf = await loader.loadAsync('models/v60_' + k + '.glb', (e) => { if (e.total) statusEl.textContent = (lang === 'ko' ? '불러오는 중 ' : 'Loading ') + Math.round(100 * e.loaded / e.total) + ' %'; });
   const g = new THREE.Group(); const rows = meta[k]; const parts = [];
   gltf.scene.updateMatrixWorld(true);
   const nodes = gltf.scene.children.slice();
@@ -302,9 +315,13 @@ cutEl.addEventListener('input', applyCut);
 let anim = 0;
 function fly(v, instant) {
   const t1 = cad(...v.t), c1 = cad(...v.c);
-  const f = Math.min(2.2, Math.max(1, 0.95 / camera.aspect)); c1.sub(t1).multiplyScalar(f).add(t1);   // portrait (phone) screen: step back
+  const f = Number.isFinite(camera.aspect) && camera.aspect > 0 ? Math.min(2.2, Math.max(1, 0.95 / camera.aspect)) : 1;   // aspect is NaN while the tab is hidden (0 × 0)
+  c1.sub(t1).multiplyScalar(f).add(t1);
+  if (!Number.isFinite(camera.position.x)) { camera.position.copy(c1); controls.target.copy(t1); }   // never lerp from a NaN camera   // portrait (phone) screen: step back
   if (v.cut !== undefined) { cutEl.value = v.cut; applyCut(); }
-  if (v.key === 'mount') { groupOn.mount = true; syncToggles(); applyGroups(); }
+  if (v.key === 'mount') { groupOn.mount = true; }
+  if (v.lid !== undefined) { groupOn.lid = v.lid; }
+  if (v.key === 'mount' || v.lid !== undefined) { syncToggles(); applyGroups(); }
   document.querySelectorAll('#views button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.k === v.key)));
   const t0 = controls.target.clone(), c0 = camera.position.clone(), id = ++anim, start = performance.now();
   if (instant) { controls.target.copy(t1); camera.position.copy(c1); controls.update(); return; }
@@ -358,7 +375,7 @@ function applyLang() {
   document.documentElement.lang = lang;
   document.querySelectorAll('[data-ko]').forEach((el) => { const s = el.dataset[lang]; if (/</.test(s)) el.innerHTML = s; else el.textContent = s; });
   document.getElementById('lang').textContent = lang === 'ko' ? 'EN' : '한국어';
-  document.title = lang === 'ko' ? '빔라인 시료 셀 v4.8' : 'Beamline cell v4.8';
+  document.title = lang === 'ko' ? '빔라인 시료 셀 v6.0' : 'Beamline cell v6.0';
   applyCut(); if (sel) select(sel);
 }
 document.getElementById('lang').onclick = () => { lang = lang === 'ko' ? 'en' : 'ko'; try { localStorage.setItem('bc46-lang', lang); } catch (e) {} applyLang(); };
@@ -369,6 +386,7 @@ function writeHash(view) { if (view) curView = view; try { history.replaceState(
 
 function resize() {
   const w = window.innerWidth, h = window.innerHeight;
+  if (!(w > 0 && h > 0)) return;   // hidden tab: keep the last finite aspect
   renderer.setSize(w, h, false); camera.aspect = w / h;
   camera.setViewOffset(w, h, 0, Math.min(h * 0.12, panel.offsetHeight * 0.45), w, h);   // keep the model above the panel
   camera.updateProjectionMatrix();
@@ -382,7 +400,7 @@ const [h0, h1] = location.hash.slice(1).split('&');
 const startK = VARIANTS.some((v) => v.key === h0) ? h0 : '3t', startV = VIEWS.find((v) => v.key === h1) || VIEWS[0];
 await show(startK); fly(startV, true); writeHash(startV.key);
 
-window.__bc = { camera, controls, root, get cur() { return cur; } };   // for console inspection
+window.__bc = { camera, controls, root, renderer, scene, get cur() { return cur; } };   // for console inspection
 renderer.setAnimationLoop(() => { controls.update(); renderer.render(scene, camera); });
 </script>
 </body>
