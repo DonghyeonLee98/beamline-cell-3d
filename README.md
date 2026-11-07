@@ -2,8 +2,15 @@
 
 보기 / View: https://donghyeonlee98.github.io/beamline-cell-3d/
 
-부산대 이동현. APS 2-ID-D (2026년 12월) 빔라인 시료 셀 **v6.2 (2026-11-07 초안: 2025 셀 방식 — 곧은 바늘 + 회전 클램프 블록 + 뒷면 PCB 포고, 선·납땜 없음)**의 3D 보기. 이전 판: [v6.0 rev B](https://donghyeonlee98.github.io/beamline-cell-3d/v60.html), [v4.8](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
+부산대 이동현. APS 2-ID-D (2026년 12월) 빔라인 시료 셀 **v6.2 (2026-11-07 초안: 2025 셀 방식 — 곧은 바늘 + 회전 클램프 블록 + 뒷면 PCB 포고, 선·납땜 없음)**의 3D 보기 (현재 **v6.2c**). 이전 판: [v6.0 rev B](https://donghyeonlee98.github.io/beamline-cell-3d/v60.html), [v4.8](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
 Donghyeon Lee, Pusan National University. 3D viewer of the beamline sample cell **v6.2 (draft 2026-11-07: 2025-cell style — straight needles + turnable clamp blocks + rear-PCB spring pins, no wires or solder)** for APS 2-ID-D (December 2026). Earlier viewers: [v6.0 rev B](https://donghyeonlee98.github.io/beamline-cell-3d/v60.html), [v4.8](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
+
+## v6.2c (2026-11-07, 초안 · draft) — 지금 보이는 모델
+
+- v6.2b에 11/07 검토 두 건을 넣었다. ① PEEK 시트가 몸체에 붙어 있지 않아 포고 힘에 블록과 같이 뜰 수 있는 문제 → 시트를 **압입**(리세스 Ø6.20 H7, 시트 Ø6.23, 간섭 0.008–0.030, 아래 모따기 0.3). ② 블록의 수직 M2 당김 나사가 12° 기울어진 블록·누름판을 지나며 걸리는 문제와 나사 구멍 벽이 얇은 문제 → 블록 당김 구멍을 **긴 구멍** 2.2 × 2.7(바늘 방향)로, 누름판을 윗면이 시트와 평행한 **쐐기**(뒤 1.0 → 앞 2.23)로, 세트스크류 탭을 블록 뒤 (1.6, 1.9)로 옮겼다.
+- 블록 하나에 나사 2개: 가운데 **당김 나사 M2×6** = 회전 축이면서 잠금, 뒤 **세트스크류 M2×3** = 기울기 (앞 아래 R0.5 모서리가 피벗). 1회전 ≈ 6.1°, 1/4회전 = 팁 0.41 mm → 예압은 세트스크류로 준다 (바늘은 닿기 직전까지만 밀기). 바늘은 BeCu 기본.
+- 블록 5.8 × 6 × 2 + 쐐기 누름판 (SUS 303), 시트는 평평한 PEEK Ø6.23 한 종류. '블록 확대'와 '회전'은 v6.2b와 같고, 회전 축은 수직 당김 나사 축이다. 초안, 발주 전.
+- Two screws per block: the centre M2×6 pull screw = turn axis + lock, the rear M2×3 cup-point set screw = tilt about the front R0.5 pivot edge (1 turn ≈ 6.1°, 1/4 turn = 0.41 mm of tip travel; preload is set with it, the needle is only pushed to just touching). Block 5.8 × 6 × 2 SUS 303; the pull-screw hole in the block is a 2.2 × 2.7 slot along the needle and the clamp plate is a 12° wedge (1.0 at the rear to 2.23 at the front, top face parallel to the seat) so the vertical shank clears and the head seats flat. Seats: flat PEEK Ø6.23, one type, press-fit into recesses Ø6.20 H7 (interference 0.008–0.030, 0.3 lead chamfer). Draft, not ordered.
 
 ## 블록 직접 조작 / try the block — [block.html](https://donghyeonlee98.github.io/beamline-cell-3d/block.html) (v6.2b, 2026-11-07, 초안 · draft)
 
