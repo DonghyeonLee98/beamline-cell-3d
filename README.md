@@ -5,7 +5,12 @@
 부산대 이동현. APS 2-ID-D (2026년 12월) 빔라인 시료 셀 **v6.2 (2026-11-07 초안: 2025 셀 방식 — 곧은 바늘 + 회전 클램프 블록 + 뒷면 PCB 포고, 선·납땜 없음)**의 3D 보기 (현재 **v6.2c**). 이전 판: [v6.0 rev B](https://donghyeonlee98.github.io/beamline-cell-3d/v60.html), [v4.8](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
 Donghyeon Lee, Pusan National University. 3D viewer of the beamline sample cell **v6.2 (draft 2026-11-07: 2025-cell style — straight needles + turnable clamp blocks + rear-PCB spring pins, no wires or solder)** for APS 2-ID-D (December 2026). Earlier viewers: [v6.0 rev B](https://donghyeonlee98.github.io/beamline-cell-3d/v60.html), [v4.8](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
 
-## v6.2c rev B (2026-11-07, 초안 · draft) — 지금 보이는 모델
+## v6.2c rev C (2026-11-07, 초안 · draft) — 지금 보이는 모델
+
+- rev B에서 바뀐 것: ① **뒷판 땜납 홈** Ø5.5 × 깊이 3.0 (포고 10곳, 가까운 두 쌍은 긴 홈): PCB 뒷면 땜납이 뒷판에 닿지 않게. ② 시트 **POM(검정) Ø6.10 헐거운 끼움 + 에폭시**. ③ 블록·쐐기 누름판 **황동 H59**. ④ 인서트 a-w **POM**. PCB와 나머지 형상은 rev B 그대로. 포고 꼬리는 땜납 뒤 PCB 뒷면에서 1.2 mm 이하로 잘라야 홈에 들어간다.
+- rev C: back-plate solder-relief pockets Ø5.5 × 3.0 deep (10 spring-pin joints, two close pairs merged into slots); seats POM Ø6.10 loose fit + epoxy; blocks and wedge plates brass H59; insert a-w POM. PCB unchanged. Pogo tails must be cut to 1.2 mm or less behind the board.
+
+## v6.2c rev B (2026-11-07, 초안 · draft) — 이전 판 · earlier
 
 - v6.2b에 11/07 검토 반영: ① PEEK 시트를 몸체에 **압입**(리세스 Ø6.20 H7, 시트 Ø6.23, 간섭 0.008–0.030). ② 블록의 수직 M2 당김 나사가 12° 기울어진 블록·누름판을 지나는 문제 → 블록 당김 구멍을 **긴 구멍** 2.4 × 3.0, 누름판을 윗면이 시트와 평행한 **쐐기**(뒤 1.0 → 앞 2.23, 긴 구멍 2.4 × 2.8)로. ③ 나사 구멍 벽 → 포고를 시트 중심에서 1.8 → 2.0으로, 기울기 세트스크류를 **M1.6×3**(블록 뒤 (1.8, 1.9), 당김 나사는 M2×6 그대로)으로. ④ 바늘 꼬리 1.5. ⑤ 누름 판(Al)은 한 조각.
 - 블록 하나에 나사 2개: 가운데 **당김 나사 M2×6** = 회전 축이면서 잠금, 뒤 **세트스크류 M1.6×3** = 기울기 (앞 아래 R0.5 모서리가 피벗). 1회전 ≈ 5.0°, 1/4회전 = 팁 0.34 mm → 예압은 세트스크류로 준다 (바늘은 닿기 직전까지만 밀기). 바늘은 BeCu 기본.

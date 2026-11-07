@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>빔라인 시료 셀 v6.2c</title>
-<meta name="description" content="APS 2-ID-D beamline sample cell v6.2c (straight needles in SUS clamp blocks that turn and tilt on press-fit flat PEEK seats, rear PCB spring pins as the contacts, no wires or solder in the cell) — 3D viewer with real materials, block rotation, section cut and close-ups.">
+<meta name="description" content="APS 2-ID-D beamline sample cell v6.2c (straight needles in brass clamp blocks that turn and tilt on glued flat POM seats, rear PCB spring pins as the contacts, no wires or solder in the cell) — 3D viewer with real materials, block rotation, section cut and close-ups.">
 <style>
 :root {
   --bg1: #eef0f2; --bg2: #c9ced4; --ink: #15181c; --ink2: #4a525c; --panel: rgba(255,255,255,0.86); --line: rgba(20,24,28,0.12);
@@ -79,7 +79,7 @@ button:disabled { opacity: 0.35; cursor: default; }
 <canvas id="c"></canvas>
 <header>
   <div class="t">
-    <h1 data-ko="빔라인 시료 셀 v6.2c — 곧은 바늘 + 회전·기울기 클램프 블록 (블록당 나사 2개) + 평평한 PEEK 압입 시트 + 뒷면 PCB 포고, 선·납땜 없음 (초안, 11/07)" data-en="Beamline sample cell v6.2c — straight needles + turn-and-tilt clamp blocks (2 screws per block) + flat press-fit PEEK seats + rear-PCB spring pins, no wires or solder (draft, 11/07)"></h1>
+    <h1 data-ko="빔라인 시료 셀 v6.2c — 곧은 바늘 + 회전·기울기 클램프 블록 (블록당 나사 2개) + 평평한 POM 시트 (에폭시) + 뒷면 PCB 포고, 선·납땜 없음 (초안, 11/07)" data-en="Beamline sample cell v6.2c — straight needles + turn-and-tilt clamp blocks (2 screws per block) + flat glued POM seats + rear-PCB spring pins, no wires or solder (draft, 11/07)"></h1>
     <div class="sub" data-ko="APS 2-ID-D · 2026년 12월 · 몸체 80 × 77 × 19 + 뚜껑 3 + PCB 1.6 + 뒷판 5 · 부산대 이동현 · <a href='v60.html'>이전 v6.0</a> · <a href='v48.html'>v4.8</a> · <a href='v33.html'>v3.3</a>"
       data-en="APS 2-ID-D · Dec 2026 · body 80 × 77 × 19 + lid 3 + PCB 1.6 + back plate 5 · Donghyeon Lee, PNU · <a href='v60.html'>earlier v6.0</a> · <a href='v48.html'>v4.8</a> · <a href='v33.html'>v3.3</a>"></div>
   </div>
@@ -155,6 +155,8 @@ const VIEWS = [   // lid: true/false = closed/open
 const M = {
   al_black: { color: 0x17181b, metalness: 0.55, roughness: 0.42, clearcoat: 0.25, clearcoatRoughness: 0.5, ko: 'Al 6061 흑색 아노다이징', en: 'Al 6061, black anodised' },
   al: { color: 0x9a9fa6, metalness: 1, roughness: 0.3, ko: 'Al 6061 (가공면)', en: 'Al 6061 (machined)' },
+  brass: { color: 0xc9a24a, metalness: 1, roughness: 0.3, ko: '황동 H59 (C3604 상당, 가공 그대로, 도전)', en: 'brass H59 (C3604 equivalent, as machined, conductive)' },
+  pom: { color: 0x2a2b2e, metalness: 0, roughness: 0.55, ko: 'POM (검정)', en: 'POM (black)' },
   sus: { color: 0xc4c7cb, metalness: 1, roughness: 0.22, ko: 'SUS 303 (가공 그대로, 도전)', en: 'SUS 303 stainless (as machined, conductive)' },
   peek: { color: 0xc6a97f, metalness: 0, roughness: 0.52, sheen: 0.2, ko: 'PEEK (자연색, 연갈색)', en: 'PEEK (natural, pale brown)' },
   fr4: { color: 0x1d6b3c, metalness: 0, roughness: 0.42, clearcoat: 0.4, clearcoatRoughness: 0.4, ko: 'FR-4 1.6 (초록 마스크, ENIG 패드)', en: 'FR-4 1.6 (green mask, ENIG pads)' },
@@ -207,8 +209,8 @@ const OVR = [   // name-based refinements over kind
   [/^포고 Mill-Max/, { color: 0xdcb55c, metalness: 1, roughness: 0.22, ko: 'Mill-Max 0929-7 스프링 핀 (금 도금)', en: 'Mill-Max 0929-7 spring pin (gold-plated)' }],
   [/^뒷핀 Mill-Max/, { color: 0xdcb55c, metalness: 1, roughness: 0.22, ko: 'Mill-Max 0908-7 스프링 핀 (금 도금)', en: 'Mill-Max 0908-7 spring pin (gold-plated)' }],
 ];
-const EN = [[/^셀 몸체/, 'cell body, Al (flat cavity floor, seat recesses Ø6.20 H7 for the press-fit seats, spring-pin holes Ø2.8)'], [/^PEEK 시트/, 'PEEK seat Ø6.23 press-fit (flat, 0.3 chamfer, M2 tap, spring-pin hole Ø1.4)'],
-  [/^클램프 블록/, 'clamp block, SUS 303 5.8 × 6 × 2 (needle groove on top, R0.5 pivot edge, rear M1.6 tilt-screw tap)'], [/^누름판/, 'clamp plate, SUS 303 5.8 × 6 wedge (1.0 rear to 2.23 front, top parallel to the seat)'], [/^M2 냄비/, 'M2×6 pan-head pull screw = turn axis + lock (into the PEEK seat)'], [/^M1.6 기울기/, 'M1.6×3 cup-point tilt set screw (tip on the PEEK seat; 1 turn ≈ 5.0°)'],
+const EN = [[/^셀 몸체/, 'cell body, Al (flat cavity floor, seat recesses Ø6.20 H7 for the loose-fit glued seats, spring-pin holes Ø2.8)'], [/^POM 시트/, 'POM seat Ø6.10 loose fit + epoxy (flat, 0.1 chamfer, M2 tap, spring-pin hole Ø1.4)'], [/^POM 인서트/, 'POM insert'],
+  [/^클램프 블록/, 'clamp block, brass H59 5.8 × 6 × 2 (needle groove on top, R0.5 pivot edge, rear M1.6 tilt-screw tap)'], [/^누름판/, 'clamp plate, brass H59 5.8 × 6 wedge (1.0 rear to 2.23 front, top parallel to the seat)'], [/^M2 냄비/, 'M2×6 pan-head pull screw = turn axis + lock (into the POM seat)'], [/^M1.6 기울기/, 'M1.6×3 cup-point tilt set screw (tip on the POM seat; 1 turn ≈ 5.0°)'],
   [/^Ossila 바늘/, 'straight needle Ossila T3008 Ø0.508'], [/^포고 Mill-Max/, 'spring pin Mill-Max 0929-7 (PCB → block bottom = contact)'], [/^뒷핀 Mill-Max/, 'rear spring pins Mill-Max 0908-7 (wafer rear pads)'],
   [/^뒷면 PCB/, 'rear PCB, FR-4 1.6 (10 spring pins, SMA ×6, JST-SH, SHT45)'], [/^뒷판/, 'back plate, Al black anodised 80 × 77 × 5'], [/^SHT45/, 'SHT45 bare die on the PCB (sensor pocket in the body)'],
   [/^0402/, '0402 passives'], [/^SMA 엣지 잭 J5/, 'SMA edge jacks J5/J6 (CH5–6, full set only)'], [/^SMA 엣지 잭 x4/, 'SMA edge jacks J1–J4 (CH1–4; minimal set: J5/J6 left empty)'], [/^\[추가분\] PL/, 'PL adapter plate (full set only, laid beside the cell)'], [/^\[추가분\] 누름 판/, 'single-cell hold-down plate (full set only, laid beside the cell)'], [/^\[추가분\] PEEK 인서트 b1/, 'PEEK insert b1-w, single ITO (full set only, laid beside the cell)'], [/^\[추가분\] PEEK 인서트 b2/, 'PEEK insert b2-w, single FTO (full set only, laid beside the cell)'], [/^\[추가분\] 어두움 마개/, 'dark plug (full set only, laid beside the cell)'], [/^SMA 엣지/,'SMA edge jacks ×6 (CH1–6)'], [/^JST-SH/, 'JST-SH 6-pin (I2C + NTC)'], [/^PCB 뒷면 땜납/, 'solder (NTC wires)'],
@@ -221,8 +223,9 @@ const EN = [[/^셀 몸체/, 'cell body, Al (flat cavity floor, seat recesses Ø6
 const enOf = (n) => { for (const [re, s] of EN) if (re.test(n)) return s; return ''; };
 const MATS = [   // material table (cnc_v62 + PCB)
   ['Al 6061', '몸체·뚜껑·뒷판 (흑색 아노다이징), 누름 판·퍽 원판', 'body, lid, back plate (black anodised); hold-down plate, puck disc'],
-  ['SUS 303', '클램프 블록 5.8 × 6 × 2 + 쐐기 누름판 5.8 × 6 × 1.0–2.23 (도전: 포고 → 블록 → 바늘)', 'clamp block 5.8 × 6 × 2 + clamp plate 5.8 × 6 × 1 (conductive: spring pin → block → needle)'],
-  ['PEEK', '평평한 시트 Ø6.23 (압입, M2 탭), 인서트, 멈춤 링', 'flat seats Ø6.23 (press-fit, M2 tap), insert, stop ring'],
+  ['황동 H59', '클램프 블록 5.8 × 6 × 2 + 쐐기 누름판 5.8 × 6 × 1.0–2.23 (도전: 포고 → 블록 → 바늘)', 'clamp block 5.8 × 6 × 2 + clamp plate 5.8 × 6 × 1 (conductive: spring pin → block → needle)'],
+  ['POM', '평평한 시트 Ø6.10 (헐거운 끼움 + 에폭시, M2 탭), 인서트 a-w', 'flat seats Ø6.10 (loose fit + epoxy, M2 tap), insert a-w'],
+  ['PEEK', '멈춤 링 (인서트 b1-w·b2-w는 전체 세트, 아직 PEEK)', 'stop ring (insert b1-w / b2-w, full set, still PEEK)'],
   ['FR-4', '뒷면 PCB 1.6, 2층 (포고 10, SMA 6, JST-SH 6, SHT45)', 'rear PCB 1.6, 2 layers (10 spring pins, 6 SMA, JST-SH 6, SHT45)'],
   ['BeCu / W', 'Ossila T3008 곧은 바늘 Ø0.508 (C1 BeCu, A1·B1 W); 스프링 핀 Mill-Max 0929-7·0908-7 (금 도금)', 'straight Ossila T3008 needles Ø0.508 (C1 BeCu, A1/B1 W); Mill-Max 0929-7 and 0908-7 spring pins (gold-plated)'],
 ];
@@ -237,8 +240,8 @@ const isLid = (m) => m.layer === 6 || m.layer === 7;
 const GROUPS = [
   { key: 'pcb', ko: 'PCB', en: 'PCB', on: true, test: (m) => m.layer === 15 && !/^포고/.test(m.name) },
   { key: 'back', ko: '뒷판', en: 'Back plate', on: true, test: (m) => m.layer === 16 },
-  { key: 'block', ko: '블록', en: 'Blocks', on: true, test: (m) => m.layer === 5 && !/^PEEK 시트/.test(m.name) },
-  { key: 'seat', ko: '시트', en: 'Seats', on: true, test: (m) => /^PEEK 시트/.test(m.name) },
+  { key: 'block', ko: '블록', en: 'Blocks', on: true, test: (m) => m.layer === 5 && !/^POM 시트/.test(m.name) },
+  { key: 'seat', ko: '시트', en: 'Seats', on: true, test: (m) => /^POM 시트/.test(m.name) },
   { key: 'pogo', ko: '포고', en: 'Spring pins', on: true, test: (m) => /^포고/.test(m.name) },
   { key: 'rearpin', ko: '뒷핀', en: 'Rear pins', on: true, test: (m) => /^뒷핀/.test(m.name) },
   { key: 'sensor', ko: '센서', en: 'Sensor', on: true, test: (m) => m.layer === 14 },
@@ -335,7 +338,7 @@ async function load(k) {
       const opaque = spec.opacity === undefined;
       m.castShadow = opaque; m.receiveShadow = opaque;
       // turning parts of a site: block, clamp plate, M2 pull + tilt screws, needle (the PEEK seat and the spring pin stay)
-      const sm = name.match(/\[([^\]]+)\]/), site = sm && layer === 5 && !/^PEEK 시트/.test(name) && sites[sm[1]] ? sm[1] : null;
+      const sm = name.match(/\[([^\]]+)\]/), site = sm && layer === 5 && !/^POM 시트/.test(name) && sites[sm[1]] ? sm[1] : null;
       m.userData = { name, kind, layer, spec, base: m.position.clone(), baseQ: m.quaternion.clone(), opaque, site, extra: isExtra, color0: m.material.color.clone() };
       if (opaque) {   // back faces drawn flat = solid-looking cut face when the section plane is on
         const capC = new THREE.Color(spec.color).multiplyScalar(0.62);
@@ -506,16 +509,16 @@ function showMats() {
   const ko = lang === 'ko';
   info.innerHTML = '<button class="x" aria-label="close">×</button><div class="k"></div><div class="n"></div><table></table>';
   info.querySelector('.k').textContent = ko ? '재질 (v6.2c)' : 'Materials (v6.2c)';
-  info.querySelector('.n').textContent = ko ? '2025 셀 방식 — 곧은 바늘 + 회전 클램프 블록 + 뒷면 PCB 포고, 선·납땜 없음. 전기: PCB 포고 → SUS 블록 밑면 → 바늘 → 패드.'
-    : '2025-cell style — straight needles + turnable clamp blocks + rear-PCB spring pins, no wires or solder. Current path: PCB spring pin → SUS block bottom → needle → pad.';
+  info.querySelector('.n').textContent = ko ? '2025 셀 방식 — 곧은 바늘 + 회전 클램프 블록 + 뒷면 PCB 포고, 선·납땜 없음. 전기: PCB 포고 → 황동 블록 밑면 → 바늘 → 패드.'
+    : '2025-cell style — straight needles + turnable clamp blocks + rear-PCB spring pins, no wires or solder. Current path: PCB spring pin → brass block bottom → needle → pad.';
   const tb = info.querySelector('table');
   for (const r of MATS) { const tr = tb.insertRow(); tr.insertCell().textContent = r[0]; tr.insertCell().textContent = ko ? r[1] : r[2]; }
   info.querySelector('.x').onclick = () => showMats();
   info.hidden = false;
 }
 document.getElementById('mat').onclick = showMats;
-const CNC_KO = { V62c_body_Al: '몸체', V60_lid_Al: '뚜껑', V62_backplate_Al: '뒷판', V61_insert_aw_PEEK: '인서트 a-w (탠덤)', V62_holddown_tandem3T_Al: '누름 판 (탠덤·3T)',
-  V62c_block_SUS303: '클램프 블록', V62c_clamp_plate_SUS303: '쐐기 누름판', V62c_seat_PEEK: 'PEEK 시트 (압입)', V62_holddown_single_Al: '누름 판 (싱글)', V61_plug_dark_Al: '어두움 마개',
+const CNC_KO = { V62c_body_Al: '몸체', V60_lid_Al: '뚜껑', V62_backplate_Al: '뒷판', V61_insert_aw_POM: '인서트 a-w (탠덤, POM)', V62_holddown_tandem3T_Al: '누름 판 (탠덤·3T)',
+  V62c_block_brass: '클램프 블록 (황동)', V62c_clamp_plate_brass: '쐐기 누름판 (황동)', V62c_seat_POM: 'POM 시트 (에폭시)', V62_holddown_single_Al: '누름 판 (싱글)', V61_plug_dark_Al: '어두움 마개',
   V47_insert_b1w_PEEK: '인서트 b1-w (싱글 ITO)', V47_insert_b2w_PEEK: '인서트 b2-w (싱글 FTO)', V47_puck_disc_Al: '퍽 원판', V47_PL_adapter_Al: 'PL 어댑터' };
 function showCompare() {   // numbers from models/v62_sets.json (read from the order CSVs and the purchased-parts md by make_viewer_sets_v62c_261107.py)
   if (sel) select(null);
