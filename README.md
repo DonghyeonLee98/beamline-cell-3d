@@ -12,6 +12,14 @@ Donghyeon Lee, Pusan National University. 3D viewer of the beamline sample cell 
 - 블록 5.8 × 6 × 2 + 쐐기 누름판 (SUS 303), 시트는 평평한 PEEK Ø6.23 한 종류. '블록 확대'와 '회전'은 v6.2b와 같고, 회전 축은 수직 당김 나사 축이다. 초안, 발주 전.
 - Two screws per block: the centre M2×6 pull screw = turn axis + lock, the rear M1.6×3 cup-point set screw = tilt about the front R0.5 pivot edge (1 turn ≈ 5.0°, 1/4 turn = 0.34 mm of tip travel; preload is set with it, the needle is only pushed to just touching). The pull-screw hole in the block is a 2.4 × 3.0 slot along the needle and the clamp plate is a 12° wedge (1.0 at the rear to 2.23 at the front) with a 2.4 × 2.8 slot, so the vertical M2 shank clears (≥ 0.1 mm at tilt ±3°, rotation ±15°) and the head seats flat. Seats: flat PEEK Ø6.23, one type, press-fit into recesses Ø6.20 H7; spring pins now 2.0 mm off the seat centre. Draft, not ordered.
 
+### 최소 세트 / 전체 세트 비교 (11/07)
+
+- 아래 '세트'에서 **최소 (12월 2T)** 와 **전체**를 고른다 (주소 끝 `&min` / `&full`로 기억). 두 세트는 rev B 발주 묶음(`00_발주표_PCBWay.csv`의 수량 열 둘)과 같다.
+- **최소** = 12월 2T 탠덤 전용: 몸체·뚜껑·뒷판·인서트 a-w·누름 판(탠덤·3T) + 블록·쐐기 누름판·PEEK 시트 6개씩(2T 4곳 + 예비 2). 모델은 CAD 2T 빌드에서 만든 전용 GLB(`models/v62_min.glb`): 시트·블록·바늘·포고는 4곳뿐이고 나머지 리세스 6곳은 비어 있다(포고 구멍 열림). SMA는 J1–J4, 퍽·마개 없음(뒤 창 Ø15 열림).
+- **전체** = CNC 14종: 3T 모델에 싱글 자리 4곳의 시트까지 넣어 자리 10곳에 시트가 다 있고(`models/v62_full.glb`), 최소 세트에 없는 부품(3T mid 블록, 싱글 자리 시트·포고, 퍽, SMA J5·J6, 어두움 마개, PL 어댑터, 인서트 b1-w·b2-w, 싱글 누름 판)은 **주황색**이다. 마개·PL 어댑터·인서트 2종·싱글 누름 판은 셀 옆(+X)에 따로 세워 두었다('추가분 (전체 세트)' 보기, '따로 놓은 추가분' 표시 단추). 주황색은 '추가분' 단추로 끄고 켠다.
+- 오른쪽 위 **비교**: CNC 부품별 최소/전체 수량·재료, 구매 부품(포고, 뒷핀, SMA, JST, 나사) 수량, CNC 추정 비용(최소 ≈ $650–750 / 전체 ≈ $1,250–1,400, 견적 전)과 구매 부품 합계(₩93,566 / ₩118,349, VAT 포함, 11/07). 표의 수량은 발주 묶음 CSV와 구매 부품표에서 읽었다(`models/v62_sets.json`, `make_viewer_sets_v62c_261107.py`).
+- Set toggle: **minimal** (December 2T-only order: 4 populated sites, 6 empty recesses, SMA J1–J4, no puck or plug; its own GLB from the CAD 2T build) vs **full** (all 14 CNC designs; seats in all 10 recesses; parts the minimal set lacks are orange, the loose full-set parts stand beside the cell). 'Compare' lists per-part quantities, materials and the cost lines of both sets.
+
 ## 블록 직접 조작 / try the block — [block.html](https://donghyeonlee98.github.io/beamline-cell-3d/block.html) (v6.2b, 2026-11-07, 초안 · draft)
 
 - v6.2b 프로브 블록 하나를 손으로 만져 보는 페이지: ① 누름판 나사 조임 + 바늘 밀기(0.3 mm 눌림 = 1.44 mm), ② 뒤 기울기 세트스크류 회전수(1회전 ≈ 5°), ③ 블록 회전 ±15° + 잠금. 팁 위치·패드 안 여부·바늘–필름 여유·예압 힘(BeCu/W)·포고 눌림이 바로 바뀝니다. 자리 10곳 선택.
@@ -102,6 +110,7 @@ APS 2-ID-D beamline sample cell v3.3 — 25 mm cell mounted whole; rear 4 spring
 
 - `index.html` — v6.2 보기 (three.js 0.160) / v6.2 viewer (three.js 0.160)
 - `models/v62_*.glb`, `models/v62_meta.json` — v6.2 셀 5종 GLB, 부품 재질·층, 자리별 회전 축(B0, U)과 검사 범위 (`make_viewer_meta_v62_261107.py`가 설계 폴더의 json에서 만듦) / the five v6.2 GLBs, per-part material and layer, per-site rotation axis and checked range
+- `models/v62_min.glb`, `models/v62_full.glb`, `models/v62_sets.json` — 최소 세트 모델(2T 빌드, 빈 리세스 6곳), 전체 세트 모델(3T 빌드 + 싱글 자리 시트 + 따로 놓은 추가분), 추가분 표시와 비교 표 숫자 (`make_viewer_sets_v62c_261107.py`) / minimal- and full-set models, extra flags and comparison numbers
 - `v60.html`, `models/v60_*.glb`, `models/v60_meta.json` — 이전 v6.0 rev B 보기 / earlier v6.0 rev B viewer
 - `v48.html`, `models/v48_*.glb`, `models/v48_meta.json` — 이전 v4.8 보기 / earlier v4.8 viewer
 - `v33.html` — 이전 판 보기 (three.js r128) / earlier viewer (three.js r128)

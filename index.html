@@ -26,9 +26,22 @@ header .t { pointer-events: auto; }
 h1 { margin: 0; font-size: 18px; letter-spacing: -0.01em; }
 .sub { color: var(--ink2); font-size: 12.5px; margin-top: 2px; }
 .sub a { color: inherit; }
-.top-r { display: flex; gap: 6px; pointer-events: auto; }
+.top-r { display: flex; gap: 6px; pointer-events: auto; flex: none; }
 button { font: inherit; color: var(--ink); background: var(--chip); border: 1px solid var(--line); border-radius: 999px; padding: 5px 11px; cursor: pointer; white-space: nowrap; }
 button[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-ink); border-color: transparent; }
+button:disabled { opacity: 0.35; cursor: default; }
+.sw { display: inline-block; width: 10px; height: 10px; border-radius: 3px; background: #ff6a00; margin-right: 5px; vertical-align: -1px; }
+#tintbtn[aria-pressed="false"] .sw { background: transparent; border: 1.5px solid #ff6a00; }
+#info table.cmp { font-size: 11.5px; table-layout: fixed; }
+#info table.cmp td { overflow-wrap: anywhere; }
+#info table.cmp col.c-n { width: 46%; } #info table.cmp col.c-q { width: 12%; } #info table.cmp.b3 col.c-n { width: 50%; } #info table.cmp.b3 col.c-q { width: 25%; }
+#info table.cmp td:first-child { white-space: normal; word-break: break-all; font-weight: 600; }
+#info table.cmp td.q { text-align: right; font-variant-numeric: tabular-nums; overflow-wrap: normal; }
+#info table.cmp tr.h td { font-weight: 650; color: var(--ink2); border-top: none; }
+#info table.cmp tr.d td { color: var(--accent); }
+#info .cost { margin: 6px 0 2px; font-size: 12px; }
+#info .cost b { font-variant-numeric: tabular-nums; }
+#info h4 { margin: 10px 0 0; font-size: 12.5px; }
 #panel { position: fixed; left: 50%; bottom: 12px; transform: translateX(-50%); width: min(880px, calc(100% - 24px)); background: var(--panel);
   backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; }
 .row { display: flex; gap: 6px; align-items: center; overflow-x: auto; scrollbar-width: none; padding: 2px 0; }
@@ -56,6 +69,7 @@ button[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-i
 .hint { color: var(--ink2); font-size: 11.5px; margin-top: 6px; }
 @media (max-width: 600px) {
   h1 { font-size: 15px; } .sub { font-size: 11.5px; }
+  .top-r { flex-direction: column; align-items: flex-end; }
   #info { top: auto; bottom: calc(var(--ph, 160px) + 20px); left: 16px; right: 16px; width: auto; max-height: 45%; }
   .hint { display: none; }
 }
@@ -69,11 +83,12 @@ button[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-i
     <div class="sub" data-ko="APS 2-ID-D · 2026년 12월 · 몸체 80 × 77 × 19 + 뚜껑 3 + PCB 1.6 + 뒷판 5 · 부산대 이동현 · <a href='v60.html'>이전 v6.0</a> · <a href='v48.html'>v4.8</a> · <a href='v33.html'>v3.3</a>"
       data-en="APS 2-ID-D · Dec 2026 · body 80 × 77 × 19 + lid 3 + PCB 1.6 + back plate 5 · Donghyeon Lee, PNU · <a href='v60.html'>earlier v6.0</a> · <a href='v48.html'>v4.8</a> · <a href='v33.html'>v3.3</a>"></div>
   </div>
-  <div class="top-r"><button id="mat" data-ko="재질" data-en="Materials"></button><button id="lang">EN</button></div>
+  <div class="top-r"><button id="cmp" data-ko="비교" data-en="Compare"></button><button id="mat" data-ko="재질" data-en="Materials"></button><button id="lang">EN</button></div>
 </header>
 <div id="status">…</div>
 <div id="info" hidden></div>
 <div id="panel">
+  <div class="row" id="sets"><span class="lab" data-ko="세트" data-en="Set"></span><button id="tintbtn" aria-pressed="true" data-ko="<span class='sw'></span>추가분" data-en="<span class='sw'></span>extras"></button></div>
   <div class="row" id="variants"><span class="lab" data-ko="셀" data-en="Cell"></span></div>
   <div class="row" id="views"><span class="lab" data-ko="보기" data-en="View"></span><button id="lidbtn"></button></div>
   <div class="more">
@@ -86,8 +101,8 @@ button[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-i
       <div class="sl"><span class="lab" data-ko="단면" data-en="Section"></span><input id="cut" type="range" min="-75" max="41" value="41" step="0.5"><output id="o-cut">–</output></div>
     </div>
     <div class="row" id="toggles"><span class="lab" data-ko="표시" data-en="Show"></span></div>
-    <div class="hint" data-ko="끌어서 회전 · 두 손가락/휠 확대 · 부품을 누르면 이름과 재질 · 두 번 누르면 그 부품 중심으로 돌림. '블록'에서 자리를 고르고 '회전'을 밀면 그 블록이 수직 M2 당김 나사 축으로 돈다; 범위 밖(옆 바늘·바닥 0.3 mm 미만, json checks)은 주황색. 블록 하나에 나사 2개: 가운데 당김 나사 = 회전 축·잠금, 뒤 M1.6 세트스크류 = 기울기 (1회전 ≈ 5.0°, 1/4회전 = 팁 0.34 mm; 예압은 이것으로). 형상은 v6.2c 빌드 모델(초안, 발주 전)."
-      data-en="Drag to rotate · pinch/wheel to zoom · tap a part for its name and material · double-tap to orbit around it. Pick a site under 'Block' and move 'Turn': that block turns about its vertical M2 pull-screw axis; outside the checked range (neighbour needle or floor < 0.3 mm, json checks) the value turns orange. Two screws per block: the centre pull screw = turn axis + lock, the rear set screw = tilt (1 turn ≈ 5.0°, 1/4 turn = 0.34 mm of tip travel; preload is set with it). Geometry is the v6.2c build model (draft, not ordered)."></div>
+    <div class="hint" data-ko="끌어서 회전 · 두 손가락/휠 확대 · 부품을 누르면 이름과 재질 · 두 번 누르면 그 부품 중심으로 돌림. '블록'에서 자리를 고르고 '회전'을 밀면 그 블록이 수직 M2 당김 나사 축으로 돈다; 범위 밖(옆 바늘·바닥 0.3 mm 미만, json checks)은 주황색. 블록 하나에 나사 2개: 가운데 당김 나사 = 회전 축·잠금, 뒤 M1.6 세트스크류 = 기울기 (1회전 ≈ 5.0°, 1/4회전 = 팁 0.34 mm; 예압은 이것으로). 형상은 v6.2c 빌드 모델(초안, 발주 전). '세트'의 최소 = 12월 2T 전용 발주(시트·블록 4곳, 빈 리세스 6곳, SMA J1–J4, 퍽·마개 없음), 전체 = 14종 전부; 전체에서 최소 세트에 없는 부품은 주황색('추가분'으로 끄고 켬). '비교'는 두 세트의 수량·비용 표."
+      data-en="Drag to rotate · pinch/wheel to zoom · tap a part for its name and material · double-tap to orbit around it. Pick a site under 'Block' and move 'Turn': that block turns about its vertical M2 pull-screw axis; outside the checked range (neighbour needle or floor < 0.3 mm, json checks) the value turns orange. Two screws per block: the centre pull screw = turn axis + lock, the rear set screw = tilt (1 turn ≈ 5.0°, 1/4 turn = 0.34 mm of tip travel; preload is set with it). Geometry is the v6.2c build model (draft, not ordered). 'Set': minimal = the December 2T-only order (seats and blocks at 4 sites, 6 empty recesses, SMA J1–J4, no puck or plug); full = all 14 CNC designs; in full, parts the minimal set lacks are orange ('extras' toggles the tint). 'Compare' lists quantities and costs of both sets."></div>
   </div>
   <div class="row" style="margin-top:6px"><button id="hide" data-ko="접기" data-en="Less"></button></div>
 </div>
@@ -117,6 +132,12 @@ const VARIANTS = [   // site variant in the build json: a = 2T, c = 3T, b = sing
   { key: 'single', v: 'b', ko: '싱글 ITO (b1)', en: 'Single ITO (b1)' },
   { key: 'single_b2', v: 'b', ko: '싱글 FTO (b2)', en: 'Single FTO (b2)' },
 ];
+// order sets (cnc_v62c/order/261107_v62c_revB_발주): min = December 2T-only order, full = all 14 CNC designs
+const SETS = [ { key: 'min', ko: '최소 (12월 2T)', en: 'Minimal (Dec 2T)' }, { key: 'full', ko: '전체', en: 'Full' } ];
+let setMode = 'full', cfg = '3t', tintOn = true;
+const effKey = () => (setMode === 'min' ? 'min' : cfg);                 // GLB key: min = v62_min.glb; 3t = v62_full.glb (3T + seats at all 10 sites + extras beside the cell)
+const fileOf = (k) => (k === '3t' ? 'full' : k);
+const TINT = new THREE.Color(0xff6a00);
 const VIEWS = [   // lid: true/false = closed/open
   { key: 'iso', ko: '비스듬히', en: '3/4', t: [-10, 0, 100], c: [265, -345, 240], lid: true },
   { key: 'front', ko: '정면 (빔 쪽)', en: 'Front (beam side)', t: [-10, 0, 111], c: [-10, -300, 118], lid: true },
@@ -127,6 +148,7 @@ const VIEWS = [   // lid: true/false = closed/open
   { key: 'pcb', ko: '뒷면 PCB (뒷판 뗌)', en: 'Rear PCB (back plate off)', t: [-15, 10, 111], c: [-90, 230, 170], back: false },
   { key: 'back', ko: '뒷면', en: 'Back', t: [-10, 12, 105], c: [-100, 240, 155], back: true },
   { key: 'mount', ko: '판·브래킷', en: 'Plate + bracket', t: [0, 10, 70], c: [220, -210, 150], lid: true },
+  { key: 'extra', ko: '추가분 (전체 세트)', en: 'Full-set extras', t: [60, 25, 80], c: [305, -380, 215], lid: true, full: true },
 ];
 
 // real-material look per CAD "kind" (from the build script) — physically based
@@ -189,7 +211,7 @@ const EN = [[/^셀 몸체/, 'cell body, Al (flat cavity floor, seat recesses Ø6
   [/^클램프 블록/, 'clamp block, SUS 303 5.8 × 6 × 2 (needle groove on top, R0.5 pivot edge, rear M1.6 tilt-screw tap)'], [/^누름판/, 'clamp plate, SUS 303 5.8 × 6 wedge (1.0 rear to 2.23 front, top parallel to the seat)'], [/^M2 냄비/, 'M2×6 pan-head pull screw = turn axis + lock (into the PEEK seat)'], [/^M1.6 기울기/, 'M1.6×3 cup-point tilt set screw (tip on the PEEK seat; 1 turn ≈ 5.0°)'],
   [/^Ossila 바늘/, 'straight needle Ossila T3008 Ø0.508'], [/^포고 Mill-Max/, 'spring pin Mill-Max 0929-7 (PCB → block bottom = contact)'], [/^뒷핀 Mill-Max/, 'rear spring pins Mill-Max 0908-7 (wafer rear pads)'],
   [/^뒷면 PCB/, 'rear PCB, FR-4 1.6 (10 spring pins, SMA ×6, JST-SH, SHT45)'], [/^뒷판/, 'back plate, Al black anodised 80 × 77 × 5'], [/^SHT45/, 'SHT45 bare die on the PCB (sensor pocket in the body)'],
-  [/^0402/, '0402 passives'], [/^SMA 엣지/, 'SMA edge jacks ×6 (CH1–6)'], [/^JST-SH/, 'JST-SH 6-pin (I2C + NTC)'], [/^PCB 뒷면 땜납/, 'solder (NTC wires)'],
+  [/^0402/, '0402 passives'], [/^SMA 엣지 잭 J5/, 'SMA edge jacks J5/J6 (CH5–6, full set only)'], [/^SMA 엣지 잭 x4/, 'SMA edge jacks J1–J4 (CH1–4; minimal set: J5/J6 left empty)'], [/^\[추가분\] PL/, 'PL adapter plate (full set only, laid beside the cell)'], [/^\[추가분\] 누름 판/, 'single-cell hold-down plate (full set only, laid beside the cell)'], [/^\[추가분\] PEEK 인서트 b1/, 'PEEK insert b1-w, single ITO (full set only, laid beside the cell)'], [/^\[추가분\] PEEK 인서트 b2/, 'PEEK insert b2-w, single FTO (full set only, laid beside the cell)'], [/^\[추가분\] 어두움 마개/, 'dark plug (full set only, laid beside the cell)'], [/^SMA 엣지/,'SMA edge jacks ×6 (CH1–6)'], [/^JST-SH/, 'JST-SH 6-pin (I2C + NTC)'], [/^PCB 뒷면 땜납/, 'solder (NTC wires)'],
   [/^PEEK 인서트/, 'PEEK insert'], [/^누름 판/, 'hold-down plate, Al'], [/^멈춤 링/, 'PEEK stop ring'], [/^뚜껑/, 'lid, Al (window boss, film ledge Y −2.3)'], [/^M3 널링 손나사/, 'M3×8 thumb screws'],
   [/^실리콘 가스켓/, 'silicone gasket strip'], [/^다월 핀/, 'dowel pins Ø2 × 7.5'], [/^가스 KQ2H04-M5 입구/, 'N₂ inlet, −X side (push-in M5)'], [/^가스 KQ2L04/, 'N₂ outlet elbow, −X side'],
   [/^NTC 선/, 'NTC wires'], [/^NTC/, 'NTC thermistor'], [/^PET 필름/, 'PET 12 µm film window (taped on the lid ledge)'], [/^Grace 새 세로판/, 'Grace plate (reprint)'], [/^Grace 2025/, 'Grace 2025 angle bracket'],
@@ -223,6 +245,7 @@ const GROUPS = [
   { key: 'mount', ko: 'Grace 판·브래킷', en: 'Grace plate + bracket', on: true, test: (m) => m.layer === -2 || m.layer === -3 },
   { key: 'exhaust', ko: '배기 블록', en: 'Exhaust block', on: true, test: (m) => m.layer === 10 },
   { key: 'puck', ko: '뒤 빛·마개', en: 'Rear light / plug', on: true, test: (m) => m.layer === 12 || m.layer === 11 },
+  { key: 'tray', ko: '따로 놓은 추가분', en: 'Extras beside the cell', on: true, test: (m) => m.layer === 20 },
 ];
 const groupOn = Object.fromEntries(GROUPS.map((g) => [g.key, g.on]));
 
@@ -256,6 +279,7 @@ let cutOn = false;
 
 // ---------- loading
 const meta = await fetch('models/v62_meta.json').then((r) => r.json());   // rows[variant] = [kind, layer] per GLB node; sites[v][key] = {B0, U, ...}; ranges[v][key] = [lo, hi]
+const sets = await fetch('models/v62_sets.json').then((r) => r.json());   // rows.min / rows.full, extra[model] = node indices absent from the minimal set, table = order numbers
 const loader = new GLTFLoader();
 const cache = {};
 let cur = null, curKey = null;
@@ -275,13 +299,22 @@ function specOf(name, kind) {
   for (const [re, o] of OVR) if (re.test(name)) return typeof o === 'string' ? M[o] : o;
   return M[kind] || M.misc;
 }
-const vOf = (k) => VARIANTS.find((x) => x.key === k).v;
+const vOf = (k) => (k === 'min' ? 'a' : VARIANTS.find((x) => x.key === k).v);
+function splitSMA(geo, zc) {   // non-indexed geometry -> [J1–J4 part, J5/J6 part] by triangle centre Z (CAD)
+  const p = geo.attributes.position.array, n = geo.attributes.normal.array, A = [[], []], B = [[], []];
+  for (let t = 0; t < p.length; t += 9) {
+    const z = (p[t + 2] + p[t + 5] + p[t + 8]) / 3, d = z > zc ? B : A;
+    for (let i = 0; i < 9; i++) { d[0].push(p[t + i]); d[1].push(n[t + i]); }
+  }
+  return [A, B].map(([P, N]) => { const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(P, 3)); g.setAttribute('normal', new THREE.Float32BufferAttribute(N, 3)); return g; });
+}
 
 async function load(k) {
   if (cache[k]) return cache[k];
   statusEl.hidden = false; statusEl.textContent = (lang === 'ko' ? '불러오는 중 … ' : 'Loading … ');
-  const gltf = await loader.loadAsync('models/v62_' + k + '.glb', (e) => { if (e.total) statusEl.textContent = (lang === 'ko' ? '불러오는 중 ' : 'Loading ') + Math.round(100 * e.loaded / e.total) + ' %'; });
-  const g = new THREE.Group(); const rows = meta.rows[k]; const parts = []; const sites = meta.sites[vOf(k)] || {};
+  const gltf = await loader.loadAsync('models/v62_' + fileOf(k) + '.glb', (e) => { if (e.total) statusEl.textContent = (lang === 'ko' ? '불러오는 중 ' : 'Loading ') + Math.round(100 * e.loaded / e.total) + ' %'; });
+  const g = new THREE.Group(); const rows = k === 'min' ? sets.rows.min : k === '3t' ? sets.rows.full : meta.rows[k]; const parts = []; const sites = meta.sites[vOf(k)] || {};
+  const extra = new Set(sets.extra[fileOf(k)] || []);
   gltf.scene.updateMatrixWorld(true);
   const nodes = gltf.scene.children.slice();
   nodes.forEach((n, i) => {
@@ -289,20 +322,28 @@ async function load(k) {
     let geo = mesh.geometry; geo.deleteAttribute('color'); geo.deleteAttribute('normal');
     geo = toCreasedNormals(geo, THREE.MathUtils.degToRad(32));
     const as = gltf.parser.associations.get(n), jn = as && as.nodes !== undefined ? gltf.parser.json.nodes[as.nodes] : null;
-    const name = (jn && jn.name) || (n.name || mesh.name).replace(/_/g, ' '), [kind, layer] = rows[i] || ['misc', 0], spec = specOf(name, kind);
-    const m = new THREE.Mesh(geo, makeMat(spec));
-    m.applyMatrix4(n.matrixWorld);
-    const opaque = spec.opacity === undefined;
-    m.castShadow = opaque; m.receiveShadow = opaque;
-    // turning parts of a site: block, clamp plate, M2 pull + tilt screws, needle (the PEEK seat and the spring pin stay)
-    const sm = name.match(/\[([^\]]+)\]/), site = sm && layer === 5 && !/^PEEK 시트/.test(name) && sites[sm[1]] ? sm[1] : null;
-    m.userData = { name, kind, layer, spec, base: m.position.clone(), baseQ: m.quaternion.clone(), opaque, site };
-    if (opaque) {   // back faces drawn flat = solid-looking cut face when the section plane is on
-      const capC = new THREE.Color(spec.color).multiplyScalar(0.62);
-      const cap = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: capC, side: THREE.BackSide, clippingPlanes: [cutPlane] }));
-      cap.visible = false; cap.userData.cap = true; m.add(cap);
+    const name0 = (jn && jn.name) || (n.name || mesh.name).replace(/_/g, ' '), [kind, layer] = rows[i] || ['misc', 0];
+    let pieces = [[geo, name0, extra.has(i)]];
+    if (k !== 'min' && /^SMA 엣지 잭 x6/.test(name0)) {   // J5/J6 exist only in the full set: split the merged jack row (PCB y 13.5 / 22.5 → CAD Z > ZC + 9)
+      const [a, b] = splitSMA(geo, sets.sma_split_z);
+      pieces = [[a, 'SMA 엣지 잭 x4 Samtec SMA-J-P-H-ST-EM1 J1–J4 (CH1–CH4)', false], [b, 'SMA 엣지 잭 J5·J6 Samtec SMA-J-P-H-ST-EM1 (CH5·CH6; 전체 세트에만 — 최소 세트는 자리 비움)', true]];
     }
-    g.add(m); parts.push(m);
+    for (const [pg, name, isExtra] of pieces) {
+      const spec = specOf(name, kind);
+      const m = new THREE.Mesh(pg, makeMat(spec));
+      m.applyMatrix4(n.matrixWorld);
+      const opaque = spec.opacity === undefined;
+      m.castShadow = opaque; m.receiveShadow = opaque;
+      // turning parts of a site: block, clamp plate, M2 pull + tilt screws, needle (the PEEK seat and the spring pin stay)
+      const sm = name.match(/\[([^\]]+)\]/), site = sm && layer === 5 && !/^PEEK 시트/.test(name) && sites[sm[1]] ? sm[1] : null;
+      m.userData = { name, kind, layer, spec, base: m.position.clone(), baseQ: m.quaternion.clone(), opaque, site, extra: isExtra, color0: m.material.color.clone() };
+      if (opaque) {   // back faces drawn flat = solid-looking cut face when the section plane is on
+        const capC = new THREE.Color(spec.color).multiplyScalar(0.62);
+        const cap = new THREE.Mesh(pg, new THREE.MeshBasicMaterial({ color: capC, side: THREE.BackSide, clippingPlanes: [cutPlane] }));
+        cap.visible = false; cap.userData.cap = true; m.add(cap);
+      }
+      g.add(m); parts.push(m);
+    }
   });
   cache[k] = { g, parts };
   statusEl.hidden = true;
@@ -310,15 +351,22 @@ async function load(k) {
 }
 
 let curSite = null;
-async function show(k) {
-  const c = await load(k);
-  if (cur) root.remove(cur.g);
-  cur = c; curKey = k; root.add(c.g);
-  select(null); buildSites(); applyPose(); applyGroups(); applyCut();
-  document.querySelectorAll('#variants button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.k === k)));
-  writeHash();
-  setTimeout(() => { for (const v of VARIANTS) if (!cache[v.key]) { load(v.key); break; } }, 1500);   // warm the others (phone: one at a time)
+function applyTint() {   // full set: parts the minimal set does not have, orange
+  if (!cur) return;
+  for (const m of cur.parts) { const u = m.userData; m.material.color.copy(u.color0); if (u.extra && tintOn) m.material.color.lerp(TINT, 0.72); }
 }
+async function show(k) {   // k = config key (3t, 2t, ...); the minimal set always shows its own 2T model
+  if (setMode === 'min') k = '2t';
+  cfg = k;
+  const ek = effKey(), c = await load(ek);
+  if (cur) root.remove(cur.g);
+  cur = c; curKey = ek; root.add(c.g);
+  select(null); buildSites(); applyPose(); applyGroups(); applyCut(); applyTint(); syncSets();
+  document.querySelectorAll('#variants button').forEach((b) => { b.setAttribute('aria-pressed', String(b.dataset.k === cfg)); b.disabled = setMode === 'min' && b.dataset.k !== '2t'; });
+  writeHash();
+  setTimeout(() => { for (const x of ['3t', 'min', '2t', '2t_dark', 'single', 'single_b2']) if (!cache[x]) { load(x); break; } }, 1500);   // warm the others (phone: one at a time)
+}
+async function setSet(s) { if (s === setMode) return; setMode = s; await show(s === 'min' ? '2t' : '3t'); }
 
 // ---------- pose: explode + lid travel + block rotation (all in CAD coordinates, the group frame)
 const exEl = document.getElementById('explode'), cutEl = document.getElementById('cut'), rotEl = document.getElementById('rot'), rotOut = document.getElementById('o-rot');
@@ -426,7 +474,7 @@ function fly(v, instant) {
 
 // ---------- picking
 const ray = new THREE.Raycaster(), ptr = new THREE.Vector2(), info = document.getElementById('info');
-let sel = null, down = null, lastTap = 0, matOn = false;
+let sel = null, down = null, lastTap = 0, matOn = false, cmpOn = false;
 function hit(ev) {
   const r = canvas.getBoundingClientRect(); ptr.set(((ev.clientX - r.left) / r.width) * 2 - 1, -((ev.clientY - r.top) / r.height) * 2 + 1);
   ray.setFromCamera(ptr, camera);
@@ -437,8 +485,9 @@ function hit(ev) {
 function select(m) {
   if (sel) { sel.material.emissive.setHex(0x000000); }
   sel = m;
-  if (!m) { if (!matOn) info.hidden = true; return; }
+  if (!m) { if (!matOn && !cmpOn) info.hidden = true; return; }
   matOn = false; document.getElementById('mat').setAttribute('aria-pressed', 'false');
+  cmpOn = false; document.getElementById('cmp').setAttribute('aria-pressed', 'false');
   m.material.emissive.setHex(0x2a4cff); m.material.emissiveIntensity = 0.35;
   const u = m.userData, short = u.name.split(' (')[0].split(':')[0], en = enOf(u.name);
   info.innerHTML = '<button class="x" aria-label="close">×</button><div class="k"></div><div class="m"></div><div class="n"></div>';
@@ -452,6 +501,7 @@ function select(m) {
 function showMats() {
   if (sel) select(null);
   matOn = !matOn; document.getElementById('mat').setAttribute('aria-pressed', String(matOn));
+  cmpOn = false; document.getElementById('cmp').setAttribute('aria-pressed', 'false');
   if (!matOn) { info.hidden = true; return; }
   const ko = lang === 'ko';
   info.innerHTML = '<button class="x" aria-label="close">×</button><div class="k"></div><div class="n"></div><table></table>';
@@ -464,6 +514,46 @@ function showMats() {
   info.hidden = false;
 }
 document.getElementById('mat').onclick = showMats;
+const CNC_KO = { V62c_body_Al: '몸체', V60_lid_Al: '뚜껑', V62_backplate_Al: '뒷판', V61_insert_aw_PEEK: '인서트 a-w (탠덤)', V62_holddown_tandem3T_Al: '누름 판 (탠덤·3T)',
+  V62c_block_SUS303: '클램프 블록', V62c_clamp_plate_SUS303: '쐐기 누름판', V62c_seat_PEEK: 'PEEK 시트 (압입)', V62_holddown_single_Al: '누름 판 (싱글)', V61_plug_dark_Al: '어두움 마개',
+  V47_insert_b1w_PEEK: '인서트 b1-w (싱글 ITO)', V47_insert_b2w_PEEK: '인서트 b2-w (싱글 FTO)', V47_puck_disc_Al: '퍽 원판', V47_PL_adapter_Al: 'PL 어댑터' };
+function showCompare() {   // numbers from models/v62_sets.json (read from the order CSVs and the purchased-parts md by make_viewer_sets_v62c_261107.py)
+  if (sel) select(null);
+  cmpOn = !cmpOn; document.getElementById('cmp').setAttribute('aria-pressed', String(cmpOn));
+  matOn = false; document.getElementById('mat').setAttribute('aria-pressed', 'false');
+  if (!cmpOn) { info.hidden = true; return; }
+  const ko = lang === 'ko', T = sets.table;
+  info.innerHTML = '<button class="x" aria-label="close">×</button><div class="k"></div><div class="n"></div>';
+  info.querySelector('.k').textContent = ko ? '최소 세트 vs 전체 세트 (v6.2c rev B 발주 묶음)' : 'Minimal vs full set (v6.2c rev B order bundle)';
+  info.querySelector('.n').textContent = ko ? '최소 = 12월 2T 탠덤 전용, 전체 = 3T·싱글·마개·퍽·PL 어댑터 포함. 주황 줄 = 두 세트 수량이 다른 것.'
+    : 'Minimal = December 2T tandem only; full = with 3T, single cells, dark plug, puck and PL adapter. Orange rows differ between the sets.';
+  const tab = (head, rows) => {
+    const tb = document.createElement('table'); tb.className = head.length === 3 ? 'cmp b3' : 'cmp';
+    const cg = tb.appendChild(document.createElement('colgroup')); head.forEach((_, j) => { const c = cg.appendChild(document.createElement('col')); c.className = j === 0 ? 'c-n' : j < 3 ? 'c-q' : 'c-m'; });
+    const h = tb.insertRow(); h.className = 'h'; for (const s of head) h.insertCell().textContent = s;
+    for (const r of rows) { const tr = tb.insertRow(); if (r.d) tr.className = 'd'; r.c.forEach((s, j) => { const td = tr.insertCell(); td.textContent = s; if (j > 0 && j < 3) td.className = 'q'; }); }
+    info.append(tb);
+  };
+  const h4 = (s) => { const e = document.createElement('h4'); e.textContent = s; info.append(e); };
+  const line = (html) => { const e = document.createElement('div'); e.className = 'cost'; e.innerHTML = html; info.append(e); };
+  h4(ko ? 'CNC 부품 (PCBWay)' : 'CNC parts (PCBWay)');
+  tab(ko ? ['부품 (CNC 파일)', '최소', '전체', '재료'] : ['Part (CNC file)', 'Min', 'Full', 'Material'],
+    T.cnc.map((r) => ({ d: r.min !== r.full, c: [(ko && CNC_KO[r.name] ? CNC_KO[r.name] + ' · ' : '') + r.name, String(r.min), String(r.full), r.mat] })));
+  const nk = (a) => a.reduce((s, r) => s + r, 0);
+  line((ko ? '종류 / 개수: 최소 ' : 'Designs / pieces: min ') + `<b>${T.cnc.filter((r) => r.min > 0).length} / ${nk(T.cnc.map((r) => r.min))}</b>` + (ko ? ', 전체 ' : ', full ') + `<b>${T.cnc.filter((r) => r.full > 0).length} / ${nk(T.cnc.map((r) => r.full))}</b>`);
+  line((ko ? 'CNC 비용: 최소 ' : 'CNC cost: min ') + `<b>${T.cnc_cost_usd.min}</b>` + (ko ? ' / 전체 ' : ' / full ') + `<b>${T.cnc_cost_usd.full}</b> (${ko ? T.cnc_cost_usd.note : 'estimate, before quote'})`);
+  h4(ko ? '구매 부품' : 'Purchased parts');
+  tab(ko ? ['부품', '최소', '전체'] : ['Part', 'Min', 'Full'],
+    T.buy.map((r) => ({ d: r.min !== r.full, c: [r.ko, r.min + (r.use_min !== undefined ? (ko ? ` (사용 ${r.use_min})` : ` (use ${r.use_min})`) : ''), r.full + (r.use_full !== undefined ? (ko ? ` (사용 ${r.use_full})` : ` (use ${r.use_full})`) : '')] })));
+  line((ko ? '구매 부품 합계: 최소 ' : 'Purchased total: min ') + `<b>₩${T.buy_total_krw.min}</b>` + (ko ? ' / 전체 ' : ' / full ') + `<b>₩${T.buy_total_krw.full}</b> (${ko ? T.buy_total_krw.note : 'incl. VAT, prices of 11/07'})`);
+  const nt = document.createElement('div'); nt.className = 'n'; nt.style.marginTop = '6px';
+  nt.textContent = ko ? '나사 수량 = 구매 권장 (괄호 = 한 번에 쓰는 수), 01_체결류_목록.csv. ' + T.setscrew_note + '. PCB·바늘·필름은 이 표에 없음.'
+    : 'Screw counts = recommended purchase (brackets = used at once), from 01_체결류_목록.csv. M1.6 set screw: designed cup point; the only SUS M1.6 available in Korea within a week is flat point. PCB, needles and film are not in this table.';
+  info.append(nt);
+  info.querySelector('.x').onclick = () => showCompare();
+  info.hidden = false;
+}
+document.getElementById('cmp').onclick = showCompare;
 canvas.addEventListener('pointerdown', (e) => { down = [e.clientX, e.clientY]; });
 canvas.addEventListener('pointerup', (e) => {
   if (!down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 6) return;
@@ -480,6 +570,15 @@ canvas.addEventListener('pointerup', (e) => {
 const vRow = document.getElementById('variants'), wRow = document.getElementById('views'), tRow = document.getElementById('toggles');
 for (const v of VARIANTS) { const b = document.createElement('button'); b.dataset.k = v.key; b.dataset.ko = v.ko; b.dataset.en = v.en; b.onclick = () => show(v.key); vRow.append(b); }
 for (const v of VIEWS) { const b = document.createElement('button'); b.dataset.k = v.key; b.dataset.ko = v.ko; b.dataset.en = v.en; b.onclick = () => { if (v.cut === undefined && cutOn) { cutEl.value = 41; applyCut(); } if (v.key === 'block' && curSite) flyToSite(curSite); else fly(v); writeHash(v.key); }; wRow.append(b);  if (v.key === 'block') { const l = document.createElement('a'); l.href = 'block.html'; l.className = 'blk-link'; l.dataset.ko = '↗ 블록 직접 조작'; l.dataset.en = '↗ try the block'; wRow.append(l); } }
+const sRow = document.getElementById('sets'), tintBtn = document.getElementById('tintbtn');
+for (const s of SETS) { const b = document.createElement('button'); b.dataset.k = s.key; b.dataset.ko = s.ko; b.dataset.en = s.en; b.onclick = () => setSet(s.key); sRow.insertBefore(b, tintBtn); }
+tintBtn.onclick = () => { tintOn = !tintOn; tintBtn.setAttribute('aria-pressed', String(tintOn)); applyTint(); };
+tintBtn.title = '최소 세트에 없는 부품 (전체 세트 추가분) 주황 표시 / parts the minimal set does not have, in orange';
+function syncSets() {
+  sRow.querySelectorAll('button[data-k]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.k === setMode)));
+  tintBtn.hidden = setMode !== 'full';
+  wRow.querySelectorAll('button[data-k]').forEach((b) => { const v = VIEWS.find((x) => x.key === b.dataset.k); if (v && v.full) b.hidden = setMode !== 'full'; });
+}
 for (const g of GROUPS) { const b = document.createElement('button'); b.dataset.k = g.key; b.dataset.ko = g.ko; b.dataset.en = g.en; b.onclick = () => { groupOn[g.key] = !groupOn[g.key]; syncToggles(); applyGroups(); }; tRow.append(b); }
 function syncToggles() { tRow.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(groupOn[b.dataset.k]))); }
 syncToggles();
@@ -489,13 +588,13 @@ function applyLang() {
   document.getElementById('lang').textContent = lang === 'ko' ? 'EN' : '한국어';
   document.title = lang === 'ko' ? '빔라인 시료 셀 v6.2c' : 'Beamline cell v6.2c';
   syncLid(); applyCut(); if (curKey) syncRot();
-  if (sel) select(sel); else if (matOn) { matOn = false; showMats(); }
+  if (sel) select(sel); else if (matOn) { matOn = false; showMats(); } else if (cmpOn) { cmpOn = false; showCompare(); }
 }
 document.getElementById('lang').onclick = () => { lang = lang === 'ko' ? 'en' : 'ko'; try { localStorage.setItem('bc46-lang', lang); } catch (e) {} applyLang(); };
 const panel = document.getElementById('panel');
 document.getElementById('hide').onclick = () => { panel.classList.toggle('min'); const b = document.getElementById('hide'); b.dataset.ko = panel.classList.contains('min') ? '더 보기' : '접기'; b.dataset.en = panel.classList.contains('min') ? 'More' : 'Less'; applyLang(); resize(); };
 let curView = 'iso';
-function writeHash(view) { if (view) curView = view; try { history.replaceState(null, '', '#' + curKey + '&' + curView); } catch (e) {} }
+function writeHash(view) { if (view) curView = view; try { history.replaceState(null, '', '#' + cfg + '&' + curView + '&' + setMode); } catch (e) {} }   // #config&view&set (set = min | full; old links without it = full)
 
 function resize() {
   const w = window.innerWidth, h = window.innerHeight;
@@ -509,8 +608,10 @@ window.addEventListener('resize', resize);
 
 if (window.innerWidth < 600 || window.innerHeight < 700) { panel.classList.add('min'); const hb = document.getElementById('hide'); hb.dataset.ko = '더 보기'; hb.dataset.en = 'More'; }
 applyLang(); resize();
-const [h0, h1] = location.hash.slice(1).split('&');
-const startK = VARIANTS.some((v) => v.key === h0) ? h0 : '3t', startV = VIEWS.find((v) => v.key === h1) || VIEWS[0];
+const [h0, h1, h2] = location.hash.slice(1).split('&');
+if (h2 === 'min') setMode = 'min';
+let startK = VARIANTS.some((v) => v.key === h0) ? h0 : '3t', startV = VIEWS.find((v) => v.key === h1) || VIEWS[0];
+if (setMode === 'min' && startV.full) startV = VIEWS[0];
 await show(startK); if (startV.key === 'block' && curSite) flyToSite(curSite, true); else fly(startV, true); writeHash(startV.key);
 
 window.__bc = { camera, controls, root, renderer, scene, meta, rotDeg, applyPose, get cur() { return cur; } };   // for console inspection
