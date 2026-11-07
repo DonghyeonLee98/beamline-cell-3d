@@ -5,6 +5,11 @@
 부산대 이동현. APS 2-ID-D (2026년 12월) 빔라인 시료 셀 **v6.2 (2026-11-07 초안: 2025 셀 방식 — 곧은 바늘 + 회전 클램프 블록 + 뒷면 PCB 포고, 선·납땜 없음)**의 3D 보기. 이전 판: [v6.0 rev B](https://donghyeonlee98.github.io/beamline-cell-3d/v60.html), [v4.8](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
 Donghyeon Lee, Pusan National University. 3D viewer of the beamline sample cell **v6.2 (draft 2026-11-07: 2025-cell style — straight needles + turnable clamp blocks + rear-PCB spring pins, no wires or solder)** for APS 2-ID-D (December 2026). Earlier viewers: [v6.0 rev B](https://donghyeonlee98.github.io/beamline-cell-3d/v60.html), [v4.8](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
 
+## 블록 직접 조작 / try the block — [block.html](https://donghyeonlee98.github.io/beamline-cell-3d/block.html) (v6.2b, 2026-11-07, 초안 · draft)
+
+- v6.2b 프로브 블록 하나를 손으로 만져 보는 페이지: ① 누름판 나사 조임 + 바늘 밀기(0.3 mm 눌림 = 1.44 mm), ② 뒤 기울기 세트스크류 회전수(1회전 ≈ 5°), ③ 블록 회전 ±15° + 잠금. 팁 위치·패드 안 여부·바늘–필름 여유·예압 힘(BeCu/W)·포고 눌림이 바로 바뀝니다. 자리 10곳 선택.
+- One v6.2b probe block to play with: ① clamp-plate screw + needle push (0.3 mm deflection = 1.44 mm), ② rear tilt set screw in turns (1 turn ≈ 5°), ③ block turn ±15° + lock. Tip position, on-pad check, needle–film gap, preload force (BeCu/W) and spring-pin compression update live. Same formulas as the CAD build (checked against its tilt × turn grid within 0.01 mm). Geometry drawn in the browser (no model file).
+
 ## v6.2 (2026-11-07, 초안 · draft)
 
 - 바늘마다 블록 하나: 곧은 Ossila 바늘(W A1·B1, BeCu C1)을 SUS 303 블록 8 × 6 × 2 윗면 홈에 놓고 SUS 누름판 8 × 6 × 1과 M2 × 6 하나로 같이 누른다. 그 나사가 회전 축이다 — 풀고 손으로 ±15° 돌려 팁을 패드에 맞춘 뒤 조인다. 블록은 몸체 바닥 리세스 Ø6.2 안의 PEEK 경사 시트 Ø6.0(12° 또는 10°) 위에 앉아 Al에 닿지 않는다.

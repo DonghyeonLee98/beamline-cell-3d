@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>v6.2b 프로브 블록 — 직접 조작</title>
+<style>
+:root { --bg1:#eef0f2; --bg2:#c9ced4; --ink:#15181c; --ink2:#4a525c; --panel:rgba(255,255,255,0.88); --line:rgba(20,24,28,0.12); --chip:rgba(20,24,28,0.06); --on:#15181c; --on-ink:#fff; --accent:#c2410c; --ok:#15803d; }
+@media (prefers-color-scheme: dark) { :root { --bg1:#2a2e34; --bg2:#0e1013; --ink:#eef1f4; --ink2:#a3acb7; --panel:rgba(22,25,29,0.88); --line:rgba(255,255,255,0.12); --chip:rgba(255,255,255,0.08); --on:#eef1f4; --on-ink:#111; --accent:#fb923c; --ok:#4ade80; } }
+* { box-sizing: border-box; }
+html, body { margin:0; height:100%; overflow:hidden; }
+body { background: radial-gradient(120% 90% at 50% 30%, var(--bg1), var(--bg2)); color: var(--ink); font: 14px/1.45 system-ui, -apple-system, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; }
+#c { position:fixed; inset:0; width:100%; height:100%; display:block; touch-action:none; }
+header { position:fixed; top:10px; left:14px; right:14px; display:flex; justify-content:space-between; gap:10px; pointer-events:none; }
+header > * { pointer-events:auto; }
+h1 { margin:0; font-size:17px; }
+.sub { color:var(--ink2); font-size:12px; margin-top:2px; }
+.sub a { color:inherit; }
+button, select { font:inherit; color:var(--ink); background:var(--chip); border:1px solid var(--line); border-radius:999px; padding:4px 10px; cursor:pointer; }
+button[aria-pressed="true"] { background:var(--on); color:var(--on-ink); border-color:transparent; }
+#panel { position:fixed; left:50%; bottom:10px; transform:translateX(-50%); width:min(760px, calc(100% - 20px)); background:var(--panel); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid var(--line); border-radius:14px; padding:8px 10px; max-height:52%; overflow-y:auto; }
+.grp { border-top:1px solid var(--line); padding:6px 0 4px; }
+.grp:first-child { border-top:0; }
+.gt { font-weight:650; font-size:12.5px; }
+.gn { color:var(--ink2); font-size:11.5px; }
+.sl { display:flex; align-items:center; gap:8px; margin-top:3px; }
+.sl label { color:var(--ink2); font-size:12px; min-width:62px; }
+.sl input[type=range] { flex:1; accent-color:var(--accent); }
+.sl output { font-variant-numeric:tabular-nums; font-size:12px; width:86px; text-align:right; }
+.warn { color:var(--accent) !important; font-weight:650; }
+.good { color:var(--ok) !important; }
+#nums { position:fixed; right:14px; top:66px; width:min(300px, calc(100% - 28px)); background:var(--panel); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid var(--line); border-radius:12px; padding:8px 10px; font-size:12.5px; }
+#nums table { width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; }
+#nums td { padding:2px 3px; border-top:1px solid var(--line); vertical-align:top; }
+#nums td:first-child { color:var(--ink2); white-space:nowrap; }
+#nums td:last-child { text-align:right; }
+@media (max-width: 600px) { h1 { font-size:14.5px; } .sub { font-size:11px; } #nums { top:auto; bottom:calc(52% + 18px); left:10px; right:10px; width:auto; font-size:11.5px; } #panel { max-height:46%; } }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<header>
+  <div>
+    <h1 data-ko="v6.2b 프로브 블록 — 직접 돌려 보기 (초안)" data-en="v6.2b probe block — try it yourself (draft)"></h1>
+    <div class="sub" data-ko="SUS 블록 + 누름판 · 앞 R0.5 피벗 · 뒤 M2 기울기 나사 · 가운데 당김 나사 (회전 축·잠금) · PEEK 시트 · 밑에서 포고 0929-7 · <a href='index.html'>셀 전체</a>"
+      data-en="SUS block + clamp plate · front R0.5 pivot · rear M2 tilt screw · centre pull screw (turn axis + lock) · PEEK seat · Mill-Max 0929-7 spring pin from below · <a href='index.html'>whole cell</a>"></div>
+  </div>
+  <div style="display:flex; gap:6px; align-items:flex-start"><select id="site"></select><button id="lang">EN</button></div>
+</header>
+<div id="nums"><table id="tbl"></table></div>
+<div id="panel">
+  <div class="grp">
+    <div class="gt" data-ko="① 바늘 고정 (누름판 나사)" data-en="① Needle clamp (clamp-plate screw)"></div>
+    <div class="sl"><label data-ko="조임" data-en="Tighten"></label><input id="clamp" type="range" min="0" max="1" step="0.05" value="1"><output id="o-clamp"></output></div>
+    <div class="sl"><label data-ko="밀어 넣기" data-en="Push in"></label><input id="slide" type="range" min="-2" max="3" step="0.05" value="0"><output id="o-slide"></output></div>
+    <div class="gn" data-ko="풀어야(조임 &lt; 0.8) 바늘을 밀 수 있음. 바늘을 팁 쪽으로 1.44 mm 밀면 팁이 0.3 mm 더 눌림 (12°). v6.2b에서는 이 나사가 ③ 회전 잠금과 같은 가운데 당김 나사."
+      data-en="Loosen (tighten &lt; 0.8) to slide the needle. Pushing it 1.44 mm toward the tip presses the tip 0.3 mm more (12°). In v6.2b this is the same centre pull screw as ③."></div>
+  </div>
+  <div class="grp">
+    <div class="gt" data-ko="② 기울기 세트스크류 (뒤, M2 피치 0.4)" data-en="② Tilt set screw (rear, M2 pitch 0.4)"></div>
+    <div class="sl"><label data-ko="회전수" data-en="Turns"></label><input id="turns" type="range" min="-1" max="1" step="0.1" value="0"><output id="o-turns"></output></div>
+  </div>
+  <div class="grp">
+    <div class="gt" data-ko="③ 블록 회전 + 잠금" data-en="③ Block turn + lock"></div>
+    <div class="sl"><label data-ko="회전" data-en="Turn"></label><input id="rot" type="range" min="-15" max="15" step="0.5" value="0"><output id="o-rot"></output></div>
+    <div class="sl"><label data-ko="잠금" data-en="Lock"></label><button id="lock" aria-pressed="false"></button><span class="gn" id="lockmsg"></span></div>
+  </div>
+  <div class="grp">
+    <div class="sl"><label data-ko="바늘 재질" data-en="Needle"></label><button id="mat-becu" aria-pressed="true">BeCu (C1)</button><button id="mat-w" aria-pressed="false">W (A1/B1)</button></div>
+    <div class="gn" data-ko="숫자는 빌드 스크립트와 같은 식 (기울기 ±3° × 회전 ±15° 격자와 0.05 mm 안에서 일치 확인). 끌어서 돌리기 · 두 손가락 확대."
+      data-en="Same formulas as the build script (checked against the tilt ±3° × turn ±15° grid within 0.05 mm). Drag to orbit · pinch to zoom."></div>
+  </div>
+</div>
+<script>
+// v6.2b block math (same formulas as build_beamline_wholecell_v62.py: frame / pose / needle_world / contact_y / set_screw_world / needle_film_margin)
+// CAD frame: X right (seen from the beam), Y = beam direction (wafer front ~ Y 0.5), Z up (sample centre Z 0 here).
+const BM = (() => {
+  const v = (x, y, z) => [x, y, z];
+  const add = (a, b) => [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
+  const sub = (a, b) => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
+  const mul = (a, k) => [a[0] * k, a[1] * k, a[2] * k];
+  const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+  const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+  const rotAx = (vv, k, t) => add(add(mul(vv, Math.cos(t)), mul(cross(k, vv), Math.sin(t))), mul(k, dot(k, vv) * (1 - Math.cos(t))));
+  const R = Math.PI / 180;
+  function frame(site) {
+    const sg = site.pad[1] > 0 ? 1 : -1, th = site.theta * R, ph = site.phi * R;
+    const h = v(Math.sin(ph), 0, sg * Math.cos(ph));
+    const a = add(mul(h, Math.cos(th)), mul(v(0, -1, 0), Math.sin(th)));
+    let s = v(h[2], 0, -h[0]);
+    let U = cross(a, s);
+    if (U[1] > 0) { U = mul(U, -1); s = mul(s, -1); }
+    return { a, s, U };
+  }
+  function pose(site, P, rot, tilt) {
+    let { a, s, U } = frame(site);
+    let B0 = site.B0.slice();
+    if (tilt) {
+      const P0 = add(B0, mul(a, P.pivot_a));
+      const sense = rotAx(a, s, 0.01)[1] < a[1] ? 1 : -1;
+      const t = sense * tilt * R;
+      a = rotAx(a, s, t); U = rotAx(U, s, t);
+      B0 = sub(P0, mul(a, P.pivot_a));
+    }
+    if (rot) {
+      const d = rot * R, Y = v(0, 1, 0), C = v(site.B0[0], 0, site.B0[2]);
+      a = rotAx(a, Y, d); s = rotAx(s, Y, d); U = rotAx(U, Y, d);
+      B0 = add(C, rotAx(sub(B0, C), Y, d));
+    }
+    return { B0, a, s, U };
+  }
+  function needle(site, P, rot, tilt, slide) {
+    const p = pose(site, P, rot, tilt);
+    const Pc = add(add(p.B0, mul(p.U, P.h_axis)), mul(p.s, P.s_needle));
+    const Lb = site.Lb + (slide || 0);
+    const tip = sub(Pc, mul(p.a, Lb));
+    return { tip, A: p.a, Pc, pose: p, L: site.L + (slide || 0) };
+  }
+  function contactY(site, P, rot, tilt) {
+    const { B0, U } = pose(site, P, rot, tilt), q = site.pogo;
+    return B0[1] - (U[0] * (q[0] - B0[0]) + U[2] * (q[1] - B0[2])) / U[1];
+  }
+  function setScrew(site, P, rot, tilt) {
+    const { B0, a, s, U } = pose(site, P, rot, tilt);
+    const Pp = add(add(B0, mul(a, P.push[0])), mul(s, P.push[1]));
+    return (P.seat_top_Y - Pp[1]) / (-U[1]);
+  }
+  function tiltForTurns(site, P, rot, turns) {
+    const e0 = setScrew(site, P, rot, 0), target = e0 + P.pitch * turns;
+    let lo = -8, hi = 8;
+    const f = (t) => setScrew(site, P, rot, t) - target;
+    const flo = f(lo);
+    for (let i = 0; i < 60; i++) { const m = (lo + hi) / 2; if ((f(m) > 0) === (flo > 0)) lo = m; else hi = m; }
+    return (lo + hi) / 2;
+  }
+  function filmMargin(tip, A, W) {
+    let worst = 1e9;
+    for (let i = 0; i <= 3200; i++) {
+      const t = i * 0.01, x = tip[0] + t * A[0], y = tip[1] + t * A[1], z = tip[2] + t * A[2], az = Math.abs(z);
+      if (x >= W.x0 && x <= W.x1 && az <= W.hz) worst = Math.min(worst, (y - W.d / 2) - (W.y_film + W.film_t));
+      else if (x >= W.x0 - W.ledge - 3.5 && x <= W.x1 + W.ledge + 0.5 && az <= W.hz + W.ledge + 0.5) worst = Math.min(worst, (y - W.d / 2) - (W.y_film + W.tape_t + W.film_t));
+      else if (x >= W.x0 - W.ledge - 3.5 && x <= W.x1 + W.ledge + W.wall + 0.5 && az <= W.hz + W.ledge + W.wall + 0.5) worst = Math.min(worst, (y - W.d / 2) - (W.y_film - W.ledge_t));
+    }
+    return Math.round(worst * 1000) / 1000;
+  }
+  return { frame, pose, needle, contactY, setScrew, tiltForTurns, filmMargin, add, sub, mul, dot, cross };
+})();
+
+
+const DATA = {"params":{"pivot_a":-2.0,"front":-2.5,"back":3.3,"h_axis":1.87,"s_needle":-2.0,"push":[2.4,0.8],"seat_top_Y":-0.9341766183644814,"pitch":0.4,"range":3.0,"blk_s":6.0,"blk_h":2.0,"plate_t":1.0},"well":{"x0":-10.0,"x1":24.9,"hz":13.5,"ledge":2.0,"wall":2.0,"y_film":-2.3,"ledge_t":1.0,"film_t":0.012,"tape_t":0.06,"d":0.508},"sites":{"2T_L+":{"pad":[-6.45,6.45],"padTrue":[-6.43,6.43],"padY":0.478,"theta":12.0,"phi":8.75,"L":15.09,"Lb":17.59,"B0":[-5.75,-1.35,24.144],"pogo":[-3.971,23.87]},"2T_L-":{"pad":[-6.45,-6.45],"padTrue":[-6.43,-6.43],"padY":0.478,"theta":12.0,"phi":0.0,"L":15.09,"Lb":17.59,"B0":[-4.45,-1.35,-24.044],"pogo":[-2.65,-24.044]},"2T_R+":{"pad":[6.45,6.45],"padTrue":[6.43,6.43],"padY":0.478,"theta":12.0,"phi":0.0,"L":15.09,"Lb":17.59,"B0":[4.45,-1.35,24.044],"pogo":[2.65,24.044]},"2T_R-":{"pad":[6.45,-6.45],"padTrue":[6.43,-6.43],"padY":0.478,"theta":12.0,"phi":0.0,"L":15.09,"Lb":17.59,"B0":[8.45,-1.35,-24.044],"pogo":[10.25,-24.044]},"ITO_aF":{"pad":[-4.4,10.0],"padTrue":[-4.4,10.0],"padY":0.55,"theta":12.0,"phi":-21.25,"L":15.436,"Lb":17.936,"B0":[-12.764,-1.35,25.989],"pogo":[-14.441,25.336]},"ITO_cS":{"pad":[-4.4,-10.0],"padTrue":[-4.4,-10.0],"padY":0.55,"theta":10.0,"phi":-73.75,"L":18.652,"Lb":21.152,"B0":[-24.151,-1.281,-17.84],"pogo":[-24.655,-16.112]},"P1S":{"pad":[-9.0,3.6],"padTrue":[-9.0,3.6],"padY":0.55,"theta":10.0,"phi":-42.5,"L":18.652,"Lb":21.152,"B0":[-24.767,-1.281,17.846],"pogo":[-26.094,16.63]},"P2S":{"pad":[-9.0,-3.6],"padTrue":[-9.0,-3.6],"padY":0.55,"theta":10.0,"phi":-86.25,"L":18.652,"Lb":21.152,"B0":[-29.98,-1.281,-6.979],"pogo":[-30.097,-5.183]},"mid_F":{"pad":[-10.4,-8.6],"padTrue":[-10.4,-8.6],"padY":0.483,"theta":10.0,"phi":-80.0,"L":18.266,"Lb":20.766,"B0":[-30.513,-1.281,-14.177],"pogo":[-30.2,-15.95]},"mid_S":{"pad":[-8.6,-10.4],"padTrue":[-8.6,-10.4],"padY":0.483,"theta":12.0,"phi":-35.0,"L":15.114,"Lb":17.614,"B0":[-17.067,-1.35,-25.979],"pogo":[-15.592,-27.011]}},"default_site":"2T_R+","needle_d":0.508,"tail":1.0,"E_becu":130000.0,"E_w":400000.0,"pad_d":1.6,"pogo_reach":12.2,"pcb_Y":10.0};
+</script>
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" } }
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+const P = DATA.params, W = DATA.well;
+let lang = 'ko';
+try { const s = localStorage.getItem('bc-block-lang'); if (s === 'en' || s === 'ko') lang = s; } catch (e) {}
+const $ = (id) => document.getElementById(id);
+function applyLang() {
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-ko]').forEach((el) => { el.innerHTML = el.dataset[lang]; });
+  $('lang').textContent = lang === 'ko' ? 'EN' : '한';
+  update();
+}
+$('lang').onclick = () => { lang = lang === 'ko' ? 'en' : 'ko'; try { localStorage.setItem('bc-block-lang', lang); } catch (e) {} applyLang(); };
+for (const k of Object.keys(DATA.sites)) { const o = document.createElement('option'); o.value = k; o.textContent = k; $('site').append(o); }
+$('site').value = DATA.default_site;
+
+// ---------------- scene (CAD (x, y, z) -> three (x, z, -y))
+const canvas = $('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 500);
+const controls = new OrbitControls(camera, canvas); controls.enableDamping = true;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8090a0, 1.2));
+const key = new THREE.DirectionalLight(0xffffff, 1.4); key.position.set(-40, 80, 60); scene.add(key);
+const root = new THREE.Group(); root.rotation.x = -Math.PI / 2; scene.add(root);
+const mat = (c, o) => new THREE.MeshStandardMaterial({ color: c, metalness: o && o.m || 0.2, roughness: o && o.r || 0.5, transparent: !!(o && o.t), opacity: o && o.t || 1, depthWrite: !(o && o.t), side: o && o.t ? THREE.DoubleSide : THREE.FrontSide });
+const M = { sus: mat(0xb8bcc2, { m: 0.8, r: 0.35 }), peek: mat(0xcbb38a, { r: 0.7 }), al: mat(0x3a3d42, { m: 0.5, r: 0.6 }), screw: mat(0x6b6f75, { m: 0.8, r: 0.4 }),
+  needleFree: mat(0xd29a2e, { m: 0.9, r: 0.3 }), needleFixed: mat(0x2f9e57, { m: 0.6, r: 0.35 }), pogo: mat(0xd8dade, { m: 0.9, r: 0.25 }), pad: mat(0xe5e7ea, { m: 0.9, r: 0.2 }),
+  wafer: mat(0x2c3340, { r: 0.4 }), film: mat(0x9fd3ff, { t: 0.25 }), warn: mat(0xf97316, { r: 0.5 }) };
+const G = {};
+function cylBetween(p0, p1, r, m) {
+  const a = new THREE.Vector3(...p0), b = new THREE.Vector3(...p1), d = b.clone().sub(a), L = d.length();
+  const g = new THREE.Mesh(new THREE.CylinderGeometry(r, r, L, 20), m);
+  g.position.copy(a.clone().add(b).multiplyScalar(0.5));
+  g.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), d.normalize());
+  return g;
+}
+function boxLocal(pose, a0, a1, s0, s1, u0, u1, m) {
+  const g = new THREE.Mesh(new THREE.BoxGeometry(a1 - a0, s1 - s0, u1 - u0), m);
+  const B = new THREE.Matrix4().makeBasis(new THREE.Vector3(...pose.a), new THREE.Vector3(...pose.s), new THREE.Vector3(...pose.U));
+  const c = BM.add(BM.add(BM.add(pose.B0, BM.mul(pose.a, (a0 + a1) / 2)), BM.mul(pose.s, (s0 + s1) / 2)), BM.mul(pose.U, (u0 + u1) / 2));
+  B.setPosition(c[0], c[1], c[2]);
+  g.applyMatrix4(B);
+  return g;
+}
+const dyn = new THREE.Group(); root.add(dyn);
+function clearDyn() { while (dyn.children.length) { const o = dyn.children.pop(); o.geometry && o.geometry.dispose(); } }
+
+// ---------------- state
+const st = { clamp: 1, slide: 0, turns: 0, rot: 0, lock: false, mat: 'becu' };
+['clamp', 'slide', 'turns', 'rot'].forEach((k) => { $(k).oninput = () => { st[k] = parseFloat($(k).value); update(); }; });
+$('lock').onclick = () => { st.lock = !st.lock; update(); };
+$('mat-becu').onclick = () => { st.mat = 'becu'; update(); };
+$('mat-w').onclick = () => { st.mat = 'w'; update(); };
+$('site').onchange = () => { st.slide = 0; st.turns = 0; st.rot = 0; $('slide').value = 0; $('turns').value = 0; $('rot').value = 0; frameCam(); update(); };
+const f2 = (x) => (x >= 0 ? '+' : '') + x.toFixed(2);
+const T = (ko, en) => (lang === 'ko' ? ko : en);
+
+function update() {
+  const site = DATA.sites[$('site').value];
+  const fixed = st.clamp >= 0.8;
+  $('slide').disabled = fixed;
+  $('rot').disabled = st.lock;
+  $('lock').setAttribute('aria-pressed', String(st.lock)); $('lock').textContent = st.lock ? T('잠김', 'Locked') : T('풀림', 'Free');
+  $('lockmsg').textContent = st.lock ? T('회전 슬라이더 막힘', 'turn slider disabled') : '';
+  $('mat-becu').setAttribute('aria-pressed', String(st.mat === 'becu')); $('mat-w').setAttribute('aria-pressed', String(st.mat === 'w'));
+  const tilt = BM.tiltForTurns(site, P, st.rot, st.turns);
+  const nd = BM.needle(site, P, st.rot, tilt, st.slide);
+  const tip = nd.tip, A = nd.A, pose = nd.pose;
+  const ang = Math.asin(-A[1]) * 180 / Math.PI;
+  const film = BM.filmMargin(tip, A, W);
+  const padY = site.padY;
+  const dY = tip[1] - padY;                                // + = unloaded tip past the pad plane (preload)
+  const dpad = Math.hypot(tip[0] - site.padTrue[0], tip[2] - site.padTrue[1]);
+  const inPad = dpad <= DATA.pad_d / 2;
+  const E = st.mat === 'becu' ? DATA.E_becu : DATA.E_w, I = Math.PI * Math.pow(DATA.needle_d, 4) / 64, k = 3 * E * I / Math.pow(nd.L, 3);
+  const F = k * Math.max(dY, 0);
+  const yc = BM.contactY(site, P, st.rot, tilt), comp = DATA.pogo_reach - (DATA.pcb_Y - yc);
+  const tiltOut = Math.abs(tilt) > P.range + 1e-6 || film < 0.3;
+  $('o-clamp').textContent = fixed ? T('고정', 'fixed') : st.clamp.toFixed(2);
+  $('o-slide').textContent = f2(st.slide) + ' mm';
+  $('o-turns').textContent = f2(st.turns) + ' → ' + (site.theta + tilt).toFixed(1) + '°';
+  $('o-turns').className = tiltOut ? 'warn' : '';
+  $('o-rot').textContent = f2(st.rot) + '°';
+  const rows = [
+    [T('팁 X, Z', 'Tip X, Z'), tip[0].toFixed(2) + ', ' + tip[2].toFixed(2)],
+    [T('팁 Y (패드 면 대비)', 'Tip Y (vs pad plane)'), f2(dY) + ' mm', dY < 0 ? 'warn' : ''],
+    [T('패드 중심까지', 'To pad centre'), dpad.toFixed(2) + ' mm ' + (inPad ? T('(패드 안)', '(on pad)') : T('(패드 밖)', '(off pad)')), inPad ? 'good' : 'warn'],
+    [T('바늘 각', 'Needle angle'), ang.toFixed(2) + '°'],
+    [T('바늘–필름 최소 여유', 'Needle–film min. gap'), film.toFixed(2) + ' mm', film < 0.3 ? 'warn' : 'good'],
+    [T('자유 길이', 'Free length'), nd.L.toFixed(2) + ' mm'],
+    [T('예압 힘', 'Preload force') + ' (' + (st.mat === 'becu' ? 'BeCu' : 'W') + ')', F.toFixed(3) + ' N (k ' + k.toFixed(3) + ' N/mm)'],
+    [T('포고 눌림', 'Spring-pin compression'), comp.toFixed(2) + ' mm', comp < 0.7 || comp > 1.0 ? 'warn' : ''],
+    [T('세트스크류 돌출', 'Set-screw protrusion'), BM.setScrew(site, P, st.rot, tilt).toFixed(2) + ' mm'],
+  ];
+  $('tbl').innerHTML = rows.map((r) => `<tr><td>${r[0]}</td><td class="${r[2] || ''}">${r[1]}</td></tr>`).join('');
+  // geometry
+  clearDyn();
+  const nm = fixed ? M.needleFixed : M.needleFree;
+  dyn.add(boxLocal(pose, P.front, P.back, -P.blk_s / 2, P.blk_s / 2, 0, P.blk_h, M.sus));
+  dyn.add(boxLocal(pose, P.front, P.back, -P.blk_s / 2, P.blk_s / 2, P.h_axis + DATA.needle_d / 2, P.h_axis + DATA.needle_d / 2 + P.plate_t, M.sus));
+  const end = BM.add(nd.Pc, BM.mul(A, P.back + DATA.tail));
+  dyn.add(cylBetween(tip, end, DATA.needle_d / 2, nm));
+  const C = [site.B0[0], 0, site.B0[2]];
+  dyn.add(cylBetween([C[0], P.seat_top_Y - 3.3, C[2]], [C[0], P.seat_top_Y + 3, C[2]], 0.75, M.screw));
+  const Pp = BM.add(BM.add(pose.B0, BM.mul(pose.a, P.push[0])), BM.mul(pose.s, P.push[1]));
+  const e = BM.setScrew(site, P, st.rot, tilt);
+  dyn.add(cylBetween(BM.add(Pp, BM.mul(pose.U, P.blk_h)), BM.sub(Pp, BM.mul(pose.U, e)), 0.75, tiltOut ? M.warn : M.screw));
+  const q = site.pogo;
+  dyn.add(cylBetween([q[0], yc, q[1]], [q[0], 10, q[1]], 0.5, M.pogo));
+  const seat = new THREE.Mesh(new THREE.CylinderGeometry(3, 3, 3 - P.seat_top_Y, 32), M.peek);
+  seat.position.set(C[0], (P.seat_top_Y + 3) / 2, C[2]); dyn.add(seat);
+  const pad = new THREE.Mesh(new THREE.CylinderGeometry(DATA.pad_d / 2, DATA.pad_d / 2, 0.03, 32), M.pad);
+  pad.position.set(site.padTrue[0], padY + 0.015, site.padTrue[1]); dyn.add(pad);
+}
+// static: floor (Al) with recess opening, wafer face, film plane
+function statics() {
+  const site = DATA.sites[$('site').value];
+  for (const o of [...root.children]) if (o !== dyn) root.remove(o);
+  const fl = new THREE.Mesh(new THREE.BoxGeometry(60, 0.5, 40), M.al);
+  fl.position.set((site.B0[0] + site.padTrue[0]) / 2, 0.25, (site.B0[2] + site.padTrue[1]) / 2); root.add(fl);
+  const film = new THREE.Mesh(new THREE.PlaneGeometry(W.x1 - W.x0, 2 * W.hz), M.film);
+  film.position.set((W.x0 + W.x1) / 2, W.y_film, 0); film.rotation.x = Math.PI / 2; root.add(film);
+  const waf = new THREE.Mesh(new THREE.BoxGeometry(25, 0.3, 25), M.wafer); waf.position.set(0, 0.5 + 0.15, 0); root.add(waf);
+}
+function frameCam() {
+  statics();
+  const site = DATA.sites[$('site').value];
+  const mid = [(site.B0[0] + site.padTrue[0]) / 2, -1, (site.B0[2] + site.padTrue[1]) / 2];
+  const t = new THREE.Vector3(mid[0], mid[2], -mid[1]);
+  controls.target.copy(t);
+  camera.position.set(t.x + 22, t.y + 18 * Math.sign(site.B0[2] || 1), t.z + 26);
+  controls.update();
+}
+function resize() { const w = window.innerWidth, h = window.innerHeight; if (!w || !h) return; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
+window.addEventListener('resize', resize); resize();
+frameCam(); applyLang();
+renderer.setAnimationLoop(() => { controls.update(); renderer.render(scene, camera); });
+</script>
+</body>
+</html>

@@ -41,6 +41,7 @@ button[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-i
 #o-rot { width: 96px; }
 #o-rot.warn { color: var(--accent); }
 #hide { margin-left: auto; }
+.blk-link { color: var(--accent); font-size: 12.5px; white-space: nowrap; text-decoration: none; padding: 0 4px; }
 #panel.min .more { display: none; }
 #info { position: fixed; right: 16px; top: 64px; width: min(360px, calc(100% - 32px)); max-height: calc(100% - 260px); overflow-y: auto; background: var(--panel); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; font-size: 13px; }
@@ -478,7 +479,7 @@ canvas.addEventListener('pointerup', (e) => {
 // ---------- UI
 const vRow = document.getElementById('variants'), wRow = document.getElementById('views'), tRow = document.getElementById('toggles');
 for (const v of VARIANTS) { const b = document.createElement('button'); b.dataset.k = v.key; b.dataset.ko = v.ko; b.dataset.en = v.en; b.onclick = () => show(v.key); vRow.append(b); }
-for (const v of VIEWS) { const b = document.createElement('button'); b.dataset.k = v.key; b.dataset.ko = v.ko; b.dataset.en = v.en; b.onclick = () => { if (v.cut === undefined && cutOn) { cutEl.value = 41; applyCut(); } if (v.key === 'block' && curSite) flyToSite(curSite); else fly(v); writeHash(v.key); }; wRow.append(b); }
+for (const v of VIEWS) { const b = document.createElement('button'); b.dataset.k = v.key; b.dataset.ko = v.ko; b.dataset.en = v.en; b.onclick = () => { if (v.cut === undefined && cutOn) { cutEl.value = 41; applyCut(); } if (v.key === 'block' && curSite) flyToSite(curSite); else fly(v); writeHash(v.key); }; wRow.append(b);  if (v.key === 'block') { const l = document.createElement('a'); l.href = 'block.html'; l.className = 'blk-link'; l.dataset.ko = '↗ 블록 직접 조작'; l.dataset.en = '↗ try the block'; wRow.append(l); } }
 for (const g of GROUPS) { const b = document.createElement('button'); b.dataset.k = g.key; b.dataset.ko = g.ko; b.dataset.en = g.en; b.onclick = () => { groupOn[g.key] = !groupOn[g.key]; syncToggles(); applyGroups(); }; tRow.append(b); }
 function syncToggles() { tRow.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(groupOn[b.dataset.k]))); }
 syncToggles();
