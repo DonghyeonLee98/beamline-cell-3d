@@ -54,6 +54,10 @@ button:disabled { opacity: 0.35; cursor: default; }
 #o-rot { width: 96px; }
 #o-rot.warn { color: var(--accent); }
 #hide { margin-left: auto; }
+#lidinfo { font-size: 11.5px; color: var(--ink2); margin-top: 4px; line-height: 1.4; }
+#lidinfo b { color: var(--ink); font-variant-numeric: tabular-nums; }
+#lidinfo .w { color: var(--accent); }
+#lidinfo .hl { color: var(--accent); font-weight: 650; }
 .blk-link { color: var(--accent); font-size: 12.5px; white-space: nowrap; text-decoration: none; padding: 0 4px; }
 #panel.min .more { display: none; }
 #info { position: fixed; right: 16px; top: 64px; width: min(360px, calc(100% - 32px)); max-height: calc(100% - 260px); overflow-y: auto; background: var(--panel); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
@@ -90,6 +94,9 @@ button:disabled { opacity: 0.35; cursor: default; }
 <div id="panel">
   <div class="row" id="sets"><span class="lab" data-ko="세트" data-en="Set"></span><button id="tintbtn" aria-pressed="true" data-ko="<span class='sw'></span>추가분" data-en="<span class='sw'></span>extras"></button></div>
   <div class="row" id="variants"><span class="lab" data-ko="셀" data-en="Cell"></span></div>
+  <div class="row" id="lids"><span class="lab" data-ko="뚜껑" data-en="Lid"></span></div>
+  <div class="row" id="clear"><span class="lab" data-ko="간섭" data-en="Clear"></span></div>
+  <div id="lidinfo"></div>
   <div class="row" id="views"><span class="lab" data-ko="보기" data-en="View"></span><button id="lidbtn"></button></div>
   <div class="more">
     <div class="row" id="sites"><span class="lab" data-ko="블록" data-en="Block"></span></div>
@@ -135,6 +142,13 @@ const VARIANTS = [   // site variant in the build json: a = 2T, c = 3T, b = sing
 // order sets (cnc_v62c/order/261107_v62c_revB_발주): min = December 2T-only order, full = all 14 CNC designs
 const SETS = [ { key: 'min', ko: '최소 (12월 2T)', en: 'Minimal (Dec 2T)' }, { key: 'full', ko: '전체', en: 'Full' } ];
 let setMode = 'full', cfg = '3t', tintOn = true;
+// lid choice (v6.2c rev C1 variants, cnc_v62c/variant_lidB3; draft 11/08): now = rev C lid (film plane Y -2.3), b3 / b3l = slot lid with the film 0.94 / 0.64 above the wafer. B3 is 2T / 3T only.
+const LIDS = [ { key: 'now', ko: '현재', en: 'Current' }, { key: 'b3', ko: 'B3 슬롯', en: 'B3 slot' }, { key: 'b3l', ko: 'B3L', en: 'B3L' } ];
+let lidSel = 'now', snoutDeg = 0, xeOn = false;
+let lidInfo = null;   // models/lid_b3_info.json
+const isSingle = (k) => k === 'single' || k === 'single_b2';
+const effLid = () => (isSingle(cfg) ? 'now' : lidSel);                  // singles keep the current lid
+const lidGLB = {};
 const effKey = () => (setMode === 'min' ? 'min' : cfg);                 // GLB key: min = v62_min.glb; 3t = v62_full.glb (3T + seats at all 10 sites + extras beside the cell)
 const fileOf = (k) => (k === '3t' ? 'full' : k);
 const TINT = new THREE.Color(0xff6a00);
@@ -282,7 +296,8 @@ let cutOn = false;
 
 // ---------- loading
 const meta = await fetch('models/v62_meta.json').then((r) => r.json());   // rows[variant] = [kind, layer] per GLB node; sites[v][key] = {B0, U, ...}; ranges[v][key] = [lo, hi]
-const sets = await fetch('models/v62_sets.json').then((r) => r.json());   // rows.min / rows.full, extra[model] = node indices absent from the minimal set, table = order numbers
+const sets = await fetch('models/v62_sets.json').then((r) => r.json());
+lidInfo = await fetch('models/lid_b3_info.json').then((r) => r.json());   // film plane, detector distance D per lid (from lid_B3_params / checks json)   // rows.min / rows.full, extra[model] = node indices absent from the minimal set, table = order numbers
 const loader = new GLTFLoader();
 const cache = {};
 let cur = null, curKey = null;
@@ -312,6 +327,40 @@ function splitSMA(geo, zc) {   // non-indexed geometry -> [J1–J4 part, J5/J6 p
   return [A, B].map(([P, N]) => { const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(P, 3)); g.setAttribute('normal', new THREE.Float32BufferAttribute(N, 3)); return g; });
 }
 
+function mkMesh(pg, name, kind, layer, isExtra, sites, matrixWorld) {
+  const spec = specOf(name, kind);
+  const m = new THREE.Mesh(pg, makeMat(spec));
+  m.applyMatrix4(matrixWorld);
+  const opaque = spec.opacity === undefined;
+  m.castShadow = opaque; m.receiveShadow = opaque;
+  // turning parts of a site: block, clamp plate, M2 pull + tilt screws, needle (the PEEK seat and the spring pin stay)
+  const sm = name.match(/\[([^\]]+)\]/), site = sm && layer === 5 && !/^POM 시트/.test(name) && sites[sm[1]] ? sm[1] : null;
+  m.userData = { name, kind, layer, spec, base: m.position.clone(), baseQ: m.quaternion.clone(), opaque, site, extra: isExtra, color0: m.material.color.clone() };
+  if (opaque) {   // back faces drawn flat = solid-looking cut face when the section plane is on
+    const capC = new THREE.Color(spec.color).multiplyScalar(0.62);
+    const cap = new THREE.Mesh(pg, new THREE.MeshBasicMaterial({ color: capC, side: THREE.BackSide, clippingPlanes: [cutPlane] }));
+    cap.visible = false; cap.userData.cap = true; m.add(cap);
+  }
+  return m;
+}
+// B3 / B3L lid (+ tape + PET film) of the selected variant, added once per loaded config; shown instead of the current lid by effLid()
+async function ensureLid(c) {
+  const lk = effLid(); if (lk === 'now' || c.lids[lk]) return;
+  if (!lidGLB[lk]) { statusEl.hidden = false; statusEl.textContent = lang === 'ko' ? '뚜껑 불러오는 중 …' : 'Loading lid …'; lidGLB[lk] = await loader.loadAsync('models/lid_' + lk + '.glb'); statusEl.hidden = true; }
+  if (c.lids[lk]) return;
+  const gl = lidGLB[lk]; gl.scene.updateMatrixWorld(true);
+  const KL = [['al', 6], ['silicone', 7], ['pet', 7]];
+  gl.scene.children.slice().forEach((n, i) => {
+    const mesh = n.isMesh ? n : n.getObjectByProperty('isMesh', true); if (!mesh) return;
+    let geo = mesh.geometry.clone(); geo.deleteAttribute('color'); geo.deleteAttribute('normal');
+    geo = toCreasedNormals(geo, THREE.MathUtils.degToRad(32));
+    const as = gl.parser.associations.get(n), jn = as && as.nodes !== undefined ? gl.parser.json.nodes[as.nodes] : null;
+    const m = mkMesh(geo, (jn && jn.name) || n.name, KL[i][0], KL[i][1], false, {}, n.matrixWorld);
+    m.userData.lidVar = lk; c.g.add(m); c.parts.push(m);
+  });
+  c.lids[lk] = true;
+}
+
 async function load(k) {
   if (cache[k]) return cache[k];
   statusEl.hidden = false; statusEl.textContent = (lang === 'ko' ? '불러오는 중 … ' : 'Loading … ');
@@ -332,23 +381,12 @@ async function load(k) {
       pieces = [[a, 'SMA 엣지 잭 x4 Samtec SMA-J-P-H-ST-EM1 J1–J4 (CH1–CH4)', false], [b, 'SMA 엣지 잭 J5·J6 Samtec SMA-J-P-H-ST-EM1 (CH5·CH6; 전체 세트에만 — 최소 세트는 자리 비움)', true]];
     }
     for (const [pg, name, isExtra] of pieces) {
-      const spec = specOf(name, kind);
-      const m = new THREE.Mesh(pg, makeMat(spec));
-      m.applyMatrix4(n.matrixWorld);
-      const opaque = spec.opacity === undefined;
-      m.castShadow = opaque; m.receiveShadow = opaque;
-      // turning parts of a site: block, clamp plate, M2 pull + tilt screws, needle (the PEEK seat and the spring pin stay)
-      const sm = name.match(/\[([^\]]+)\]/), site = sm && layer === 5 && !/^POM 시트/.test(name) && sites[sm[1]] ? sm[1] : null;
-      m.userData = { name, kind, layer, spec, base: m.position.clone(), baseQ: m.quaternion.clone(), opaque, site, extra: isExtra, color0: m.material.color.clone() };
-      if (opaque) {   // back faces drawn flat = solid-looking cut face when the section plane is on
-        const capC = new THREE.Color(spec.color).multiplyScalar(0.62);
-        const cap = new THREE.Mesh(pg, new THREE.MeshBasicMaterial({ color: capC, side: THREE.BackSide, clippingPlanes: [cutPlane] }));
-        cap.visible = false; cap.userData.cap = true; m.add(cap);
-      }
+      const m = mkMesh(pg, name, kind, layer, isExtra, sites, n.matrixWorld);
+      if ((layer === 6 && /^뚜껑/.test(name)) || (layer === 7 && /^PET 필름/.test(name))) m.userData.lidVar = 'now';   // swapped by the lid toggle
       g.add(m); parts.push(m);
     }
   });
-  cache[k] = { g, parts };
+  cache[k] = { g, parts, lids: {} };
   statusEl.hidden = true;
   return cache[k];
 }
@@ -363,8 +401,9 @@ async function show(k) {   // k = config key (3t, 2t, ...); the minimal set alwa
   cfg = k;
   const ek = effKey(), c = await load(ek);
   if (cur) root.remove(cur.g);
+  await ensureLid(c);
   cur = c; curKey = ek; root.add(c.g);
-  select(null); buildSites(); applyPose(); applyGroups(); applyCut(); applyTint(); syncSets();
+  select(null); buildSites(); applyPose(); applyGroups(); applyCut(); applyTint(); syncSets(); syncLidUI(); updateAux();
   document.querySelectorAll('#variants button').forEach((b) => { b.setAttribute('aria-pressed', String(b.dataset.k === cfg)); b.disabled = setMode === 'min' && b.dataset.k !== '2t'; });
   writeHash();
   setTimeout(() => { for (const x of ['3t', 'min', '2t', '2t_dark', 'single', 'single_b2']) if (!cache[x]) { load(x); break; } }, 1500);   // warm the others (phone: one at a time)
@@ -397,6 +436,7 @@ function applyGroups() {
   for (const m of cur.parts) {
     let vis = true; for (const g of GROUPS) if (!groupOn[g.key] && g.test(m.userData)) vis = false;
     if (isLid(m.userData) && lidT >= 0.999) vis = false;
+    if (m.userData.lidVar && m.userData.lidVar !== effLid()) vis = false;
     m.visible = vis;
   }
 }
@@ -569,6 +609,54 @@ canvas.addEventListener('pointerup', (e) => {
   lastTap = now;
 });
 
+// ---------- lid toggle, detector snout dummy, Xe light cone
+const aux = new THREE.Group(); root.add(aux);   // CAD coordinates (root frame)
+const S0 = new THREE.Vector3(0, 0.5, 111);       // sample centre on the wafer top (tandem, Y_FRONT_A)
+const auxMat = (color, op) => new THREE.MeshStandardMaterial({ color, metalness: 0.2, roughness: 0.5, transparent: true, opacity: op, depthWrite: false, side: THREE.DoubleSide, clippingPlanes: [cutPlane] });
+const Dof = (lk) => (lk === 'now' ? lidInfo.D_now : lidInfo[lk].D);
+function updateAux() {
+  while (aux.children.length) { const o = aux.children.pop(); if (o.geometry) o.geometry.dispose(); }
+  if (isSingle(cfg)) return;   // D and the sample plane are the tandem ones
+  const Y = new THREE.Vector3(0, 1, 0), Q = new THREE.Quaternion();
+  if (snoutDeg) {   // as V60.snout_dummy(): tip Ø10 x 12 + body Ø20 x 30 along the detector axis; D = sample centre to the Ø10 face centre along the detector axis
+    const t = THREE.MathUtils.degToRad(snoutDeg), d = new THREE.Vector3(Math.sin(t), -Math.cos(t), 0), D = Dof(effLid())[String(snoutDeg)];
+    const C = S0.clone().addScaledVector(d, D);   // D = sample centre to the centre of the Ø10 face along the detector axis (its lowest rim point then touches the film plane: D cos t − 5 sin t = film height + 0.0)
+    Q.setFromUnitVectors(Y, d);
+    const part = (r, h, a, op) => { const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, h, 48), auxMat(0x3b7fd4, op)); m.position.copy(C).addScaledVector(d, a + h / 2); m.quaternion.copy(Q); aux.add(m); };
+    part(5, 12, 0, 0.7); part(10, 30, 12, 0.45);
+    aux.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([S0, C]), new THREE.LineBasicMaterial({ color: 0x3b7fd4, clippingPlanes: [cutPlane] })));
+  }
+  if (xeOn) {   // Xe light from -X at 45 deg to the sample normal, converging on the sample centre; half angle 10 deg and the size are ASSUMED
+    const L = 45, u = new THREE.Vector3(-Math.sin(Math.PI / 4), -Math.cos(Math.PI / 4), 0), r = L * Math.tan(THREE.MathUtils.degToRad(10));
+    const m = new THREE.Mesh(new THREE.ConeGeometry(r, L, 48, 1, true), auxMat(0xffc933, 0.28));
+    m.quaternion.setFromUnitVectors(new THREE.Vector3(0, -1, 0), u); m.position.copy(S0).addScaledVector(u, L / 2); aux.add(m);
+    aux.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([S0, S0.clone().addScaledVector(u, L)]), new THREE.LineBasicMaterial({ color: 0xe0a800, clippingPlanes: [cutPlane] })));
+  }
+}
+const lidRow = document.getElementById('lids'), clrRow = document.getElementById('clear'), lidInfoEl = document.getElementById('lidinfo');
+for (const l of LIDS) { const b = document.createElement('button'); b.dataset.k = l.key; b.dataset.ko = l.ko; b.dataset.en = l.en; b.onclick = () => setLidSel(l.key); lidRow.append(b); }
+for (const a of [20, 30, 40]) { const b = document.createElement('button'); b.dataset.k = 'sn' + a; b.dataset.ko = (a === 20 ? '검출기 ' : '') + a + '°'; b.dataset.en = (a === 20 ? 'Detector ' : '') + a + '°'; b.title = '검출기 스노트 Ø10 × 12 + Ø20 몸통, +X 쪽, 시료 법선에서 ' + a + '° / detector snout dummy'; b.onclick = () => { snoutDeg = snoutDeg === a ? 0 : a; syncLidUI(); updateAux(); writeHash(); }; clrRow.append(b); }
+{ const b = document.createElement('button'); b.dataset.k = 'xe'; b.dataset.ko = 'Xe 광'; b.dataset.en = 'Xe light'; b.title = '−X 45° (반각 10°, 크기 가정) / from −X at 45 deg (half angle 10 deg assumed)'; b.onclick = () => { xeOn = !xeOn; syncLidUI(); updateAux(); writeHash(); }; clrRow.append(b); }
+async function setLidSel(k) {
+  lidSel = k;
+  if (cur) { await ensureLid(cur); applyPose(); applyGroups(); }
+  syncLidUI(); updateAux(); writeHash();
+}
+function syncLidUI() {
+  const ko = lang === 'ko', lk = effLid(), single = isSingle(cfg);
+  lidRow.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.k === lidSel)));
+  clrRow.querySelectorAll('button').forEach((b) => { const k = b.dataset.k; b.setAttribute('aria-pressed', String(k === 'xe' ? xeOn : k === 'sn' + snoutDeg)); b.disabled = single; });
+  if (!lidInfo) return;
+  const f = lk === 'now' ? 2.8 : lidInfo[lk].land_above_wafer, D = Dof(lk), fmt = (v) => v.toFixed(2);
+  let s = '';
+  if (single && lidSel !== 'now') s += `<span class="w">${ko ? 'B3는 싱글 불가 (B3L도 마찬가지, 2T/3T 전용) — 현재 뚜껑 유지' : 'B3 is not possible for the single cells (nor B3L; 2T/3T only) — current lid kept'}</span><br>`;
+  s += (ko ? '필름 ' : 'Film ') + `<b>${fmt(f)}</b> mm` + (ko ? ' (시료 위' : ' (above wafer') + (lk === 'now' ? (ko ? ', 필름 면 Y −2.3)' : ', film plane Y −2.3)') : (ko ? ', 랜드면)' : ', land face)'));
+  if (single) s += (ko ? ' · 검출기 거리 D는 탠덤 기준이라 싱글에서는 표시 안 함' : ' · detector D is for the tandem cells; not shown for singles');
+  else s += ' · D ' + [20, 30, 40].map((a) => `<span class="${snoutDeg === a ? 'hl' : ''}">${a}° <b>${fmt(D[String(a)])}</b></span>`).join(' · ') + ' mm' + (ko ? ' (시료 중심 ~ Ø10 면 중심, 가장 가까운 위치)' : ' (sample centre to Ø10 face centre, closest)');
+  if (!single && xeOn) s += '<br>' + (ko ? 'Xe 광: −X 45°, 원뿔 반각 10°·크기는 가정 (광원 실측 전)' : 'Xe light: from −X at 45°; cone half angle 10° and size assumed (source not measured)');
+  lidInfoEl.innerHTML = s;
+}
+
 // ---------- UI
 const vRow = document.getElementById('variants'), wRow = document.getElementById('views'), tRow = document.getElementById('toggles');
 for (const v of VARIANTS) { const b = document.createElement('button'); b.dataset.k = v.key; b.dataset.ko = v.ko; b.dataset.en = v.en; b.onclick = () => show(v.key); vRow.append(b); }
@@ -590,14 +678,14 @@ function applyLang() {
   document.querySelectorAll('[data-ko]').forEach((el) => { const s = el.dataset[lang]; if (/</.test(s)) el.innerHTML = s; else el.textContent = s; });
   document.getElementById('lang').textContent = lang === 'ko' ? 'EN' : '한국어';
   document.title = lang === 'ko' ? '빔라인 시료 셀 v6.2c' : 'Beamline cell v6.2c';
-  syncLid(); applyCut(); if (curKey) syncRot();
+  syncLid(); applyCut(); syncLidUI(); if (curKey) syncRot();
   if (sel) select(sel); else if (matOn) { matOn = false; showMats(); } else if (cmpOn) { cmpOn = false; showCompare(); }
 }
 document.getElementById('lang').onclick = () => { lang = lang === 'ko' ? 'en' : 'ko'; try { localStorage.setItem('bc46-lang', lang); } catch (e) {} applyLang(); };
 const panel = document.getElementById('panel');
 document.getElementById('hide').onclick = () => { panel.classList.toggle('min'); const b = document.getElementById('hide'); b.dataset.ko = panel.classList.contains('min') ? '더 보기' : '접기'; b.dataset.en = panel.classList.contains('min') ? 'More' : 'Less'; applyLang(); resize(); };
 let curView = 'iso';
-function writeHash(view) { if (view) curView = view; try { history.replaceState(null, '', '#' + cfg + '&' + curView + '&' + setMode); } catch (e) {} }   // #config&view&set (set = min | full; old links without it = full)
+function writeHash(view) { if (view) curView = view; try { history.replaceState(null, '', '#' + cfg + '&' + curView + '&' + setMode + '&' + lidSel + '&sn' + snoutDeg + '&xe' + (xeOn ? 1 : 0)); } catch (e) {} }   // #config&view&set&lid&snN&xeN (set = min | full; lid = now | b3 | b3l; sn = detector snout dummy 0 | 20 | 30 | 40; xe = Xe cone 0 | 1; old links without them = full / now / off)
 
 function resize() {
   const w = window.innerWidth, h = window.innerHeight;
@@ -611,7 +699,10 @@ window.addEventListener('resize', resize);
 
 if (window.innerWidth < 600 || window.innerHeight < 700) { panel.classList.add('min'); const hb = document.getElementById('hide'); hb.dataset.ko = '더 보기'; hb.dataset.en = 'More'; }
 applyLang(); resize();
-const [h0, h1, h2] = location.hash.slice(1).split('&');
+const [h0, h1, h2, h3, h4, h5] = location.hash.slice(1).split('&');
+if (LIDS.some((l) => l.key === h3)) lidSel = h3;
+if ([20, 30, 40].includes(+(h4 || '').slice(2))) snoutDeg = +h4.slice(2);
+if (h5 === 'xe1') xeOn = true;
 if (h2 === 'min') setMode = 'min';
 let startK = VARIANTS.some((v) => v.key === h0) ? h0 : '3t', startV = VIEWS.find((v) => v.key === h1) || VIEWS[0];
 if (setMode === 'min' && startV.full) startV = VIEWS[0];

@@ -25,6 +25,14 @@ Donghyeon Lee, Pusan National University. 3D viewer of the beamline sample cell 
 - 오른쪽 위 **비교**: CNC 부품별 최소/전체 수량·재료, 구매 부품(포고, 뒷핀, SMA, JST, 나사) 수량, CNC 추정 비용(최소 ≈ $650–750 / 전체 ≈ $1,250–1,400, 견적 전)과 구매 부품 합계(₩93,566 / ₩118,349, VAT 포함, 11/07). 표의 수량은 발주 묶음 CSV와 구매 부품표에서 읽었다(`models/v62_sets.json`, `make_viewer_sets_v62c_261107.py`).
 - Set toggle: **minimal** (December 2T-only order: 4 populated sites, 6 empty recesses, SMA J1–J4, no puck or plug; its own GLB from the CAD 2T build) vs **full** (all 14 CNC designs; seats in all 10 recesses; parts the minimal set lacks are orange, the loose full-set parts stand beside the cell). 'Compare' lists per-part quantities, materials and the cost lines of both sets.
 
+### 뚜껑 B3 슬롯 · 검출기 스노트 · Xe 광 (11/08, 초안)
+
+- '뚜껑' 줄에서 **현재 / B3 슬롯 / B3L**을 고른다 (주소 끝 `&now` / `&b3` / `&b3l`로 기억). 뚜껑 + 테이프 틀 + PET 필름만 바뀌고 나머지 셀은 그대로. B3은 2T/3T 전용이라 싱글에서는 "B3는 싱글 불가"가 뜨고 현재 뚜껑을 쓴다.
+- 필름 높이(시료 위): 현재 2.80, B3 0.94, B3L 0.64 mm (랜드면; PET 면은 테이프 0.06 + 필름 0.012만큼 시료 쪽, 즉 0.87 / 0.57). 모델 `models/lid_b3.glb`, `lid_b3l.glb`는 변형 STEP의 조립 방향 STEP에서 만들었다 (`make_viewer_lid_b3_261108.py`).
+- '간섭' 줄: **검출기** 20/30/40°는 +X 쪽 스노트 더미 (Ø10 면 × 12 + Ø20 몸통 × 30)를 선택한 뚜껑에서 가장 가까운 자리에 놓는다. D (시료 중심 ~ Ø10 면 중심): 현재 4.73 / 6.04 / 7.77, B3 2.75 / 3.90 / 5.34, B3L 2.43 / 3.55 / 4.95 mm (20/30/40°). **Xe 광**은 −X 45°에서 시료로 모이는 원뿔인데 반각 10°와 크기는 가정이다 (광원 실측 전).
+- 스노트·Xe 원뿔은 탠덤(2T/3T) 시료면 기준이라 싱글에서는 끈다. 주소 끝 `&sn30&xe1`은 스노트 각도와 Xe 광을 기억한다.
+- Lid toggle **current / B3 slot / B3L** (hash `&now|b3|b3l`): swaps only the lid, tape frame and PET film (film land face 2.80 / 0.94 / 0.64 mm above the wafer); B3 is 2T/3T only (singles keep the current lid and show a note). 'Clear' row: detector snout dummy (Ø10 face × 12 + Ø20 body) at 20/30/40° from the sample normal on +X at its closest position for the selected lid (D, sample centre to face centre: 4.73/6.04/7.77, 2.75/3.90/5.34, 2.43/3.55/4.95 mm) and the Xe light cone from −X at 45° (half angle 10° and size assumed). Draft, not ordered.
+
 ## 블록 직접 조작 / try the block — [block.html](https://donghyeonlee98.github.io/beamline-cell-3d/block.html) (v6.2b, 2026-11-07, 초안 · draft)
 
 - v6.2b 프로브 블록 하나를 손으로 만져 보는 페이지: ① 누름판 나사 조임 + 바늘 밀기(0.3 mm 눌림 = 1.44 mm), ② 뒤 기울기 세트스크류 회전수(1회전 ≈ 5°), ③ 블록 회전 ±15° + 잠금. 팁 위치·패드 안 여부·바늘–필름 여유·예압 힘(BeCu/W)·포고 눌림이 바로 바뀝니다. 자리 10곳 선택.
@@ -115,6 +123,7 @@ APS 2-ID-D beamline sample cell v3.3 — 25 mm cell mounted whole; rear 4 spring
 
 - `index.html` — v6.2 보기 (three.js 0.160) / v6.2 viewer (three.js 0.160)
 - `models/v62_*.glb`, `models/v62_meta.json` — v6.2 셀 5종 GLB, 부품 재질·층, 자리별 회전 축(B0, U)과 검사 범위 (`make_viewer_meta_v62_261107.py`가 설계 폴더의 json에서 만듦) / the five v6.2 GLBs, per-part material and layer, per-site rotation axis and checked range
+- `models/lid_b3.glb`, `models/lid_b3l.glb`, `models/lid_b3_info.json` — B3 / B3L 슬롯 뚜껑 (뚜껑·테이프·필름 3개 노드), 필름 높이와 검출기 거리 D (`make_viewer_lid_b3_261108.py`) / B3 and B3L slot lids, film height and detector distance D
 - `models/v62_min.glb`, `models/v62_full.glb`, `models/v62_sets.json` — 최소 세트 모델(2T 빌드, 빈 리세스 6곳), 전체 세트 모델(3T 빌드 + 싱글 자리 시트 + 따로 놓은 추가분), 추가분 표시와 비교 표 숫자 (`make_viewer_sets_v62c_261107.py`) / minimal- and full-set models, extra flags and comparison numbers
 - `v60.html`, `models/v60_*.glb`, `models/v60_meta.json` — 이전 v6.0 rev B 보기 / earlier v6.0 rev B viewer
 - `v48.html`, `models/v48_*.glb`, `models/v48_meta.json` — 이전 v4.8 보기 / earlier v4.8 viewer
