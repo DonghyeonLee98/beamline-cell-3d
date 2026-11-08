@@ -143,8 +143,8 @@ const VARIANTS = [   // site variant in the build json: a = 2T, c = 3T, b = sing
 const SETS = [ { key: 'min', ko: '최소 (12월 2T)', en: 'Minimal (Dec 2T)' }, { key: 'full', ko: '전체', en: 'Full' } ];
 let setMode = 'full', cfg = '3t', tintOn = true;
 // lid choice (v6.2c rev C1 variants, cnc_v62c/variant_lidB3; draft 11/08): now = rev C lid (film plane Y -2.3), b3 / b3l = slot lid with the film 0.94 / 0.64 above the wafer. B3 is 2T / 3T only.
-const LIDS = [ { key: 'now', ko: '현재', en: 'Current' }, { key: 'b3', ko: 'B3 슬롯', en: 'B3 slot' }, { key: 'b3l', ko: 'B3L', en: 'B3L' } ];
-let lidSel = 'now', snoutDeg = 0, xeOn = false;
+const LIDS = [ { key: 'now', ko: '현재', en: 'Current' }, { key: 'b3', ko: 'B3 슬롯', en: 'B3 slot' }, { key: 'b3l', ko: 'B3L', en: 'B3L' }, { key: 'b3b', ko: 'B3b (권장)', en: 'B3b (recommended)' } ];
+let lidSel = 'b3b', lidUser = false, snoutDeg = 0, xeOn = false;   // 11/09: B3b rev1 is the default lid for 2T / 3T (#...&now still opens the current lid)
 let lidInfo = null;   // models/lid_b3_info.json
 const isSingle = (k) => k === 'single' || k === 'single_b2';
 const effLid = () => (isSingle(cfg) ? 'now' : lidSel);                  // singles keep the current lid
@@ -158,6 +158,7 @@ const VIEWS = [   // lid: true/false = closed/open
   { key: 'probe', ko: '바늘·블록 (뚜껑 열음)', en: 'Needles + blocks (lid off)', t: [-5, -3, 111], c: [70, -135, 210], lid: false },
   { key: 'block', ko: '블록 확대', en: 'Block close-up', t: [3, -2, 130], c: [48, -78, 178], lid: false },
   { key: 'wafer', ko: '웨이퍼 확대', en: 'Wafer close-up', t: [0, -1, 111], c: [22, -64, 132], lid: false },
+  { key: 'lidsec', ko: '뚜껑 단면 X +6.45 (비탈 껍질)', en: 'Lid section X +6.45 (ramp shell)', t: [6.45, -4, 111], c: [80, -12, 121], cut: 6.45, lid: true },
   { key: 'section', ko: '단면 X 6.45 (바늘 면)', en: 'Section X 6.45 (needle plane)', t: [0, 2, 111], c: [165, -55, 150], cut: 6.45 },
   { key: 'pcb', ko: '뒷면 PCB (뒷판 뗌)', en: 'Rear PCB (back plate off)', t: [-15, 10, 111], c: [-90, 230, 170], back: false },
   { key: 'back', ko: '뒷면', en: 'Back', t: [-10, 12, 105], c: [-100, 240, 155], back: true },
@@ -638,7 +639,7 @@ for (const l of LIDS) { const b = document.createElement('button'); b.dataset.k 
 for (const a of [20, 30, 40]) { const b = document.createElement('button'); b.dataset.k = 'sn' + a; b.dataset.ko = (a === 20 ? '검출기 ' : '') + a + '°'; b.dataset.en = (a === 20 ? 'Detector ' : '') + a + '°'; b.title = '검출기 스노트 Ø10 × 12 + Ø20 몸통, +X 쪽, 시료 법선에서 ' + a + '° / detector snout dummy'; b.onclick = () => { snoutDeg = snoutDeg === a ? 0 : a; syncLidUI(); updateAux(); writeHash(); }; clrRow.append(b); }
 { const b = document.createElement('button'); b.dataset.k = 'xe'; b.dataset.ko = 'Xe 광'; b.dataset.en = 'Xe light'; b.title = '−X 45° (반각 10°, 크기 가정) / from −X at 45 deg (half angle 10 deg assumed)'; b.onclick = () => { xeOn = !xeOn; syncLidUI(); updateAux(); writeHash(); }; clrRow.append(b); }
 async function setLidSel(k) {
-  lidSel = k;
+  lidSel = k; lidUser = true;
   if (cur) { await ensureLid(cur); applyPose(); applyGroups(); }
   syncLidUI(); updateAux(); writeHash();
 }
@@ -649,10 +650,11 @@ function syncLidUI() {
   if (!lidInfo) return;
   const f = lk === 'now' ? 2.8 : lidInfo[lk].land_above_wafer, D = Dof(lk), fmt = (v) => v.toFixed(2);
   let s = '';
-  if (single && lidSel !== 'now') s += `<span class="w">${ko ? 'B3는 싱글 불가 (B3L도 마찬가지, 2T/3T 전용) — 현재 뚜껑 유지' : 'B3 is not possible for the single cells (nor B3L; 2T/3T only) — current lid kept'}</span><br>`;
+  if (single && lidSel !== 'now' && lidUser) s += `<span class="w">${ko ? 'B3는 싱글 불가 (B3L도 마찬가지, 2T/3T 전용) — 현재 뚜껑 유지' : 'B3 is not possible for the single cells (nor B3L; 2T/3T only) — current lid kept'}</span><br>`;
   s += (ko ? '필름 ' : 'Film ') + `<b>${fmt(f)}</b> mm` + (ko ? ' (시료 위' : ' (above wafer') + (lk === 'now' ? (ko ? ', 필름 면 Y −2.3)' : ', film plane Y −2.3)') : (ko ? ', 랜드면)' : ', land face)'));
   if (single) s += (ko ? ' · 검출기 거리 D는 탠덤 기준이라 싱글에서는 표시 안 함' : ' · detector D is for the tandem cells; not shown for singles');
   else s += ' · D ' + [20, 30, 40].map((a) => `<span class="${snoutDeg === a ? 'hl' : ''}">${a}° <b>${fmt(D[String(a)])}</b></span>`).join(' · ') + ' mm' + (ko ? ' (시료 중심 ~ Ø10 면 중심, 가장 가까운 위치)' : ' (sample centre to Ø10 face centre, closest)');
+  if (lk === 'b3b' && !single) s += '<br>' + (ko ? `B3b rev1: B3 슬롯과 같은 필름 면, 비탈 바깥 쐐기 없앰 — 비탈 <b>${lidInfo.b3b.ramp_deg}°</b> 껍질 <b>${lidInfo.b3b.shell_mm}</b> mm, 단차 없음, ±Z 대칭 (‘뚜껑 단면’ 보기로 바늘과 비교)` : `B3b rev1: same film plane as B3, outer wedge removed — <b>${lidInfo.b3b.ramp_deg}°</b> sloped shell <b>${lidInfo.b3b.shell_mm}</b> mm, no steps, symmetric ±Z (see the 'Lid section' view against the needles)`);
   if (!single && xeOn) s += '<br>' + (ko ? 'Xe 광: −X 45°, 원뿔 반각 10°·크기는 가정 (광원 실측 전)' : 'Xe light: from −X at 45°; cone half angle 10° and size assumed (source not measured)');
   lidInfoEl.innerHTML = s;
 }
@@ -700,7 +702,7 @@ window.addEventListener('resize', resize);
 if (window.innerWidth < 600 || window.innerHeight < 700) { panel.classList.add('min'); const hb = document.getElementById('hide'); hb.dataset.ko = '더 보기'; hb.dataset.en = 'More'; }
 applyLang(); resize();
 const [h0, h1, h2, h3, h4, h5] = location.hash.slice(1).split('&');
-if (LIDS.some((l) => l.key === h3)) lidSel = h3;
+if (LIDS.some((l) => l.key === h3)) { lidSel = h3; lidUser = true; }
 if ([20, 30, 40].includes(+(h4 || '').slice(2))) snoutDeg = +h4.slice(2);
 if (h5 === 'xe1') xeOn = true;
 if (h2 === 'min') setMode = 'min';

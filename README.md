@@ -33,6 +33,14 @@ Donghyeon Lee, Pusan National University. 3D viewer of the beamline sample cell 
 - 스노트·Xe 원뿔은 탠덤(2T/3T) 시료면 기준이라 싱글에서는 끈다. 주소 끝 `&sn30&xe1`은 스노트 각도와 Xe 광을 기억한다.
 - Lid toggle **current / B3 slot / B3L** (hash `&now|b3|b3l`): swaps only the lid, tape frame and PET film (film land face 2.80 / 0.94 / 0.64 mm above the wafer); B3 is 2T/3T only (singles keep the current lid and show a note). 'Clear' row: detector snout dummy (Ø10 face × 12 + Ø20 body) at 20/30/40° from the sample normal on +X at its closest position for the selected lid (D, sample centre to face centre: 4.73/6.04/7.77, 2.75/3.90/5.34, 2.43/3.55/4.95 mm) and the Xe light cone from −X at 45° (half angle 10° and size assumed). Draft, not ordered.
 
+### 뚜껑 B3b rev1 (11/09, 초안, 발주 안 함)
+
+- '뚜껑' 줄의 네 번째 버튼 **B3b (권장)**. 2T/3T를 열면 기본 뚜껑이다 (싱글은 현재 뚜껑 유지; 예전 주소 `&now` / `&b3` / `&b3l`은 그대로 열린다).
+- B3 슬롯(필름 랜드면 시료 위 0.94 mm, 같은 필름 면)에서 비탈 바깥 쐐기를 없앴다: 비탈은 14.7° 경사 껍질 1.15 mm, 단차 없음, ±Z 대칭. 검출기 거리 D 20/30/40° = 2.75 / 3.90 / 5.34 mm (B3와 같음). 스노트·Xe 버튼이 그대로 동작한다.
+- '보기' 줄의 **뚜껑 단면 X +6.45 (비탈 껍질)**: 뚜껑을 닫은 채 X = +6.45 면(Y–Z)으로 잘라 껍질과 바늘을 본다. '단면' 슬라이더로 위치를 바꿀 수 있다.
+- 모델 `models/lid_b3b.glb` (`make_viewer_lid_b3_261108.py`가 `cnc_v62c/variant_lidB3b`의 조립 방향 STEP에서 만듦).
+- Lid toggle 4th button **B3b (recommended)**, default for 2T / 3T: B3 slot film plane (0.94 mm above the wafer) with the outer wedge removed; 14.7 deg sloped shell 1.15 mm, no steps, symmetric in Z; D 2.75 / 3.90 / 5.34 mm as B3. View 'Lid section X +6.45' clips the closed lid and needles at the Y-Z plane. Draft, not ordered.
+
 ## 블록 직접 조작 / try the block — [block.html](https://donghyeonlee98.github.io/beamline-cell-3d/block.html) (v6.2b, 2026-11-07, 초안 · draft)
 
 - v6.2b 프로브 블록 하나를 손으로 만져 보는 페이지: ① 누름판 나사 조임 + 바늘 밀기(0.3 mm 눌림 = 1.44 mm), ② 뒤 기울기 세트스크류 회전수(1회전 ≈ 5°), ③ 블록 회전 ±15° + 잠금. 팁 위치·패드 안 여부·바늘–필름 여유·예압 힘(BeCu/W)·포고 눌림이 바로 바뀝니다. 자리 10곳 선택.
@@ -123,6 +131,7 @@ APS 2-ID-D beamline sample cell v3.3 — 25 mm cell mounted whole; rear 4 spring
 
 - `index.html` — v6.2 보기 (three.js 0.160) / v6.2 viewer (three.js 0.160)
 - `models/v62_*.glb`, `models/v62_meta.json` — v6.2 셀 5종 GLB, 부품 재질·층, 자리별 회전 축(B0, U)과 검사 범위 (`make_viewer_meta_v62_261107.py`가 설계 폴더의 json에서 만듦) / the five v6.2 GLBs, per-part material and layer, per-site rotation axis and checked range
+- `models/lid_b3b.glb` — B3b rev1 뚜껑 / B3b rev1 lid
 - `models/lid_b3.glb`, `models/lid_b3l.glb`, `models/lid_b3_info.json` — B3 / B3L 슬롯 뚜껑 (뚜껑·테이프·필름 3개 노드), 필름 높이와 검출기 거리 D (`make_viewer_lid_b3_261108.py`) / B3 and B3L slot lids, film height and detector distance D
 - `models/v62_min.glb`, `models/v62_full.glb`, `models/v62_sets.json` — 최소 세트 모델(2T 빌드, 빈 리세스 6곳), 전체 세트 모델(3T 빌드 + 싱글 자리 시트 + 따로 놓은 추가분), 추가분 표시와 비교 표 숫자 (`make_viewer_sets_v62c_261107.py`) / minimal- and full-set models, extra flags and comparison numbers
 - `v60.html`, `models/v60_*.glb`, `models/v60_meta.json` — 이전 v6.0 rev B 보기 / earlier v6.0 rev B viewer
