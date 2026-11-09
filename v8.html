@@ -46,8 +46,8 @@ button[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-i
 <header>
   <div class="t">
     <h1 data-ko="빔라인 시료 셀 v8 (2026-11-09 검토 모델, 발주 전)" data-en="Beamline sample cell v8 (review model 2026-11-09, not ordered)"></h1>
-    <div class="sub" data-ko="PCB를 공동 바닥에 · 스탠드오프 위 황동 팔 판 30 × 10 × 3 ×4 · 직사각 우물 필름 64 × 28 · 몸체 104 × 114 × 30.1 · 부산대 이동현 · <a href='index.html'>v6.2c</a> · <a href='v60.html'>v6.0</a> · <a href='v48.html'>v4.8</a>"
-      data-en="PCB inside the cavity · brass arm plates 30 × 10 × 3 on standoffs ×4 · rectangular film well 64 × 28 · body 104 × 114 × 30.1 · Donghyeon Lee, PNU · <a href='index.html'>v6.2c</a> · <a href='v60.html'>v6.0</a> · <a href='v48.html'>v4.8</a>"></div>
+    <div class="sub" data-ko="PCB를 공동 바닥에 · 스탠드오프 위 황동 팔 판 30 × 10 × 3 ×4 (직선 바늘, 기울인 V홈, 앞 들기 나사) · 직사각 우물 필름 64 × 28 · 몸체 104 × 114 × 30.1 · 부산대 이동현 · <a href='index.html'>v6.2c</a> · <a href='v60.html'>v6.0</a> · <a href='v48.html'>v4.8</a>"
+      data-en="PCB inside the cavity · brass arm plates 30 × 10 × 3 on standoffs ×4 (straight needles in inclined V grooves, front lift screw) · rectangular film well 64 × 28 · body 104 × 114 × 30.1 · Donghyeon Lee, PNU · <a href='index.html'>v6.2c</a> · <a href='v60.html'>v6.0</a> · <a href='v48.html'>v4.8</a>"></div>
   </div>
   <div class="top-r"><button id="numsBtn" data-ko="수치" data-en="Numbers"></button> <button id="lang">EN</button></div>
 </header>
@@ -58,8 +58,8 @@ button[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-i
   <div class="row" id="toggles"><span class="lab" data-ko="표시" data-en="Show"></span></div>
   <div class="row" id="views"><span class="lab" data-ko="보기" data-en="View"></span></div>
   <div class="row"><div class="sl"><span class="lab" data-ko="단면 X" data-en="Cut X"></span><input id="cut" type="range" min="-55" max="55" value="55" step="0.5"><output id="o-cut">–</output></div></div>
-  <div class="hint" data-ko="끌어서 회전 · 두 손가락/휠 확대 · 부품을 누르면 이름. 주황 = 팔 판·바늘. '치움 18°'는 팔이 기둥 축으로 X 바깥쪽 18° 돌고 끝이 1.0 들린 자리(흐리게). 검출기 더미는 Ø20 원통, 법선 40°에서 머리–필름 2.5가 되는 거리(D 15.6)."
-    data-en="Drag to rotate · pinch/wheel to zoom · tap a part for its name. Orange = arm plates and needles. 'Swing 18°' shows the arms turned 18° outward about the standoff with the tip lifted 1.0 (ghost). Detector dummy: Ø20 cylinder at 40° from the normal, at the distance where the head is 2.5 above the film (D 15.6)."></div>
+  <div class="hint" data-ko="끌어서 회전 · 두 손가락/휠 확대 · 부품을 누르면 이름. 주황 = 팔 판·바늘. '치움 18°'는 들기 나사 0.3바퀴로 끝을 약 0.6 들고 팔을 기둥 축으로 X 바깥쪽 18° 돌린 자리(흐리게). 검출기 더미는 Ø20 원통, 법선 40°에서 머리–필름 2.5가 되는 거리(D 15.6)."
+    data-en="Drag to rotate · pinch/wheel to zoom · tap a part for its name. Orange = arm plates and needles. 'Swing 18°' shows the arms turned 18° outward about the standoff after lifting the tip about 0.6 with the lift screw (ghost). Detector dummy: Ø20 cylinder at 40° from the normal, at the distance where the head is 2.5 above the film (D 15.6)."></div>
 </div>
 <script type="importmap">
 { "imports": {
@@ -165,15 +165,16 @@ function buildUI() {
     [T('검출기 40° D / 머리–필름 (±X)', 'Detector 40° D / head–film (±X)'), '15.6 / 2.5'],
     [T('검출기 30° / 50° D', 'Detector 30° / 50° D'), '20.3 / 20.5'],
     [T('Xe −X 45° ±6°, X선 창 Ø5 막힘', 'Xe −X 45° ±6°, X-ray Ø5 blocked'), '0 / 0'],
-    [T('바늘 각도 · 자유 길이', 'Needle angle · free length'), '8.4° · 21.9'],
-    [T('바늘 힘 (0.3 눌림, W)', 'Needle force (0.3 press, W)'), '0.12 N'],
-    [T('바늘–필름 최소', 'Needle–film min'), '0.92'],
-    [T('치움 18° 끝: 웨이퍼 밖', 'Swing 18° tip outside wafer'), '2.16'],
-    [T('두 +Z 판 끝 사이', 'Gap between the two +Z plates'), '0.85'],
+    [T('직선 바늘 각도 · 자유 길이', 'Straight needle angle · free length'), '9.2° · 22.3'],
+    [T('바늘 힘 (0.3 눌림, W)', 'Needle force (0.3 press, W)'), '0.11 N'],
+    [T('바늘–필름 틀 / 인서트 가장자리', 'Needle–film frame / insert rim'), '0.63 / 0.81'],
+    [T('들기 나사 1바퀴: 끝 뜸', 'Lift screw 1 turn: tip rise'), '+1.97'],
+    [T('치움 18° 끝: 웨이퍼 밖', 'Swing 18° tip outside wafer'), '2.21'],
+    [T('두 +Z 판 끝 사이', 'Gap between the two +Z plates'), '3.05'],
     [T('PCB 윗면 (웨이퍼 앞면 기준)', 'PCB top (from wafer front)'), 'h −9.5'],
   ];
   document.getElementById('nums').innerHTML = '<table>' + rows.map((r) => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('') + '</table>' +
-    `<div class="hint">${T('mm. 검토 모델이며 확인 필요 항목(꼬리 나사 방향, W 바늘 굽힘, 판 끝 간격)이 남아 있다.', 'mm. Review model; open items remain (tail-screw direction, bending a W needle, plate-end gap).')}</div>`;
+    `<div class="hint">${T('mm. 검토 모델(11/09 2차). 확인 필요: 바늘–필름 틀 0.63 (창 Z ±13이면 0.82), 바늘 누름 와셔가 바늘 뒤 끝만 누름, 판 A/B 거울상 2종.', 'mm. Review model (2nd pass 11/09). Open: needle–film frame 0.63 (0.82 with window Z ±13), the clamp washer only bears on the needle rear end, plates are two mirror parts A/B.')}</div>`;
 }
 document.getElementById('lang').onclick = () => { lang = lang === 'ko' ? 'en' : 'ko'; document.documentElement.lang = lang; buildUI(); };
 document.getElementById('numsBtn').onclick = () => document.getElementById('nums').classList.toggle('open');

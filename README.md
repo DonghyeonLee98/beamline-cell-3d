@@ -5,15 +5,15 @@
 부산대 이동현. APS 2-ID-D (2026년 12월) 빔라인 시료 셀 **v6.2 (2026-11-07 초안: 2025 셀 방식 — 곧은 바늘 + 회전 클램프 블록 + 뒷면 PCB 포고, 선·납땜 없음)**의 3D 보기 (현재 **v6.2c**). 이전 판: [v6.0 rev B](https://donghyeonlee98.github.io/beamline-cell-3d/v60.html), [v4.8](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
 Donghyeon Lee, Pusan National University. 3D viewer of the beamline sample cell **v6.2 (draft 2026-11-07: 2025-cell style — straight needles + turnable clamp blocks + rear-PCB spring pins, no wires or solder)** for APS 2-ID-D (December 2026). Earlier viewers: [v6.0 rev B](https://donghyeonlee98.github.io/beamline-cell-3d/v60.html), [v4.8](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
 
-## v8 (2026-11-09, 검토안 · review model) — [v8.html](https://donghyeonlee98.github.io/beamline-cell-3d/v8.html)
+## v8 (2026-11-09, 검토안 2차 · review model, 2nd pass) — [v8.html](https://donghyeonlee98.github.io/beamline-cell-3d/v8.html)
 
-- 한 줄: PCB를 공동 바닥에 넣고, 바늘 팔을 스탠드오프 위 황동 판 30 × 10 × 3 네 개로 바꾼 셀 (몸체 104 × 114 × 30.1, 공동 90 × 100, 필름 창 64 × 28). 발주 전 검토 모델이다.
-- 전기 경로: PCB 패드 → 황동 스탠드오프 M3 × 10 → 팔 판 → W 바늘 → 앞 패드 (±6.45, ±6.45). 웨이퍼 뒷면은 뒷핀 0908-7 4개 (PCB 윗면 h −9.5, 눌림 0.71). PCB 꼬리 20 폭이 −Z 벽 홈으로 나간다.
-- 검사 (CAD): 측정 자세 간섭 0 (74 부품). 검출기 Ø20 원통, 머리–필름 2.5 mm 기준 시료–머리 중심 D: 30° 20.3 (빔 통로가 정함), 40° 15.6, 45° 17.8, 50° 20.5 mm (±X 같음). Xe −X 45° ±6°와 X선 창 Ø5 막힘 0. 바늘 8.4°, 자유 길이 21.9, 0.3 mm 눌림에 0.12 N. 팔을 X 바깥쪽 18° 돌리면 끝이 웨이퍼 밖 2.2 mm (끝을 1.0 들어 올린 상태에서 간섭 0).
-- 남은 확인: 꼬리 나사가 끝을 올리지 않고 내림(방향 문제), W 바늘 굽힘, 두 +Z 판 끝 사이 0.85 mm, 2-ID-D 무대에 104 × 114가 들어가는지.
-- One line: the PCB lies on the cavity floor and the needle arms are four brass plates 30 × 10 × 3 on standoffs (body 104 × 114 × 30.1, cavity 90 × 100, film window 64 × 28). Review model, not ordered.
-- Checks (CAD): 0 clashes in the measuring state (74 parts). Detector Ø20 cylinder with the head 2.5 mm above the film: D (sample to head centre) 20.3 / 15.6 / 17.8 / 20.5 mm at 30 / 40 / 45 / 50° on either side. Xe light from −X 45° ±6° and the Ø5 X-ray window are clear. Needle 8.4°, free length 21.9, 0.12 N at 0.3 mm. Arms swing 18° outward to put the tip 2.2 mm off the wafer (clear when the tip is lifted 1.0).
-- Toggles: lid + film + gasket, arms, PCB, gas fittings, swing 18° ghost, detector dummies at 40° ±X; X section slider. Models: `models/v8.glb`, `v8_swing.glb`, `v8_det.glb` + `*_meta.json` (node id → name, kind, layer).
+- 한 줄: PCB를 공동 바닥에 넣고, 바늘 팔을 스탠드오프 (±17, ±31.5) 위 황동 판 30 × 10 × 3 네 개로 바꾼 셀 (몸체 104 × 114 × 30.1, 공동 90 × 100, 필름 창 64 × 28). 발주 전 검토 모델이다.
+- 2차(11/09 오후): 바늘은 굽히지 않은 직선 W, 판 윗면 V홈을 9.2° 기울여(뒤 깊이 0.4 → 앞 2.02) 바늘이 그 각으로 나간다. 스탠드오프 12. 꼬리 나사 대신 판 앞쪽 들기 나사(PEEK M2, 1바퀴에 끝 +1.97). 판은 거울상 2종 A/B.
+- 전기 경로: PCB 패드 → 황동 스탠드오프 → 팔 판 → W 바늘 → 앞 패드 (±6.45, ±6.45). 웨이퍼 뒷면은 뒷핀 0908-7 4개 (PCB 윗면 h −9.5, 눌림 0.71). PCB 꼬리 20 폭이 −Z 벽 홈으로 나간다.
+- 검사 (CAD): 측정 자세 간섭 0 (74 부품). 검출기 Ø20, 머리–필름 2.5 기준 D: 30° 20.3, 40° 15.6, 45° 17.8, 50° 20.5 mm (±X 같음). Xe −X 45° ±6°, X선 창 Ø5 막힘 0. 바늘 9.2°, 0.3 mm 눌림에 0.11 N. 두 판 끝 사이 3.05. 치움 18° 끝은 웨이퍼 밖 2.2 (들고 돌리면 간섭 0).
+- 남은 확인: 바늘–필름 틀 0.63 (창 Z ±13이면 0.82), 와셔가 바늘 뒤 끝만 누름, 2-ID-D 무대에 104 × 114가 들어가는지.
+- One line: PCB on the cavity floor, needle arms are four brass plates 30 × 10 × 3 on standoffs at (±17, ±31.5). 2nd pass: straight W needles in V grooves inclined 9.2° (0.4 deep at the rear, 2.02 at the front), standoffs 12, a front PEEK lift screw (1 turn lifts the tip 1.97 mm), mirror plates A/B. Checks: 0 clashes; detector D 20.3/15.6/17.8/20.5 mm at 30/40/45/50° with the head 2.5 above the film; Xe and X-ray paths clear; needle 0.11 N at 0.3 mm; plate-end gap 3.05. Open: needle to film frame 0.63 mm (0.82 with a ±13 window). Review model, not ordered.
+- Toggles: lid + film + gasket, arms, PCB, gas fittings, swing 18° ghost, detector dummies at 40° ±X; X section slider. Models: `models/v8.glb`, `v8_swing.glb`, `v8_det.glb` + `*_meta.json`.
 
 ## v6.2c rev C (2026-11-07, 초안 · draft) — 지금 보이는 모델
 
