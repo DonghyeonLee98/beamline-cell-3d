@@ -46,8 +46,8 @@ button[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-i
 <header>
   <div class="t">
     <h1 data-ko="빔라인 시료 셀 v8 (2026-11-09 검토 모델, 발주 전)" data-en="Beamline sample cell v8 (review model 2026-11-09, not ordered)"></h1>
-    <div class="sub" data-ko="PCB를 공동 바닥에 · 스탠드오프 위 황동 쐐기 팔 판 30 × 10 ×4 (직선 바늘, 경사면 V홈, 누름 띠, 앞 들기 나사) · 필름 창 64 × 26 · 몸체 104 × 114 × 30.1 · 부산대 이동현 · <a href='index.html'>v6.2c</a> · <a href='v60.html'>v6.0</a> · <a href='v48.html'>v4.8</a>"
-      data-en="PCB inside the cavity · brass wedge arm plates 30 × 10 on standoffs ×4 (straight needles in V grooves on a sloped face, clamp strip, front lift screw) · film window 64 × 26 · body 104 × 114 × 30.1 · Donghyeon Lee, PNU · <a href='index.html'>v6.2c</a> · <a href='v60.html'>v6.0</a> · <a href='v48.html'>v4.8</a>"></div>
+    <div class="sub" data-ko="PCB를 공동 바닥에 · 스탠드오프 위 황동 쐐기 팔 판 30 × 10 ×4 (직선 바늘, 경사면 V홈, 누름 띠, 앞 들기 나사) · 필름 창 64 × 26 · 꼬리에 SMA 6 + JST-SH 6핀 (V62식) · 몸체 104 × 114 × 30.1 · 부산대 이동현 · <a href='index.html'>v6.2c</a> · <a href='v60.html'>v6.0</a> · <a href='v48.html'>v4.8</a>"
+      data-en="PCB inside the cavity · brass wedge arm plates 30 × 10 on standoffs ×4 (straight needles in V grooves on a sloped face, clamp strip, front lift screw) · film window 64 × 26 · tail with six SMA + JST-SH 6-pin (as V62) · body 104 × 114 × 30.1 · Donghyeon Lee, PNU · <a href='index.html'>v6.2c</a> · <a href='v60.html'>v6.0</a> · <a href='v48.html'>v4.8</a>"></div>
   </div>
   <div class="top-r"><button id="numsBtn" data-ko="수치" data-en="Numbers"></button> <button id="lang">EN</button></div>
 </header>
@@ -87,7 +87,7 @@ const standoff = /^스탠드오프/;   // brass, but keep the accent for plates 
 const GROUPS = [
   { key: 'lid', ko: '뚜껑 + 필름 + 가스켓', en: 'Lid + film + gasket', on: true, test: (m) => m.layer === 3 || m.layer === 4 },
   { key: 'arms', ko: '팔 (측정 자세)', en: 'Arms (measuring)', on: true, test: (m) => m.layer === 5 },
-  { key: 'pcb', ko: 'PCB · 인서트 고정', en: 'PCB + insert screws', on: true, test: (m) => m.layer === 15 },
+  { key: 'pcb', ko: 'PCB · SMA · 인서트 고정', en: 'PCB + SMA + insert screws', on: true, test: (m) => m.layer === 15 },
   { key: 'gas', ko: '가스 피팅', en: 'Gas fittings', on: true, test: (m) => m.layer === 10 },
   { key: 'swing', ko: '치움 18° (흐림)', en: 'Swing 18° (ghost)', on: false, test: (m) => m.set === 'swing' },
   { key: 'det', ko: '검출기 40° ±X', en: 'Detector 40° ±X', on: false, test: (m) => m.set === 'det' },
@@ -172,6 +172,7 @@ function buildUI() {
     [T('치움 18° 끝: 웨이퍼 밖', 'Swing 18° tip outside wafer'), '2.21'],
     [T('두 +Z 판 끝 사이', 'Gap between the two +Z plates'), '3.05'],
     [T('PCB 윗면 (웨이퍼 앞면 기준)', 'PCB top (from wafer front)'), 'h −9.5'],
+    [T('PCB 꼬리 (몸체 밖) · SMA', 'PCB tail outside the body · SMA'), '20 · ×6'],
   ];
   document.getElementById('nums').innerHTML = '<table>' + rows.map((r) => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('') + '</table>' +
     `<div class="hint">${T('mm. 검토 모델(11/09 5차: 쐐기 판 9.22°, V홈 0.4 일정, 누름 띠 8 × 4 × 1.5 + M2 × 6, 카운터보어 + 저두 M3). 확인 필요: 안쪽 M2 탭이 카운터보어 벽에 걸침(온전한 나사산 1.48), 판 A/B 거울상 2종.', 'mm. Review model (5th pass 11/09: wedge plate 9.22°, constant 0.4 V groove, clamp strip 8 × 4 × 1.5 with two M2 × 6, counterbored low-head M3). Open: the inner M2 tap breaks into the counterbore wall (1.48 mm of full thread), plates are two mirror parts A/B.')}</div>`;

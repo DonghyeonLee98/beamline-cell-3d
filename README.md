@@ -5,7 +5,7 @@
 부산대 이동현. APS 2-ID-D (2026년 12월) 빔라인 시료 셀 **v6.2 (2026-11-07 초안: 2025 셀 방식 — 곧은 바늘 + 회전 클램프 블록 + 뒷면 PCB 포고, 선·납땜 없음)**의 3D 보기 (현재 **v6.2c**). 이전 판: [v6.0 rev B](https://donghyeonlee98.github.io/beamline-cell-3d/v60.html), [v4.8](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
 Donghyeon Lee, Pusan National University. 3D viewer of the beamline sample cell **v6.2 (draft 2026-11-07: 2025-cell style — straight needles + turnable clamp blocks + rear-PCB spring pins, no wires or solder)** for APS 2-ID-D (December 2026). Earlier viewers: [v6.0 rev B](https://donghyeonlee98.github.io/beamline-cell-3d/v60.html), [v4.8](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
 
-## v8 (2026-11-09, 검토안 5차 · review model, 5th pass) — [v8.html](https://donghyeonlee98.github.io/beamline-cell-3d/v8.html)
+## v8 (2026-11-09, 검토안 6차 · review model, 6th pass) — [v8.html](https://donghyeonlee98.github.io/beamline-cell-3d/v8.html)
 
 - 한 줄: PCB를 공동 바닥에 넣고, 바늘 팔을 스탠드오프 (±17, ±31.5) 위 황동 판 30 × 10 × 5 네 개로 바꾼 셀 (몸체 104 × 114 × 30.1, 공동 90 × 100, 필름 창 64 × 26). 발주 전 검토 모델이다.
 - 2차(11/09 오후): 바늘은 굽히지 않은 직선 W, 판 윗면 V홈을 9.2° 기울여(뒤 깊이 0.4 → 앞 2.02) 바늘이 그 각으로 나간다. 스탠드오프 10 (판 5 t). 꼬리 나사 대신 판 앞쪽 들기 나사(PEEK M2, 1바퀴에 끝 +1.97). 판은 거울상 2종 A/B.
@@ -16,6 +16,8 @@ Donghyeon Lee, Pusan National University. 3D viewer of the beamline sample cell 
 - 남은 확인: 위에서 넣는 세트 나사의 판 물림 0.1 / 0.8 mm (판 두께와 무관), 2-ID-D 무대에 104 × 114가 들어가는지.
 - 4th pass: plates 30 × 10 × 5 on 10 mm standoffs (same top height, needle and checks unchanged).
 - 5차(11/09): 판 윗면을 9.22° 쐐기로 깎고(뒤 5.0 → 앞 3.38) V홈 0.40 일정, 바늘은 누름 띠 8 × 4 × 1.5 + M2 × 6 2개로 누름. 가운데 M3는 카운터보어 + 저두. 바늘·간격·검출기 수치 그대로.
+- 6차(11/09): 전기 연결을 V62식으로 되돌림 — PCB 꼬리 46 폭이 −Z 벽 홈(48 × 2)으로 나가 몸체 밖 20, 끝에 SMA 엣지 잭 6개(J1–J6, CH1–CH6) + JST-SH 6핀 J7.
+- 6th pass: back to V62-style connections — a 46 mm wide PCB tail leaves through a 48 × 2 slot in the −Z wall, 20 mm outside the body, with six SMA edge jacks (J1–J6) and a JST-SH 6-pin J7.
 - 5th pass: wedge plate (top face at 9.22°, 5.0 → 3.38 mm), constant 0.40 V groove, needle clamped by a brass strip 8 × 4 × 1.5 with two M2 × 6; centre M3 low-head in a counterbore. Needle, clearances and detector numbers unchanged.
 - 3rd pass: film window 64 × 26 (needle to frame 0.82 mm); needles held by two M2 × 3 set screws on the groove line; max lift 0.64 turn (tip +1.26 mm).
 - One line: PCB on the cavity floor, needle arms are four brass plates 30 × 10 × 3 on standoffs at (±17, ±31.5). 2nd pass: straight W needles in V grooves inclined 9.2° (0.4 deep at the rear, 2.02 at the front), standoffs 12, a front PEEK lift screw (1 turn lifts the tip 1.97 mm), mirror plates A/B. Checks: 0 clashes; detector D 20.3/15.6/17.8/20.5 mm at 30/40/45/50° with the head 2.5 above the film; Xe and X-ray paths clear; needle 0.11 N at 0.3 mm; plate-end gap 3.05. Review model, not ordered.
