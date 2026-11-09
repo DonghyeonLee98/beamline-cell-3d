@@ -5,14 +5,16 @@
 부산대 이동현. APS 2-ID-D (2026년 12월) 빔라인 시료 셀 **v6.2 (2026-11-07 초안: 2025 셀 방식 — 곧은 바늘 + 회전 클램프 블록 + 뒷면 PCB 포고, 선·납땜 없음)**의 3D 보기 (현재 **v6.2c**). 이전 판: [v6.0 rev B](https://donghyeonlee98.github.io/beamline-cell-3d/v60.html), [v4.8](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
 Donghyeon Lee, Pusan National University. 3D viewer of the beamline sample cell **v6.2 (draft 2026-11-07: 2025-cell style — straight needles + turnable clamp blocks + rear-PCB spring pins, no wires or solder)** for APS 2-ID-D (December 2026). Earlier viewers: [v6.0 rev B](https://donghyeonlee98.github.io/beamline-cell-3d/v60.html), [v4.8](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
 
-## v8 (2026-11-09, 검토안 2차 · review model, 2nd pass) — [v8.html](https://donghyeonlee98.github.io/beamline-cell-3d/v8.html)
+## v8 (2026-11-09, 검토안 3차 · review model, 3rd pass) — [v8.html](https://donghyeonlee98.github.io/beamline-cell-3d/v8.html)
 
-- 한 줄: PCB를 공동 바닥에 넣고, 바늘 팔을 스탠드오프 (±17, ±31.5) 위 황동 판 30 × 10 × 3 네 개로 바꾼 셀 (몸체 104 × 114 × 30.1, 공동 90 × 100, 필름 창 64 × 28). 발주 전 검토 모델이다.
+- 한 줄: PCB를 공동 바닥에 넣고, 바늘 팔을 스탠드오프 (±17, ±31.5) 위 황동 판 30 × 10 × 3 네 개로 바꾼 셀 (몸체 104 × 114 × 30.1, 공동 90 × 100, 필름 창 64 × 26). 발주 전 검토 모델이다.
 - 2차(11/09 오후): 바늘은 굽히지 않은 직선 W, 판 윗면 V홈을 9.2° 기울여(뒤 깊이 0.4 → 앞 2.02) 바늘이 그 각으로 나간다. 스탠드오프 12. 꼬리 나사 대신 판 앞쪽 들기 나사(PEEK M2, 1바퀴에 끝 +1.97). 판은 거울상 2종 A/B.
 - 전기 경로: PCB 패드 → 황동 스탠드오프 → 팔 판 → W 바늘 → 앞 패드 (±6.45, ±6.45). 웨이퍼 뒷면은 뒷핀 0908-7 4개 (PCB 윗면 h −9.5, 눌림 0.71). PCB 꼬리 20 폭이 −Z 벽 홈으로 나간다.
 - 검사 (CAD): 측정 자세 간섭 0 (74 부품). 검출기 Ø20, 머리–필름 2.5 기준 D: 30° 20.3, 40° 15.6, 45° 17.8, 50° 20.5 mm (±X 같음). Xe −X 45° ±6°, X선 창 Ø5 막힘 0. 바늘 9.2°, 0.3 mm 눌림에 0.11 N. 두 판 끝 사이 3.05. 치움 18° 끝은 웨이퍼 밖 2.2 (들고 돌리면 간섭 0).
-- 남은 확인: 바늘–필름 틀 0.63 (창 Z ±13이면 0.82), 와셔가 바늘 뒤 끝만 누름, 2-ID-D 무대에 104 × 114가 들어가는지.
-- One line: PCB on the cavity floor, needle arms are four brass plates 30 × 10 × 3 on standoffs at (±17, ±31.5). 2nd pass: straight W needles in V grooves inclined 9.2° (0.4 deep at the rear, 2.02 at the front), standoffs 12, a front PEEK lift screw (1 turn lifts the tip 1.97 mm), mirror plates A/B. Checks: 0 clashes; detector D 20.3/15.6/17.8/20.5 mm at 30/40/45/50° with the head 2.5 above the film; Xe and X-ray paths clear; needle 0.11 N at 0.3 mm; plate-end gap 3.05. Open: needle to film frame 0.63 mm (0.82 with a ±13 window). Review model, not ordered.
+- 3차(11/09): 필름 창 64 × 26 (Z ±13)으로 줄여 바늘–필름 틀 0.82. 바늘은 홈 줄 위 M2 × 3 세트 나사 2개(r −2.2 / +2.2)로 누름. 들기 최대 0.64바퀴(끝 +1.26).
+- 남은 확인: 세트 나사가 판에 거의 안 물림(0.1 / 0.8 mm), 2-ID-D 무대에 104 × 114가 들어가는지.
+- 3rd pass: film window 64 × 26 (needle to frame 0.82 mm); needles held by two M2 × 3 set screws on the groove line; max lift 0.64 turn (tip +1.26 mm).
+- One line: PCB on the cavity floor, needle arms are four brass plates 30 × 10 × 3 on standoffs at (±17, ±31.5). 2nd pass: straight W needles in V grooves inclined 9.2° (0.4 deep at the rear, 2.02 at the front), standoffs 12, a front PEEK lift screw (1 turn lifts the tip 1.97 mm), mirror plates A/B. Checks: 0 clashes; detector D 20.3/15.6/17.8/20.5 mm at 30/40/45/50° with the head 2.5 above the film; Xe and X-ray paths clear; needle 0.11 N at 0.3 mm; plate-end gap 3.05. Review model, not ordered.
 - Toggles: lid + film + gasket, arms, PCB, gas fittings, swing 18° ghost, detector dummies at 40° ±X; X section slider. Models: `models/v8.glb`, `v8_swing.glb`, `v8_det.glb` + `*_meta.json`.
 
 ## v6.2c rev C (2026-11-07, 초안 · draft) — 지금 보이는 모델
