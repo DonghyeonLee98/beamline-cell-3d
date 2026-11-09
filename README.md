@@ -5,6 +5,16 @@
 부산대 이동현. APS 2-ID-D (2026년 12월) 빔라인 시료 셀 **v6.2 (2026-11-07 초안: 2025 셀 방식 — 곧은 바늘 + 회전 클램프 블록 + 뒷면 PCB 포고, 선·납땜 없음)**의 3D 보기 (현재 **v6.2c**). 이전 판: [v6.0 rev B](https://donghyeonlee98.github.io/beamline-cell-3d/v60.html), [v4.8](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
 Donghyeon Lee, Pusan National University. 3D viewer of the beamline sample cell **v6.2 (draft 2026-11-07: 2025-cell style — straight needles + turnable clamp blocks + rear-PCB spring pins, no wires or solder)** for APS 2-ID-D (December 2026). Earlier viewers: [v6.0 rev B](https://donghyeonlee98.github.io/beamline-cell-3d/v60.html), [v4.8](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
 
+## v8 (2026-11-09, 검토안 · review model) — [v8.html](https://donghyeonlee98.github.io/beamline-cell-3d/v8.html)
+
+- 한 줄: PCB를 공동 바닥에 넣고, 바늘 팔을 스탠드오프 위 황동 판 30 × 10 × 3 네 개로 바꾼 셀 (몸체 104 × 114 × 30.1, 공동 90 × 100, 필름 창 64 × 28). 발주 전 검토 모델이다.
+- 전기 경로: PCB 패드 → 황동 스탠드오프 M3 × 10 → 팔 판 → W 바늘 → 앞 패드 (±6.45, ±6.45). 웨이퍼 뒷면은 뒷핀 0908-7 4개 (PCB 윗면 h −9.5, 눌림 0.71). PCB 꼬리 20 폭이 −Z 벽 홈으로 나간다.
+- 검사 (CAD): 측정 자세 간섭 0 (74 부품). 검출기 Ø20 원통, 머리–필름 2.5 mm 기준 시료–머리 중심 D: 30° 20.3 (빔 통로가 정함), 40° 15.6, 45° 17.8, 50° 20.5 mm (±X 같음). Xe −X 45° ±6°와 X선 창 Ø5 막힘 0. 바늘 8.4°, 자유 길이 21.9, 0.3 mm 눌림에 0.12 N. 팔을 X 바깥쪽 18° 돌리면 끝이 웨이퍼 밖 2.2 mm (끝을 1.0 들어 올린 상태에서 간섭 0).
+- 남은 확인: 꼬리 나사가 끝을 올리지 않고 내림(방향 문제), W 바늘 굽힘, 두 +Z 판 끝 사이 0.85 mm, 2-ID-D 무대에 104 × 114가 들어가는지.
+- One line: the PCB lies on the cavity floor and the needle arms are four brass plates 30 × 10 × 3 on standoffs (body 104 × 114 × 30.1, cavity 90 × 100, film window 64 × 28). Review model, not ordered.
+- Checks (CAD): 0 clashes in the measuring state (74 parts). Detector Ø20 cylinder with the head 2.5 mm above the film: D (sample to head centre) 20.3 / 15.6 / 17.8 / 20.5 mm at 30 / 40 / 45 / 50° on either side. Xe light from −X 45° ±6° and the Ø5 X-ray window are clear. Needle 8.4°, free length 21.9, 0.12 N at 0.3 mm. Arms swing 18° outward to put the tip 2.2 mm off the wafer (clear when the tip is lifted 1.0).
+- Toggles: lid + film + gasket, arms, PCB, gas fittings, swing 18° ghost, detector dummies at 40° ±X; X section slider. Models: `models/v8.glb`, `v8_swing.glb`, `v8_det.glb` + `*_meta.json` (node id → name, kind, layer).
+
 ## v6.2c rev C (2026-11-07, 초안 · draft) — 지금 보이는 모델
 
 - rev B에서 바뀐 것: ① **뒷판 땜납 홈** Ø5.5 × 깊이 3.0 (포고 10곳, 가까운 두 쌍은 긴 홈): PCB 뒷면 땜납이 뒷판에 닿지 않게. ② 시트 **POM(검정) Ø6.10 헐거운 끼움 + 에폭시**. ③ 블록·쐐기 누름판 **황동 H59**. ④ 인서트 a-w **POM**. PCB와 나머지 형상은 rev B 그대로. 포고 꼬리는 땜납 뒤 PCB 뒷면에서 1.2 mm 이하로 잘라야 홈에 들어간다.
@@ -134,6 +144,7 @@ APS 2-ID-D beamline sample cell v3.3 — 25 mm cell mounted whole; rear 4 spring
 - `models/lid_b3b.glb` — B3b rev1 뚜껑 / B3b rev1 lid
 - `models/lid_b3.glb`, `models/lid_b3l.glb`, `models/lid_b3_info.json` — B3 / B3L 슬롯 뚜껑 (뚜껑·테이프·필름 3개 노드), 필름 높이와 검출기 거리 D (`make_viewer_lid_b3_261108.py`) / B3 and B3L slot lids, film height and detector distance D
 - `models/v62_min.glb`, `models/v62_full.glb`, `models/v62_sets.json` — 최소 세트 모델(2T 빌드, 빈 리세스 6곳), 전체 세트 모델(3T 빌드 + 싱글 자리 시트 + 따로 놓은 추가분), 추가분 표시와 비교 표 숫자 (`make_viewer_sets_v62c_261107.py`) / minimal- and full-set models, extra flags and comparison numbers
+- `v8.html`, `models/v8*.glb`, `models/v8*_meta.json` — v8 검토안 보기 (11/09) / v8 review viewer
 - `v60.html`, `models/v60_*.glb`, `models/v60_meta.json` — 이전 v6.0 rev B 보기 / earlier v6.0 rev B viewer
 - `v48.html`, `models/v48_*.glb`, `models/v48_meta.json` — 이전 v4.8 보기 / earlier v4.8 viewer
 - `v33.html` — 이전 판 보기 (three.js r128) / earlier viewer (three.js r128)
