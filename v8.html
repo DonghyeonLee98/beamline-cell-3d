@@ -46,8 +46,8 @@ button[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-i
 <header>
   <div class="t">
     <h1 data-ko="빔라인 시료 셀 v8 (2026-11-09 검토 모델, 발주 전)" data-en="Beamline sample cell v8 (review model 2026-11-09, not ordered)"></h1>
-    <div class="sub" data-ko="PCB를 공동 바닥에 · 스탠드오프 위 황동 팔 판 30 × 10 × 3 ×4 (직선 바늘, 기울인 V홈, 앞 들기 나사) · 필름 창 64 × 26 · 몸체 104 × 114 × 30.1 · 부산대 이동현 · <a href='index.html'>v6.2c</a> · <a href='v60.html'>v6.0</a> · <a href='v48.html'>v4.8</a>"
-      data-en="PCB inside the cavity · brass arm plates 30 × 10 × 3 on standoffs ×4 (straight needles in inclined V grooves, front lift screw) · film window 64 × 26 · body 104 × 114 × 30.1 · Donghyeon Lee, PNU · <a href='index.html'>v6.2c</a> · <a href='v60.html'>v6.0</a> · <a href='v48.html'>v4.8</a>"></div>
+    <div class="sub" data-ko="PCB를 공동 바닥에 · 스탠드오프 위 황동 팔 판 30 × 10 × 5 ×4 (직선 바늘, 기울인 V홈, 앞 들기 나사) · 필름 창 64 × 26 · 몸체 104 × 114 × 30.1 · 부산대 이동현 · <a href='index.html'>v6.2c</a> · <a href='v60.html'>v6.0</a> · <a href='v48.html'>v4.8</a>"
+      data-en="PCB inside the cavity · brass arm plates 30 × 10 × 5 on standoffs ×4 (straight needles in inclined V grooves, front lift screw) · film window 64 × 26 · body 104 × 114 × 30.1 · Donghyeon Lee, PNU · <a href='index.html'>v6.2c</a> · <a href='v60.html'>v6.0</a> · <a href='v48.html'>v4.8</a>"></div>
   </div>
   <div class="top-r"><button id="numsBtn" data-ko="수치" data-en="Numbers"></button> <button id="lang">EN</button></div>
 </header>
@@ -168,13 +168,13 @@ function buildUI() {
     [T('직선 바늘 각도 · 자유 길이', 'Straight needle angle · free length'), '9.2° · 22.3'],
     [T('바늘 힘 (0.3 눌림, W)', 'Needle force (0.3 press, W)'), '0.11 N'],
     [T('바늘–필름 틀 / 인서트 가장자리', 'Needle–film frame / insert rim'), '0.82 / 0.81'],
-    [T('들기 나사 1바퀴 / 최대 0.64바퀴', 'Lift screw 1 turn / max 0.64 turn'), '+1.97 / +1.26'],
+    [T('들기 나사 1바퀴 / 최대 0.65바퀴', 'Lift screw 1 turn / max 0.65 turn'), '+1.96 / +1.27'],
     [T('치움 18° 끝: 웨이퍼 밖', 'Swing 18° tip outside wafer'), '2.21'],
     [T('두 +Z 판 끝 사이', 'Gap between the two +Z plates'), '3.05'],
     [T('PCB 윗면 (웨이퍼 앞면 기준)', 'PCB top (from wafer front)'), 'h −9.5'],
   ];
   document.getElementById('nums').innerHTML = '<table>' + rows.map((r) => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('') + '</table>' +
-    `<div class="hint">${T('mm. 검토 모델(11/09 3차: 창 64 × 26, 바늘 누름 M2 세트 나사 2개). 확인 필요: 세트 나사가 판에 거의 안 물림(0.1 / 0.8), 판 A/B 거울상 2종.', 'mm. Review model (3rd pass 11/09: window 64 × 26, needle held by two M2 set screws). Open: the set screws barely engage the plate thread (0.1 / 0.8 mm), plates are two mirror parts A/B.')}</div>`;
+    `<div class="hint">${T('mm. 검토 모델(11/09 4차: 판 30 × 10 × 5, 스탠드오프 10, 창 64 × 26). 확인 필요: 위에서 넣는 세트 나사의 판 물림이 0.1 / 0.8 (판 두께와 무관), 판 A/B 거울상 2종.', 'mm. Review model (4th pass 11/09: plates 30 × 10 × 5, standoffs 10, window 64 × 26). Open: the top-entry set screws engage only 0.1 / 0.8 mm of plate thread (independent of plate thickness); plates are two mirror parts A/B.')}</div>`;
 }
 document.getElementById('lang').onclick = () => { lang = lang === 'ko' ? 'en' : 'ko'; document.documentElement.lang = lang; buildUI(); };
 document.getElementById('numsBtn').onclick = () => document.getElementById('nums').classList.toggle('open');
