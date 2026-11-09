@@ -46,8 +46,8 @@ button[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-i
 <header>
   <div class="t">
     <h1 data-ko="빔라인 시료 셀 v8 (2026-11-09 검토 모델, 발주 전)" data-en="Beamline sample cell v8 (review model 2026-11-09, not ordered)"></h1>
-    <div class="sub" data-ko="PCB를 공동 바닥에 · 스탠드오프 위 황동 쐐기 팔 판 30 × 10 ×4 (직선 바늘, 경사면 V홈, 누름 띠, 앞 들기 나사) · 필름 창 64 × 26 · 꼬리에 SMA 6 + JST-SH 6핀 (V62식) · 몸체 104 × 114 × 30.1 · 부산대 이동현 · <a href='index.html'>v6.2c</a> · <a href='v60.html'>v6.0</a> · <a href='v48.html'>v4.8</a>"
-      data-en="PCB inside the cavity · brass wedge arm plates 30 × 10 on standoffs ×4 (straight needles in V grooves on a sloped face, clamp strip, front lift screw) · film window 64 × 26 · tail with six SMA + JST-SH 6-pin (as V62) · body 104 × 114 × 30.1 · Donghyeon Lee, PNU · <a href='index.html'>v6.2c</a> · <a href='v60.html'>v6.0</a> · <a href='v48.html'>v4.8</a>"></div>
+    <div class="sub" data-ko="PCB를 공동 바닥에 · 스탠드오프 위 황동 쐐기 팔 판 30 × 10 ×4 (직선 바늘, 경사면 V홈, 누름 띠, 앞 들기 나사) · 필름 창 64 × 26 · −X 꼬리에 SMA 6 + JST-SH 6핀 (V62식) · 몸체 104 × 114 × 30.1 · 부산대 이동현 · <a href='index.html'>v6.2c</a> · <a href='v60.html'>v6.0</a> · <a href='v48.html'>v4.8</a>"
+      data-en="PCB inside the cavity · brass wedge arm plates 30 × 10 on standoffs ×4 (straight needles in V grooves on a sloped face, clamp strip, front lift screw) · film window 64 × 26 · −X tail with six SMA + JST-SH 6-pin (as V62) · body 104 × 114 × 30.1 · Donghyeon Lee, PNU · <a href='index.html'>v6.2c</a> · <a href='v60.html'>v6.0</a> · <a href='v48.html'>v4.8</a>"></div>
   </div>
   <div class="top-r"><button id="numsBtn" data-ko="수치" data-en="Numbers"></button> <button id="lang">EN</button></div>
 </header>
@@ -57,9 +57,12 @@ button[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-i
 <div id="panel">
   <div class="row" id="toggles"><span class="lab" data-ko="표시" data-en="Show"></span></div>
   <div class="row" id="views"><span class="lab" data-ko="보기" data-en="View"></span></div>
-  <div class="row"><div class="sl"><span class="lab" data-ko="단면 X" data-en="Cut X"></span><input id="cut" type="range" min="-55" max="55" value="55" step="0.5"><output id="o-cut">–</output></div></div>
-  <div class="hint" data-ko="끌어서 회전 · 두 손가락/휠 확대 · 부품을 누르면 이름. 주황 = 팔 판·바늘. '치움 18°'는 들기 나사 0.3바퀴로 끝을 약 0.6 들고 팔을 기둥 축으로 X 바깥쪽 18° 돌린 자리(흐리게). 검출기 더미는 Ø20 원통, 법선 40°에서 머리–필름 2.5가 되는 거리(D 15.6)."
-    data-en="Drag to rotate · pinch/wheel to zoom · tap a part for its name. Orange = arm plates and needles. 'Swing 18°' shows the arms turned 18° outward about the standoff after lifting the tip about 0.6 with the lift screw (ghost). Detector dummy: Ø20 cylinder at 40° from the normal, at the distance where the head is 2.5 above the film (D 15.6)."></div>
+  <div class="row">
+    <div class="sl"><span class="lab" data-ko="분해" data-en="Explode"></span><input id="explode" type="range" min="0" max="100" value="0"><output id="o-ex">0 %</output></div>
+    <div class="sl"><span class="lab" data-ko="단면 X" data-en="Cut X"></span><input id="cut" type="range" min="-95" max="55" value="55" step="0.5"><output id="o-cut">–</output></div>
+  </div>
+  <div class="hint" data-ko="끌어서 회전 · 두 손가락/휠 확대 · 부품을 누르면 이름. '분해'로 뚜껑은 앞으로, 팔 부품은 위로 단계별, PCB·커넥터는 뒤로 벌어진다. 주황 = 팔 판·바늘. '치움 18°'는 들기 나사 0.3바퀴로 끝을 약 0.6 들고 팔을 기둥 축으로 X 바깥쪽 18° 돌린 자리(흐리게). 검출기 더미는 Ø20 원통, 법선 40°에서 머리–필름 2.5가 되는 거리(D 15.6)."
+    data-en="Drag to rotate · pinch/wheel to zoom · tap a part for its name. 'Explode' pulls the lid forward, the arm parts up in steps and the PCB and connectors back. Orange = arm plates and needles. 'Swing 18°' shows the arms turned 18° outward about the standoff after lifting the tip about 0.6 with the lift screw (ghost). Detector dummy: Ø20 cylinder at 40° from the normal, at the distance where the head is 2.5 above the film (D 15.6)."></div>
 </div>
 <script type="importmap">
 { "imports": {
@@ -128,10 +131,26 @@ async function loadSet(file, metaFile, set, ghost) {
     const r = byId[id] || { name: id, kind: 'misc', layer: 0 };
     let geo = n.geometry; geo.deleteAttribute('color'); geo.deleteAttribute('normal'); geo = toCreasedNormals(geo, THREE.MathUtils.degToRad(32));
     const m = new THREE.Mesh(geo, mat(r.kind, r.name, ghost)); m.applyMatrix4(n.matrixWorld);
-    m.userData = { name: r.name, kind: r.kind, layer: r.layer, set };
+    m.userData = { name: r.name, kind: r.kind, layer: r.layer, set, base: m.position.clone(), ex: explodeOf(r.name, r.kind, r.layer) };
     root.add(m); parts.push(m);
   });
 }
+// exploded view: offsets in CAD mm at 100 % (X, Y, Z); front of the cell = -Y, "up" from the PCB toward the lid = -Y as well
+const EXPL = [
+  [/^M3 널링|^다월/, [0, -62, 0]], [/^뚜껑|^실리콘 가스켓|^PET/, [0, -46, 0]],
+  [/^들기/, [0, -34, 0]], [/^M2 x 6/, [0, -30, 0]], [/^누름 띠/, [0, -25, 0]], [/^M3 x|^스프링 와셔/, [0, -21, 0]], [/^팔 판/, [0, -15, 0]],
+  [/^W 바늘/, [0, -11, 0]], [/^스탠드오프|^스톱 핀|^M3 너트/, [0, -6, 0]],
+  [/^탠덤 웨이퍼|^Ag 앞 패드|^캡톤/, [0, -5, 0]], [/^인서트 POM/, [0, -3, 0]], [/^뒷핀/, [0, 6, 0]],
+  [/^PCB v8|^SMA|^JST|^SHT45|^M2 x 10|^실리콘 메움/, [0, 26, 0]], [/^원터치|^PU 튜브/, [0, 0, 12]], [/^셀 몸체|^검출기/, [0, 0, 0]],
+];
+function explodeOf(name, kind, layer) { for (const [re, o] of EXPL) if (re.test(name)) return o; return [0, 0, 0]; }
+const exEl = document.getElementById('explode');
+function applyExplode() {
+  const t = exEl.value / 100, e = t * t * (3 - 2 * t);
+  document.getElementById('o-ex').textContent = exEl.value + ' %';
+  for (const m of parts) { const o = m.userData.ex, b = m.userData.base; m.position.set(b.x + o[0] * e, b.y + o[1] * e, b.z + o[2] * e); }
+}
+exEl.oninput = applyExplode;
 function applyGroups() {
   for (const m of parts) {
     const u = m.userData; let vis = true;
@@ -172,7 +191,7 @@ function buildUI() {
     [T('치움 18° 끝: 웨이퍼 밖', 'Swing 18° tip outside wafer'), '2.21'],
     [T('두 +Z 판 끝 사이', 'Gap between the two +Z plates'), '3.05'],
     [T('PCB 윗면 (웨이퍼 앞면 기준)', 'PCB top (from wafer front)'), 'h −9.5'],
-    [T('PCB 꼬리 (몸체 밖) · SMA 잭 끝', 'PCB tail outside the body · SMA jack end'), '20 · 28'],
+    [T('PCB 꼬리 −X (몸체 밖) · 플러그 끝', 'PCB tail −X outside the body · plug end'), '20 · 38'],
   ];
   document.getElementById('nums').innerHTML = '<table>' + rows.map((r) => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('') + '</table>' +
     `<div class="hint">${T('mm. 검토 모델(11/09 5차: 쐐기 판 9.22°, V홈 0.4 일정, 누름 띠 8 × 4 × 1.5 + M2 × 6, 카운터보어 + 저두 M3). 확인 필요: 안쪽 M2 탭이 카운터보어 벽에 걸침(온전한 나사산 1.48), 판 A/B 거울상 2종.', 'mm. Review model (5th pass 11/09: wedge plate 9.22°, constant 0.4 V groove, clamp strip 8 × 4 × 1.5 with two M2 × 6, counterbored low-head M3). Open: the inner M2 tap breaks into the counterbore wall (1.48 mm of full thread), plates are two mirror parts A/B.')}</div>`;
