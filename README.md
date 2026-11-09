@@ -9,7 +9,7 @@ Donghyeon Lee, Pusan National University. 3D viewer of the beamline sample cell 
 
 - 한 줄: PCB를 공동 바닥에 넣고, 바늘 팔을 스탠드오프 (±17, ±31.5) 위 황동 판 30 × 10 × 5 네 개로 바꾼 셀 (몸체 104 × 114 × 30.1, 공동 90 × 100, 필름 창 64 × 26). 발주 전 검토 모델이다.
 - 2차(11/09 오후): 바늘은 굽히지 않은 직선 W, 판 윗면 V홈을 9.2° 기울여(뒤 깊이 0.4 → 앞 2.02) 바늘이 그 각으로 나간다. 스탠드오프 10 (판 5 t). 꼬리 나사 대신 판 앞쪽 들기 나사(PEEK M2, 1바퀴에 끝 +1.97). 판은 거울상 2종 A/B.
-- 전기 경로: PCB 패드 → 황동 스탠드오프 → 팔 판 → W 바늘 → 앞 패드 (±6.45, ±6.45). 웨이퍼 뒷면은 뒷핀 0908-7 4개 (PCB 윗면 h −9.5, 눌림 0.71). PCB 꼬리 20 폭이 −Z 벽 홈으로 나간다.
+- 전기 경로: PCB 패드 → 황동 스탠드오프 → 팔 판 → W 바늘 → 앞 패드 (±6.45, ±6.45). 웨이퍼 뒷면은 뒷핀 0908-7 4개 (PCB 윗면 h −9.5, 눌림 0.71). PCB 꼬리 60 폭이 −X 벽 홈으로 나가고 (8차), 13차부터 꼬리 끝 L자 받침 패널의 바인딩 포스트 6개로 연결한다.
 - 검사 (CAD): 측정 자세 간섭 0 (74 부품). 검출기 Ø20, 머리–필름 2.5 기준 D: 30° 20.3, 40° 15.6, 45° 17.8, 50° 20.5 mm (±X 같음). Xe −X 45° ±6°, X선 창 Ø5 막힘 0. 바늘 9.2°, 0.3 mm 눌림에 0.11 N. 두 판 끝 사이 3.05. 치움 18° 끝은 웨이퍼 밖 2.2 (들고 돌리면 간섭 0).
 - 3차(11/09): 필름 창 64 × 26 (Z ±13)으로 줄여 바늘–필름 틀 0.82. 바늘은 홈 줄 위 M2 × 3 세트 나사 2개(r −2.2 / +2.2)로 누름. 들기 최대 0.64바퀴(끝 +1.26).
 - 4차(11/09): 팔 판 30 × 10 × 5, 스탠드오프 10 (판 윗면 높이·바늘·검사 수치 그대로), M3 × 10.
@@ -18,6 +18,8 @@ Donghyeon Lee, Pusan National University. 3D viewer of the beamline sample cell 
 - 5차(11/09): 판 윗면을 9.22° 쐐기로 깎고(뒤 5.0 → 앞 3.38) V홈 0.40 일정, 바늘은 누름 띠 8 × 4 × 1.5 + M2 × 6 2개로 누름. 가운데 M3는 카운터보어 + 저두. 바늘·간격·검출기 수치 그대로.
 - 6차(11/09): 전기 연결을 V62식으로 되돌림 — PCB 꼬리 60 폭이 −X 벽 홈(62 × 2)으로 나가 몸체 밖 20 (8차: V62와 같은 −X 쪽), 끝에 SMA 엣지 잭 6개(J1–J6, CH1–CH6, 피치 10) + JST-SH 6핀 J7.
 - 6th pass: back to V62-style connections — a 60 mm wide PCB tail leaves through a 62 × 2 slot in the −X wall (8th pass: same side as V62), 20 mm outside the body, with six SMA edge jacks (J1–J6, 10 mm pitch) and a JST-SH 6-pin J7.
+- 13차(11/09): SMA 엣지 잭 6 → 4 mm 바인딩 포스트 6 (Mueller BU-P3760, 3 열 × 2 줄, 줄 피치 19.05, 열 피치 24). 포스트는 PCB가 아니라 L자 꼬리 받침(발 + 세로 Al 패널 3 t, X −78)에 꽂고, 스터드를 패널 안쪽 10에서 자른다. PCB 꼬리 끝 −72 → −62, 선 납땜 패드 6 (X −59). BNC–이중 바나나 어댑터(가정 상자) 2개를 꽂은 상태로도 간섭 0. 받침 지름·어댑터 크기는 가정.
+- 13th pass: six SMA edge jacks → six 4 mm binding posts (Mueller BU-P3760, 3 columns × 2 rows, 19.05 / 24 pitch) on the vertical Al panel of an L tail bracket (X −78), studs cut 10 mm behind the panel; PCB tail end −72 → −62 with six wire pads. No clashes with two BNC–dual-banana adapters (assumed boxes) plugged in. Post base diameter and adapter size are assumed.
 - 5th pass: wedge plate (top face at 9.22°, 5.0 → 3.38 mm), constant 0.40 V groove, needle clamped by a brass strip 8 × 4 × 1.5 with two M2 × 6; centre M3 low-head in a counterbore. Needle, clearances and detector numbers unchanged.
 - 3rd pass: film window 64 × 26 (needle to frame 0.82 mm); needles held by two M2 × 3 set screws on the groove line; max lift 0.64 turn (tip +1.26 mm).
 - One line: PCB on the cavity floor, needle arms are four brass plates 30 × 10 × 3 on standoffs at (±17, ±31.5). 2nd pass: straight W needles in V grooves inclined 9.2° (0.4 deep at the rear, 2.02 at the front), standoffs 12, a front PEEK lift screw (1 turn lifts the tip 1.97 mm), mirror plates A/B. Checks: 0 clashes; detector D 20.3/15.6/17.8/20.5 mm at 30/40/45/50° with the head 2.5 above the film; Xe and X-ray paths clear; needle 0.11 N at 0.3 mm; plate-end gap 3.05. Review model, not ordered.

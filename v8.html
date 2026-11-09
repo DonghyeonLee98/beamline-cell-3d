@@ -46,8 +46,8 @@ button[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-i
 <header>
   <div class="t">
     <h1 data-ko="빔라인 시료 셀 v8 (2026-11-09 검토 모델, 발주 전)" data-en="Beamline sample cell v8 (review model 2026-11-09, not ordered)"></h1>
-    <div class="sub" data-ko="PCB를 공동 바닥에 · 스탠드오프 위 황동 쐐기 팔 판 30 × 10 ×4 (직선 바늘, 경사면 V홈, 누름 띠, 앞 들기 나사) · 필름 창 64 × 26 · −X 꼬리에 SMA 6 + JST-SH 6핀 (V62식) · 몸체 104 × 114 × 30.1 · 부산대 이동현 · <a href='index.html'>v6.2c</a> · <a href='v60.html'>v6.0</a> · <a href='v48.html'>v4.8</a>"
-      data-en="PCB inside the cavity · brass wedge arm plates 30 × 10 on standoffs ×4 (straight needles in V grooves on a sloped face, clamp strip, front lift screw) · film window 64 × 26 · −X tail with six SMA + JST-SH 6-pin (as V62) · body 104 × 114 × 30.1 · Donghyeon Lee, PNU · <a href='index.html'>v6.2c</a> · <a href='v60.html'>v6.0</a> · <a href='v48.html'>v4.8</a>"></div>
+    <div class="sub" data-ko="PCB를 공동 바닥에 · 스탠드오프 위 황동 쐐기 팔 판 30 × 10 ×4 (직선 바늘, 경사면 V홈, 누름 띠, 앞 들기 나사) · 필름 창 64 × 26 · −X 꼬리 L자 받침 패널에 4 mm 바인딩 포스트 6 (3 열 × 2 줄, 19.05 × 24) + JST-SH 6핀 · 몸체 104 × 114 × 30.1 · 부산대 이동현 · <a href='index.html'>v6.2c</a> · <a href='v60.html'>v6.0</a> · <a href='v48.html'>v4.8</a>"
+      data-en="PCB inside the cavity · brass wedge arm plates 30 × 10 on standoffs ×4 (straight needles in V grooves on a sloped face, clamp strip, front lift screw) · film window 64 × 26 · −X tail: six 4 mm binding posts (3 columns × 2 rows, 19.05 × 24) on the panel of an L bracket + JST-SH 6-pin · body 104 × 114 × 30.1 · Donghyeon Lee, PNU · <a href='index.html'>v6.2c</a> · <a href='v60.html'>v6.0</a> · <a href='v48.html'>v4.8</a>"></div>
   </div>
   <div class="top-r"><button id="numsBtn" data-ko="수치" data-en="Numbers"></button> <button id="lang">EN</button></div>
 </header>
@@ -59,7 +59,7 @@ button[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-i
   <div class="row" id="views"><span class="lab" data-ko="보기" data-en="View"></span></div>
   <div class="row">
     <div class="sl"><span class="lab" data-ko="분해" data-en="Explode"></span><input id="explode" type="range" min="0" max="100" value="0"><output id="o-ex">0 %</output></div>
-    <div class="sl"><span class="lab" data-ko="단면 X" data-en="Cut X"></span><input id="cut" type="range" min="-95" max="55" value="55" step="0.5"><output id="o-cut">–</output></div>
+    <div class="sl"><span class="lab" data-ko="단면 X" data-en="Cut X"></span><input id="cut" type="range" min="-140" max="55" value="55" step="0.5"><output id="o-cut">–</output></div>
   </div>
   <div class="hint" data-ko="끌어서 회전 · 두 손가락/휠 확대 · 부품을 누르면 이름. '분해'로 뚜껑은 앞으로, 팔 부품은 위로 단계별, PCB·커넥터는 뒤로 벌어진다. 주황 = 팔 판·바늘. '치움 18°'는 들기 나사 0.3바퀴로 끝을 약 0.6 들고 팔을 기둥 축으로 X 바깥쪽 18° 돌린 자리(흐리게). 검출기 더미는 Ø20 원통, 법선 40°에서 머리–필름 2.5가 되는 거리(D 15.6)."
     data-en="Drag to rotate · pinch/wheel to zoom · tap a part for its name. 'Explode' pulls the lid forward, the arm parts up in steps and the PCB and connectors back. Orange = arm plates and needles. 'Swing 18°' shows the arms turned 18° outward about the standoff after lifting the tip about 0.6 with the lift screw (ghost). Detector dummy: Ø20 cylinder at 40° from the normal, at the distance where the head is 2.5 above the film (D 15.6)."></div>
@@ -85,12 +85,14 @@ const M = {
   pad: [0xd6d8dc, 0.9, 0.25], pin: [0xd4af37, 1, 0.3], screw: [0x9a9ca0, 0.9, 0.35], solder: [0xb8babd, 0.8, 0.4], silicone: [0xdcdcd0, 0, 0.8],
   kapton: [0xd98a1e, 0, 0.4, 0.85], brass: [0xc8641e, 0.85, 0.35], becu: [0x8a5a2b, 0.9, 0.3], peek: [0xcdb48a, 0, 0.6], ceramic: [0xf4f3ee, 0, 0.35],
   pet: [0xcfe6f5, 0, 0.1, 0.3], gasket: [0x9c3b30, 0, 0.8], tube: [0x55575c, 0.4, 0.5], wire: [0x3b6aa8, 0, 0.6], detector: [0x4c74b0, 0.2, 0.5, 0.45], misc: [0x888888, 0, 0.6],
+  al: [0xbfc1c4, 0.7, 0.4], post_red: [0xb51a14, 0, 0.45], post_black: [0x1e1e20, 0, 0.45], adapter: [0x3a3b3f, 0.2, 0.5], plug: [0x8c8e92, 0.6, 0.4],
 };
 const standoff = /^스탠드오프/;   // brass, but keep the accent for plates + needles only
 const GROUPS = [
   { key: 'lid', ko: '뚜껑 + 필름 + 가스켓', en: 'Lid + film + gasket', on: true, test: (m) => m.layer === 3 || m.layer === 4 },
   { key: 'arms', ko: '팔 (측정 자세)', en: 'Arms (measuring)', on: true, test: (m) => m.layer === 5 },
-  { key: 'pcb', ko: 'PCB · SMA · 인서트 고정', en: 'PCB + SMA + insert screws', on: true, test: (m) => m.layer === 15 },
+  { key: 'pcb', ko: 'PCB · 바인딩 포스트 · 인서트 고정', en: 'PCB + binding posts + insert screws', on: true, test: (m) => m.layer === 15 },
+  { key: 'adapt', ko: '어댑터 · 바나나 플러그 (가정)', en: 'Adapters + banana plugs (assumed)', on: true, test: (m) => m.layer === 16 },
   { key: 'gas', ko: '가스 피팅', en: 'Gas fittings', on: true, test: (m) => m.layer === 10 },
   { key: 'swing', ko: '치움 18° (흐림)', en: 'Swing 18° (ghost)', on: false, test: (m) => m.set === 'swing' },
   { key: 'det', ko: '검출기 40° ±X', en: 'Detector 40° ±X', on: false, test: (m) => m.set === 'det' },
@@ -141,7 +143,7 @@ const EXPL = [
   [/^들기/, [0, -34, 0]], [/^M2 x 6/, [0, -30, 0]], [/^누름 띠/, [0, -25, 0]], [/^M3 x|^스프링 와셔/, [0, -21, 0]], [/^팔 판/, [0, -15, 0]],
   [/^W 바늘/, [0, -11, 0]], [/^스탠드오프|^M3 너트/, [0, -6, 0]],
   [/^탠덤 웨이퍼|^Ag 앞 패드|^캡톤/, [0, -5, 0]], [/^인서트 POM/, [0, -3, 0]], [/^뒷핀/, [0, 6, 0]],
-  [/^PCB v8|^SMA|^JST|^SHT45|^M2 x 10|^실리콘 메움/, [0, 26, 0]], [/^원터치|^PU 튜브/, [0, 0, 12]], [/^접지 링|^M3 x 6 접지/, [-10, 0, 0]], [/^꼬리 받침|^M3 x 16 소켓 \(꼬리|^M2 x 5 팬/, [-6, 34, 0]], [/^스톱 나일론/, [0, -6, 0]], [/^셀 몸체|^검출기/, [0, 0, 0]],
+  [/^PCB v8|^JST|^SHT45|^M2 x 10|^실리콘 메움|^선 납땜/, [0, 26, 0]], [/^원터치|^PU 튜브/, [0, 0, 12]], [/^접지 링|^M3 x 6 접지/, [-10, 0, 0]], [/^꼬리 받침|^M3 x 1[46] 소켓 \(꼬리|^M2 x 5 팬|^바인딩 포스트|^포스트 /, [-6, 34, 0]], [/^BNC|^바나나/, [-30, 34, 0]], [/^스톱 나일론/, [0, -6, 0]], [/^셀 몸체|^검출기/, [0, 0, 0]],
 ];
 function explodeOf(name, kind, layer) { for (const [re, o] of EXPL) if (re.test(name)) return o; return [0, 0, 0]; }
 const exEl = document.getElementById('explode');
@@ -180,7 +182,7 @@ function buildUI() {
   document.querySelectorAll('[data-ko]').forEach((el) => { if (el.tagName !== 'BUTTON' || el.id) el.innerHTML = el.dataset[lang]; });
   document.getElementById('lang').textContent = lang === 'ko' ? 'EN' : '한';
   const rows = [
-    [T('간섭 (측정 자세, 74 부품)', 'Clashes (measuring, 74 parts)'), '0'],
+    [T('간섭 (측정 자세, 132 부품, 어댑터 포함)', 'Clashes (measuring, 132 parts incl. adapters)'), '0'],
     [T('검출기 40° D / 머리–필름 (±X)', 'Detector 40° D / head–film (±X)'), '15.6 / 2.5'],
     [T('검출기 30° / 50° D', 'Detector 30° / 50° D'), '20.3 / 20.5'],
     [T('Xe −X 45° ±6°, X선 창 Ø5 막힘', 'Xe −X 45° ±6°, X-ray Ø5 blocked'), '0 / 0'],
@@ -191,8 +193,9 @@ function buildUI() {
     [T('치움 18° 끝: 웨이퍼 밖', 'Swing 18° tip outside wafer'), '2.21'],
     [T('두 +Z 판 끝 사이', 'Gap between the two +Z plates'), '3.05'],
     [T('PCB 윗면 (웨이퍼 앞면 기준)', 'PCB top (from wafer front)'), 'h −9.5'],
-    [T('PCB 꼬리 −X (몸체 밖) · 플러그 끝', 'PCB tail −X outside the body · plug end'), '20 · 38'],
+    [T('PCB 꼬리 −X (몸체 밖) · 포스트 머리 끝 · 어댑터 끝', 'PCB tail −X outside the body · post tip · adapter end'), '10 · 46.3 · 81.3'],
     [T('12차: PCB 아래 릴리프 1.0 + 뒷핀 납땜 릴리프 Ø7 x 1.5 (12b: Grace M4 탭 보스 Ø8, 탭 밑 Al 1.0)', '12th pass: 1.0 relief under the PCB + Ø7 x 1.5 rear-pin solder relief (12b: Ø8 bosses under the Grace M4 taps, 1.0 Al below each tap)'), '80.4 × 90.4'],
+    [T('13차: SMA 6 → 바인딩 포스트 6 (L자 받침 패널), 스터드 영역–발 / PCB 1.0 / 3.1, Xe·검출기·어댑터 간섭 0', '13th pass: six SMA → six binding posts on an L-bracket panel; stud zone to foot / PCB 1.0 / 3.1, Xe, detector and adapters clear'), 'X −78'],
   ];
   document.getElementById('nums').innerHTML = '<table>' + rows.map((r) => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('') + '</table>' +
     `<div class="hint">${T('mm. 검토 모델(11/09 5차: 쐐기 판 9.22°, V홈 0.4 일정, 누름 띠 8 × 4 × 1.5 + M2 × 6, 카운터보어 + 저두 M3). 확인 필요: 안쪽 M2 탭이 카운터보어 벽에 걸침(온전한 나사산 1.48), 판 A/B 거울상 2종.', 'mm. Review model (5th pass 11/09: wedge plate 9.22°, constant 0.4 V groove, clamp strip 8 × 4 × 1.5 with two M2 × 6, counterbored low-head M3). Open: the inner M2 tap breaks into the counterbore wall (1.48 mm of full thread), plates are two mirror parts A/B.')}</div>`;
