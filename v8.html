@@ -192,7 +192,7 @@ function buildUI() {
     [T('두 +Z 판 끝 사이', 'Gap between the two +Z plates'), '3.05'],
     [T('PCB 윗면 (웨이퍼 앞면 기준)', 'PCB top (from wafer front)'), 'h −9.5'],
     [T('PCB 꼬리 −X (몸체 밖) · 플러그 끝', 'PCB tail −X outside the body · plug end'), '20 · 38'],
-    [T('12차: PCB 아래 릴리프 1.0 + 뒷핀 납땜 릴리프 Ø7 x 1.5', '12th pass: 1.0 relief under the PCB + Ø7 x 1.5 rear-pin solder relief'), '80.4 × 90.4'],
+    [T('12차: PCB 아래 릴리프 1.0 + 뒷핀 납땜 릴리프 Ø7 x 1.5 (12b: Grace M4 탭 보스 Ø8, 탭 밑 Al 1.0)', '12th pass: 1.0 relief under the PCB + Ø7 x 1.5 rear-pin solder relief (12b: Ø8 bosses under the Grace M4 taps, 1.0 Al below each tap)'), '80.4 × 90.4'],
   ];
   document.getElementById('nums').innerHTML = '<table>' + rows.map((r) => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('') + '</table>' +
     `<div class="hint">${T('mm. 검토 모델(11/09 5차: 쐐기 판 9.22°, V홈 0.4 일정, 누름 띠 8 × 4 × 1.5 + M2 × 6, 카운터보어 + 저두 M3). 확인 필요: 안쪽 M2 탭이 카운터보어 벽에 걸침(온전한 나사산 1.48), 판 A/B 거울상 2종.', 'mm. Review model (5th pass 11/09: wedge plate 9.22°, constant 0.4 V groove, clamp strip 8 × 4 × 1.5 with two M2 × 6, counterbored low-head M3). Open: the inner M2 tap breaks into the counterbore wall (1.48 mm of full thread), plates are two mirror parts A/B.')}</div>`;
