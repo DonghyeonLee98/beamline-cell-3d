@@ -200,6 +200,7 @@ function buildUI() {
     [T('13c: 포스트 4 (CH1–CH4), 어댑터 1개 줄 A (CH1 앞F · CH3 뒤F), 패널 Z ±19, 꼬리 받침 PLA 예정 (CNC 제외) · 어댑터–플러그', '13c: four posts (CH1–CH4), one adapter on row A (CH1 front F · CH3 rear F), panel Z ±19, tail bracket to be printed in PLA (not CNC) · adapter to plug'), '3.05'],
     [T('14차(v8.1): 포스트 4를 −X 벽에 직접 (자리파기 18 × 76 × 1.5, Y 2.0), 꼬리·홈·받침 삭제, 뒷면 평면 · 안쪽 스터드–팔 판', '14th pass (v8.1): four posts straight in the −X wall (spot face 18 × 76 × 1.5, Y 2.0), tail, slot and bracket removed, flat floor · inner stud to arm plate'), '2.52'],
     [T('14b: J7 PCB rev G 자리 (-31, -43), 플러그 -X 끝 X -43.6 → 벽 구멍 Ø4 (Y 8, Z -44) · 플러그 끝–벽', '14b: J7 at the PCB rev G place (-31, -43), plug to -X ending at X -43.6 → wall hole Ø4 (Y 8, Z -44) · plug end to wall'), '1.4'],
+    [T('14c: W5 GND 패드 (−38, −40) → (−38, −36), J7 플러그 밖 · 패드 중심–플러그', '14c: W5 GND pad moved (−38, −40) → (−38, −36), clear of the J7 plug · pad centre to plug'), '3.0'],
   ];
   document.getElementById('nums').innerHTML = '<table>' + rows.map((r) => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('') + '</table>' +
     `<div class="hint">${T('mm. 검토 모델(11/09 5차: 쐐기 판 9.22°, V홈 0.4 일정, 누름 띠 8 × 4 × 1.5 + M2 × 6, 카운터보어 + 저두 M3). 확인 필요: 안쪽 M2 탭이 카운터보어 벽에 걸침(온전한 나사산 1.48), 판 A/B 거울상 2종.', 'mm. Review model (5th pass 11/09: wedge plate 9.22°, constant 0.4 V groove, clamp strip 8 × 4 × 1.5 with two M2 × 6, counterbored low-head M3). Open: the inner M2 tap breaks into the counterbore wall (1.48 mm of full thread), plates are two mirror parts A/B.')}</div>`;
