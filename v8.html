@@ -45,9 +45,9 @@ button[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-i
 <canvas id="c"></canvas>
 <header>
   <div class="t">
-    <h1 data-ko="빔라인 시료 셀 v8 (2026-11-09 검토 모델, 발주 전)" data-en="Beamline sample cell v8 (review model 2026-11-09, not ordered)"></h1>
-    <div class="sub" data-ko="PCB를 공동 바닥에 · 스탠드오프 위 황동 쐐기 팔 판 30 × 10 ×4 (직선 바늘, 경사면 V홈, 누름 띠, 앞 들기 나사) · 필름 창 64 × 26 · −X 꼬리 L자 받침 패널(PLA 출력 예정)에 4 mm 바인딩 포스트 4 (2 × 2, 19.05 피치) + JST-SH 6핀 · 몸체 104 × 114 × 30.1 · 부산대 이동현 · <a href='index.html'>v6.2c</a> · <a href='v60.html'>v6.0</a> · <a href='v48.html'>v4.8</a>"
-      data-en="PCB inside the cavity · brass wedge arm plates 30 × 10 on standoffs ×4 (straight needles in V grooves on a sloped face, clamp strip, front lift screw) · film window 64 × 26 · −X tail: four 4 mm binding posts (2 × 2, 19.05 pitch) on the panel of an L bracket (to be 3D-printed in PLA) + JST-SH 6-pin · body 104 × 114 × 30.1 · Donghyeon Lee, PNU · <a href='index.html'>v6.2c</a> · <a href='v60.html'>v6.0</a> · <a href='v48.html'>v4.8</a>"></div>
+    <h1 data-ko="빔라인 시료 셀 v8.1 (2026-11-09 14차 정리판, 발주 전)" data-en="Beamline sample cell v8.1 (14th pass clean-up 2026-11-09, not ordered)"></h1>
+    <div class="sub" data-ko="PCB를 공동 바닥에 · 스탠드오프 위 황동 쐐기 팔 판 30 × 10 ×4 (직선 바늘, 경사면 V홈, 누름 띠, 앞 들기 나사) · 필름 창 64 × 26 · 14차(v8.1): 포스트 4를 −X 벽에 직접 (한 줄, 19.05 피치, 어댑터는 가운데 CH1·CH3), 꼬리·홈·받침 삭제, 뒷면 평면 · 몸체 104 × 114 × 30.1 · 부산대 이동현 · <a href='index.html'>v6.2c</a> · <a href='v60.html'>v6.0</a> · <a href='v48.html'>v4.8</a>"
+      data-en="PCB inside the cavity · brass wedge arm plates 30 × 10 on standoffs ×4 (straight needles in V grooves on a sloped face, clamp strip, front lift screw) · film window 64 × 26 · 14th pass (v8.1): four 4 mm binding posts straight in the −X wall (one row, 19.05 pitch, adapter on the middle CH1·CH3); tail, slot and bracket removed; flat floor under the PCB · body 104 × 114 × 30.1 · Donghyeon Lee, PNU · <a href='index.html'>v6.2c</a> · <a href='v60.html'>v6.0</a> · <a href='v48.html'>v4.8</a>"></div>
   </div>
   <div class="top-r"><button id="numsBtn" data-ko="수치" data-en="Numbers"></button> <button id="lang">EN</button></div>
 </header>
@@ -143,7 +143,7 @@ const EXPL = [
   [/^들기/, [0, -34, 0]], [/^M2 x 6/, [0, -30, 0]], [/^누름 띠/, [0, -25, 0]], [/^M3 x|^스프링 와셔/, [0, -21, 0]], [/^팔 판/, [0, -15, 0]],
   [/^W 바늘/, [0, -11, 0]], [/^스탠드오프|^M3 너트/, [0, -6, 0]],
   [/^탠덤 웨이퍼|^Ag 앞 패드|^캡톤/, [0, -5, 0]], [/^인서트 POM/, [0, -3, 0]], [/^뒷핀/, [0, 6, 0]],
-  [/^PCB v8|^JST|^SHT45|^M2 x 10|^실리콘 메움|^선 납땜/, [0, 26, 0]], [/^원터치|^PU 튜브/, [0, 0, 12]], [/^접지 링|^M3 x 6 접지/, [-10, 0, 0]], [/^꼬리 받침|^M3 x 1[46] 소켓 \(꼬리|^M2 x 5 팬|^바인딩 포스트|^포스트 /, [-6, 34, 0]], [/^BNC|^바나나/, [-30, 34, 0]], [/^스톱 나일론/, [0, -6, 0]], [/^셀 몸체|^검출기/, [0, 0, 0]],
+  [/^PCB v8|^JST|^SHT45|^M2 x 10|^W 패드/, [0, 26, 0]], [/^원터치|^PU 튜브/, [0, 0, 12]], [/^접지 링|^M3 x 6 접지/, [-10, 0, 0]], [/^바인딩 포스트|^포스트 /, [-12, 0, 0]], [/^BNC|^바나나/, [-36, 0, 0]], [/^스톱 나일론/, [0, -6, 0]], [/^셀 몸체|^검출기/, [0, 0, 0]],
 ];
 function explodeOf(name, kind, layer) { for (const [re, o] of EXPL) if (re.test(name)) return o; return [0, 0, 0]; }
 const exEl = document.getElementById('explode');
@@ -182,7 +182,7 @@ function buildUI() {
   document.querySelectorAll('[data-ko]').forEach((el) => { if (el.tagName !== 'BUTTON' || el.id) el.innerHTML = el.dataset[lang]; });
   document.getElementById('lang').textContent = lang === 'ko' ? 'EN' : '한';
   const rows = [
-    [T('간섭 (측정 자세, 119 부품, 어댑터 포함)', 'Clashes (measuring, 119 parts incl. adapter)'), '0'],
+    [T('간섭 (측정 자세, 121 부품, 어댑터 포함)', 'Clashes (measuring, 121 parts incl. adapter)'), '0'],
     [T('검출기 40° D / 머리–필름 (±X)', 'Detector 40° D / head–film (±X)'), '15.6 / 2.5'],
     [T('검출기 30° / 50° D', 'Detector 30° / 50° D'), '20.3 / 20.5'],
     [T('Xe −X 45° ±6°, X선 창 Ø5 막힘', 'Xe −X 45° ±6°, X-ray Ø5 blocked'), '0 / 0'],
@@ -193,11 +193,12 @@ function buildUI() {
     [T('치움 18° 끝: 웨이퍼 밖', 'Swing 18° tip outside wafer'), '2.21'],
     [T('두 +Z 판 끝 사이', 'Gap between the two +Z plates'), '3.05'],
     [T('PCB 윗면 (웨이퍼 앞면 기준)', 'PCB top (from wafer front)'), 'h −9.5'],
-    [T('PCB 꼬리 −X (몸체 밖) · 포스트 머리 끝 · 어댑터 끝', 'PCB tail −X outside the body · post tip · adapter end'), '10 · 46.3 · 81.3'],
+    [T('−X 몸체 면에서 포스트 머리 끝 · 어댑터 끝', 'Post tip · adapter end from the −X body face'), '19.3 · 54.3'],
     [T('12차: PCB 아래 릴리프 1.0 + 뒷핀 납땜 릴리프 Ø7 x 1.5 (12b: Grace M4 탭 보스 Ø8, 탭 밑 Al 1.0)', '12th pass: 1.0 relief under the PCB + Ø7 x 1.5 rear-pin solder relief (12b: Ø8 bosses under the Grace M4 taps, 1.0 Al below each tap)'), '80.4 × 90.4'],
     [T('13차: SMA 6 → 바인딩 포스트 6 (L자 받침 패널), 스터드 영역–발 / PCB 1.0 / 3.1, Xe·검출기·어댑터 간섭 0', '13th pass: six SMA → six binding posts on an L-bracket panel; stud zone to foot / PCB 1.0 / 3.1, Xe, detector and adapters clear'), 'X −78'],
     [T('13b: 선 패드 두 묶음 Z ±11/±19/±27 (J7 플러그 피함), M2 머리–패드 링', '13b: wire pads in two groups at Z ±11/±19/±27 (clear of the J7 plug), M2 head to pad ring'), '1.22'],
     [T('13c: 포스트 4 (CH1–CH4), 어댑터 1개 줄 A (CH1 앞F · CH3 뒤F), 패널 Z ±19, 꼬리 받침 PLA 예정 (CNC 제외) · 어댑터–플러그', '13c: four posts (CH1–CH4), one adapter on row A (CH1 front F · CH3 rear F), panel Z ±19, tail bracket to be printed in PLA (not CNC) · adapter to plug'), '3.05'],
+    [T('14차(v8.1): 포스트 4를 −X 벽에 직접 (자리파기 18 × 76 × 1.5, Y 2.0), 꼬리·홈·받침 삭제, 뒷면 평면 · 안쪽 스터드–팔 판', '14th pass (v8.1): four posts straight in the −X wall (spot face 18 × 76 × 1.5, Y 2.0), tail, slot and bracket removed, flat floor · inner stud to arm plate'), '2.52'],
   ];
   document.getElementById('nums').innerHTML = '<table>' + rows.map((r) => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('') + '</table>' +
     `<div class="hint">${T('mm. 검토 모델(11/09 5차: 쐐기 판 9.22°, V홈 0.4 일정, 누름 띠 8 × 4 × 1.5 + M2 × 6, 카운터보어 + 저두 M3). 확인 필요: 안쪽 M2 탭이 카운터보어 벽에 걸침(온전한 나사산 1.48), 판 A/B 거울상 2종.', 'mm. Review model (5th pass 11/09: wedge plate 9.22°, constant 0.4 V groove, clamp strip 8 × 4 × 1.5 with two M2 × 6, counterbored low-head M3). Open: the inner M2 tap breaks into the counterbore wall (1.48 mm of full thread), plates are two mirror parts A/B.')}</div>`;

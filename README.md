@@ -19,6 +19,8 @@ Donghyeon Lee, Pusan National University. 3D viewer of the beamline sample cell 
 - 6차(11/09): 전기 연결을 V62식으로 되돌림 — PCB 꼬리 60 폭이 −X 벽 홈(62 × 2)으로 나가 몸체 밖 20 (8차: V62와 같은 −X 쪽), 끝에 SMA 엣지 잭 6개(J1–J6, CH1–CH6, 피치 10) + JST-SH 6핀 J7.
 - 6th pass: back to V62-style connections — a 60 mm wide PCB tail leaves through a 62 × 2 slot in the −X wall (8th pass: same side as V62), 20 mm outside the body, with six SMA edge jacks (J1–J6, 10 mm pitch) and a JST-SH 6-pin J7.
 - 13차(11/09): SMA 엣지 잭 6 → 4 mm 바인딩 포스트 6 (Mueller BU-P3760, 3 열 × 2 줄, 줄 피치 19.05, 열 피치 24). 포스트는 PCB가 아니라 L자 꼬리 받침(발 + 세로 Al 패널 3 t, X −78)에 꽂고, 스터드를 패널 안쪽 10에서 자른다. PCB 꼬리 끝 −72 → −62, 선 납땜 패드 6 (X −59). BNC–이중 바나나 어댑터(가정 상자) 2개를 꽂은 상태로도 간섭 0. 받침 지름·어댑터 크기는 가정.
+- 14차 v8.1(11/09): 포스트 4를 몸체 −X 벽 자리파기(18 × 76 × 1.5)에 한 줄로 직접 꽂음 (CH2·CH1·CH3·CH4, 어댑터는 가운데 CH1·CH3). PCB 꼬리·벽 홈·꼬리 받침 삭제, PCB 아래 평면, 접지 한 점, 팔 판 V홈 뒤 막힘 턱. 간섭 0.
+- 14th pass v8.1: four posts in one row straight in a spot face on the −X body wall (CH2·CH1·CH3·CH4, adapter on the middle CH1·CH3); PCB tail, wall slot and tail bracket removed; flat floor under the PCB, one ground point, blind rear end on the arm-plate V groove. No clashes.
 - 13c(11/09): 포스트 6 → 4 (CH1–CH4, 열 피치 19.05), BNC–이중 바나나 어댑터 1개를 줄 A (CH1 앞 F · CH3 뒤 F)에 꽂은 상태로 간섭 0. 패널 Z ±19. 꼬리 받침은 CNC에서 빼고 포스트 실물 확인 후 PLA로 출력할 예정.
 - 13c: six posts → four (CH1–CH4, 19.05 pitch); one BNC–dual-banana adapter on row A (CH1 front F · CH3 rear F), no clashes; panel Z ±19; the tail bracket is dropped from the CNC order and will be printed in PLA after checking the real posts.
 - 13b(11/09): 선 패드 6개를 J7 플러그 양옆 두 묶음으로 (X −59, Z −27/−19/−11 | +11/+19/+27 = CH1 CH2 CH3 | CH4 GND CH5), 받침 발 홈은 패드마다 포켓으로. 간섭 0.
