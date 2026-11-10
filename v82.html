@@ -46,9 +46,9 @@ button[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-i
 <canvas id="c"></canvas>
 <header>
   <div class="t">
-    <h1 data-ko="빔라인 시료 셀 v8.2b (2026-11-10, 3단자 + 양면 수광)" data-en="Beamline sample cell v8.2b (2026-11-10, 3-terminal + bifacial light)"></h1>
-    <div class="sub" data-ko="v8.1 + 3단자 중간 바늘 2개 (MF·MS, [−X−Z] 자리에 POM 3T 판) · 포스트 4 → 6 (2줄 CH5·CH6) · 뒷벽 관통 Ø20 + 뒷면 테이프 자리 Ø34 × 0.4 · '구성'에서 3T 판 / 판 B (2단자·4단자) 전환 · 몸체 104 × 114 × 30.1 · 부산대 이동현 · <a href='v8.html'>v8.1</a> · <a href='index.html'>v6.2c</a>"
-      data-en="v8.1 + two 3-terminal mid needles (MF, MS) on a POM 3T plate at [−X−Z] · posts 4 → 6 (second row CH5, CH6) · rear through hole Ø20 + tape recess Ø34 × 0.4 · 'Config' switches 3T plate / plate B (2- and 4-terminal) · body 104 × 114 × 30.1 · Donghyeon Lee, PNU · <a href='v8.html'>v8.1</a> · <a href='index.html'>v6.2c</a>"></div>
+    <h1 data-ko="빔라인 시료 셀 v8.2b + 뚜껑 안 B (2026-11-10, 3단자 + 양면 수광)" data-en="Beamline sample cell v8.2b + lid option B (2026-11-10, 3-terminal + bifacial light)"></h1>
+    <div class="sub" data-ko="v8.1 + 3단자 중간 바늘 2개 (MF·MS, [−X−Z] 자리에 POM 3T 판) · 포스트 4 → 6 (2줄 CH5·CH6) · 뒷벽 관통 Ø20 + 뒷면 테이프 자리 Ø34 × 0.4 · 뚜껑 안 B (11/10): X 벽 41° 경사 (윗면 구멍 X ±44.4) + 가운데 (±48.5, 0) M3 × 10 접시머리 · '구성'에서 3T 판 / 판 B (2단자·4단자) 전환 · 몸체 104 × 114 × 30.1 · 부산대 이동현 · <a href='v8.html'>v8.1</a> · <a href='index.html'>v6.2c</a>"
+      data-en="v8.1 + two 3-terminal mid needles (MF, MS) on a POM 3T plate at [−X−Z] · posts 4 → 6 (second row CH5, CH6) · rear through hole Ø20 + tape recess Ø34 × 0.4 · lid option B (11/10): X walls sloped 41° (top opening X ±44.4) + M3 × 10 countersunk at (±48.5, 0) · 'Config' switches 3T plate / plate B (2- and 4-terminal) · body 104 × 114 × 30.1 · Donghyeon Lee, PNU · <a href='v8.html'>v8.1</a> · <a href='index.html'>v6.2c</a>"></div>
   </div>
   <div class="top-r"><button id="numsBtn" data-ko="수치" data-en="Numbers"></button> <button id="lang">EN</button></div>
 </header>
@@ -199,6 +199,7 @@ function buildUI() {
   document.getElementById('lang').textContent = lang === 'ko' ? 'EN' : '한';
   const rows = [
     [T('간섭 (측정 자세): 3T 149 부품 / 2T·4T 144 부품', 'Clashes (measuring): 3T 149 parts / 2T·4T 144 parts'), '0 / 0'],
+    [T('뚜껑 안 B, 검출기 55°: 거리 / 입체각 (v8.1 뚜껑 → 안 B; Ø20 원통·50–55° 가정)', 'Lid option B, detector 55°: distance / solid angle (v8.1 lid → B; Ø20 cylinder, 50–55° assumed)'), '51.4 → 23.9 mm / 113 → 489 msr'],
     [T('3T 바늘 각도 MF / MS', '3T needle angle MF / MS'), '10.4° / 10.2°'],
     [T('3T 바늘 자유 길이 MF / MS', '3T needle free length MF / MS'), '18.5 / 18.7'],
     [T('3T 바늘끼리 (MF–MS 금속)', 'MF to MS needle (metal)'), '2.01'],
@@ -210,6 +211,7 @@ function buildUI() {
     [T('뒷벽 관통 · 뒷면 자리', 'Rear through hole · tape recess'), 'Ø20 · Ø34 × 0.4'],
     [T('테이프 (0.15 가정)–Grace 판', 'Tape (0.15 assumed) to Grace plate'), '0.25'],
     [T('검출기 40° D / 머리–필름 (±X)', 'Detector 40° D / head–film (±X)'), '15.6 / 2.5'],
+    [T('뚜껑 안 B–가장 가까운 앞 바늘 / 3T 판 / 포스트 받침', 'Lid B to nearest front needle / 3T plate / post base'), '0.82 / 2.74 / 2.80'],
     [T('Grace 판 가운데 구멍 제안 (뒤 빛용, Grace 확인 필요)', 'Suggested Grace-plate centre hole (rear light, ask Grace)'), 'Ø17'],
     [T('몸체 질량 (v8.1 0.341)', 'Body mass (v8.1 0.341)'), '0.333 kg'],
   ];

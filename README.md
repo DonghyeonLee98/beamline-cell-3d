@@ -11,8 +11,9 @@ Donghyeon Lee, Pusan National University. 3D viewer of the beamline sample cell 
 - 포스트 4 → 6: 1줄 CH2·CH1·CH3·CH4 그대로, 2줄(Y −4) CH5 (Z −43)·CH6 (Z +43), 각각 자리파기 Ø16. 접지 탭을 (Y 12.6, Z −48.5)로 옮김.
 - 뒷벽 가운데 관통 Ø20 + 뒷면 얕은 자리 Ø34 × 0.4. 단면 수광은 흑색 Al 포일 + PI 테이프, 양면 수광은 PET 필름 + PI 테이프로 막는다. 인서트에는 3T 바늘이 넘는 ㄱ자 홈 0.4.
 - 검사 (CAD): 간섭 0 (3T 149 부품, 2T 144 부품). 3T 바늘 10.4° / 10.2°, 바늘끼리 2.01, 인서트 테두리 0.69 / 0.43. 몸체 0.333 kg.
+- 뚜껑 안 B (11/10 저녁): X 벽 41° 경사(윗면 구멍 X ±44.4), 가운데 (±48.5, 0) 나사 2개는 M3 × 10 접시머리(Ø6.8 × 90°). v8.1 뚜껑을 대체. 55°에서 검출기 거리 51.4 → 23.9 mm, 입체각 113 → 489 msr (검출기 Ø20 원통·각도 50–55°는 가정). 다시 빌드한 조립에서도 간섭 0 (3T 149, 2T 144), 뚜껑–가장 가까운 앞 바늘 0.82.
 - 남은 확인: 중간 패드 실측 위치, POM M2 탭 강도, 포스트 받침 Ø14, 테이프 막음의 밀폐, Grace 판 가운데 구멍(Ø17 제안).
-- One line: v8.1 plus two needles for the 3-terminal mid contact (MF, MS) on a POM 3T plate that replaces plate B at [−X−Z]; plate B goes back for 2- and 4-terminal samples ('Config' buttons). Six binding posts (second row CH5, CH6), rear through hole Ø20 with a Ø34 × 0.4 tape recess (black Al foil or PET film + PI tape). CAD checks: 0 clashes (3T 149 parts, 2T 144 parts). Models: `models/v82_3t.glb`, `models/v82_2t.glb` + `*_meta.json` (detector dummy from v8).
+- One line: v8.1 plus two needles for the 3-terminal mid contact (MF, MS) on a POM 3T plate that replaces plate B at [−X−Z]; plate B goes back for 2- and 4-terminal samples ('Config' buttons). Six binding posts (second row CH5, CH6), rear through hole Ø20 with a Ø34 × 0.4 tape recess (black Al foil or PET film + PI tape). CAD checks: 0 clashes (3T 149 parts, 2T 144 parts). Lid option B (11/10 evening): X walls sloped 41°, centre pair M3 × 10 countersunk; at 55° the detector distance goes 51.4 → 23.9 mm, solid angle 113 → 489 msr (Ø20 cylinder detector and 50–55° assumed); rebuilt assembly still 0 clashes. Models: `models/v82_3t.glb`, `models/v82_2t.glb` + `*_meta.json` (detector dummy from v8).
 
 ## v8 (2026-11-09, 검토안 8차 · review model, 8th pass) — [v8.html](https://donghyeonlee98.github.io/beamline-cell-3d/v8.html)
 
