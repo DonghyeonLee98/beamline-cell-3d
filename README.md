@@ -5,6 +5,15 @@
 부산대 이동현. APS 2-ID-D (2026년 12월) 빔라인 시료 셀 **v6.2 (2026-11-07 초안: 2025 셀 방식 — 곧은 바늘 + 회전 클램프 블록 + 뒷면 PCB 포고, 선·납땜 없음)**의 3D 보기 (현재 **v6.2c**). 이전 판: [v6.0 rev B](https://donghyeonlee98.github.io/beamline-cell-3d/v60.html), [v4.8](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
 Donghyeon Lee, Pusan National University. 3D viewer of the beamline sample cell **v6.2 (draft 2026-11-07: 2025-cell style — straight needles + turnable clamp blocks + rear-PCB spring pins, no wires or solder)** for APS 2-ID-D (December 2026). Earlier viewers: [v6.0 rev B](https://donghyeonlee98.github.io/beamline-cell-3d/v60.html), [v4.8](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
 
+## v8.2b (2026-11-10, 3단자 + 양면 수광 · 3-terminal + bifacial light) — [v82.html](https://donghyeonlee98.github.io/beamline-cell-3d/v82.html)
+
+- 한 줄: v8.1에 3단자 중간 전극용 바늘 2개(MF·MS)를 더한 셀. [−X−Z] 스탠드오프의 판 B 자리에 POM 3T 판(V홈 2, 누름 띠 2)을 끼우고, 2단자·4단자 시료는 판 B를 다시 끼운다. 페이지의 '구성' 버튼으로 두 경우를 본다.
+- 포스트 4 → 6: 1줄 CH2·CH1·CH3·CH4 그대로, 2줄(Y −4) CH5 (Z −43)·CH6 (Z +43), 각각 자리파기 Ø16. 접지 탭을 (Y 12.6, Z −48.5)로 옮김.
+- 뒷벽 가운데 관통 Ø20 + 뒷면 얕은 자리 Ø34 × 0.4. 단면 수광은 흑색 Al 포일 + PI 테이프, 양면 수광은 PET 필름 + PI 테이프로 막는다. 인서트에는 3T 바늘이 넘는 ㄱ자 홈 0.4.
+- 검사 (CAD): 간섭 0 (3T 149 부품, 2T 144 부품). 3T 바늘 10.4° / 10.2°, 바늘끼리 2.01, 인서트 테두리 0.69 / 0.43. 몸체 0.333 kg.
+- 남은 확인: 중간 패드 실측 위치, POM M2 탭 강도, 포스트 받침 Ø14, 테이프 막음의 밀폐, Grace 판 가운데 구멍(Ø17 제안).
+- One line: v8.1 plus two needles for the 3-terminal mid contact (MF, MS) on a POM 3T plate that replaces plate B at [−X−Z]; plate B goes back for 2- and 4-terminal samples ('Config' buttons). Six binding posts (second row CH5, CH6), rear through hole Ø20 with a Ø34 × 0.4 tape recess (black Al foil or PET film + PI tape). CAD checks: 0 clashes (3T 149 parts, 2T 144 parts). Models: `models/v82_3t.glb`, `models/v82_2t.glb` + `*_meta.json` (detector dummy from v8).
+
 ## v8 (2026-11-09, 검토안 8차 · review model, 8th pass) — [v8.html](https://donghyeonlee98.github.io/beamline-cell-3d/v8.html)
 
 - 한 줄: PCB를 공동 바닥에 넣고, 바늘 팔을 스탠드오프 (±17, ±31.5) 위 황동 판 30 × 10 × 5 네 개로 바꾼 셀 (몸체 104 × 114 × 30.1, 공동 90 × 100, 필름 창 64 × 26). 발주 전 검토 모델이다.
@@ -160,6 +169,7 @@ APS 2-ID-D beamline sample cell v3.3 — 25 mm cell mounted whole; rear 4 spring
 - `models/lid_b3b.glb` — B3b rev1 뚜껑 / B3b rev1 lid
 - `models/lid_b3.glb`, `models/lid_b3l.glb`, `models/lid_b3_info.json` — B3 / B3L 슬롯 뚜껑 (뚜껑·테이프·필름 3개 노드), 필름 높이와 검출기 거리 D (`make_viewer_lid_b3_261108.py`) / B3 and B3L slot lids, film height and detector distance D
 - `models/v62_min.glb`, `models/v62_full.glb`, `models/v62_sets.json` — 최소 세트 모델(2T 빌드, 빈 리세스 6곳), 전체 세트 모델(3T 빌드 + 싱글 자리 시트 + 따로 놓은 추가분), 추가분 표시와 비교 표 숫자 (`make_viewer_sets_v62c_261107.py`) / minimal- and full-set models, extra flags and comparison numbers
+- `v82.html`, `models/v82_*.glb`, `models/v82_*_meta.json` — v8.2b 보기, 3T / 2T 전환 (11/10) / v8.2b viewer with a 3T / 2T switch
 - `v8.html`, `models/v8*.glb`, `models/v8*_meta.json` — v8 검토안 보기 (11/09) / v8 review viewer
 - `v60.html`, `models/v60_*.glb`, `models/v60_meta.json` — 이전 v6.0 rev B 보기 / earlier v6.0 rev B viewer
 - `v48.html`, `models/v48_*.glb`, `models/v48_meta.json` — 이전 v4.8 보기 / earlier v4.8 viewer
