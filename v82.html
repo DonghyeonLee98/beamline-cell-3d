@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>빔라인 시료 셀 v8.2b</title>
+<title>빔라인 시료 셀 v8.2b r2</title>
 <meta name="description" content="APS 2-ID-D beamline sample cell v8.2b (2026-11-10): v8.1 + 3-terminal mid-contact needles on a POM 3T plate, six binding posts, rear through hole for bifacial light. 3D viewer with a 3T / 2T toggle.">
 <style>
 :root { --bg1: #eef0f2; --bg2: #c9ced4; --ink: #15181c; --ink2: #4a525c; --panel: rgba(255,255,255,0.88); --line: rgba(20,24,28,0.12);
@@ -46,9 +46,9 @@ button[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-i
 <canvas id="c"></canvas>
 <header>
   <div class="t">
-    <h1 data-ko="빔라인 시료 셀 v8.2b + 뚜껑 안 B (2026-11-10, 3단자 + 양면 수광)" data-en="Beamline sample cell v8.2b + lid option B (2026-11-10, 3-terminal + bifacial light)"></h1>
-    <div class="sub" data-ko="v8.1 + 3단자 중간 바늘 2개 (MF·MS, [−X−Z] 자리에 POM 3T 판) · 포스트 4 → 6 (2줄 CH5·CH6) · 뒷벽 관통 Ø20 + 뒷면 테이프 자리 Ø34 × 0.4 · 뚜껑 안 B (11/10): X 벽 41° 경사 (윗면 구멍 X ±44.4) + 가운데 (±48.5, 0) M3 × 10 접시머리 · '구성'에서 3T 판 / 판 B (2단자·4단자) 전환 · 몸체 104 × 114 × 30.1 · 부산대 이동현 · <a href='v8.html'>v8.1</a> · <a href='index.html'>v6.2c</a>"
-      data-en="v8.1 + two 3-terminal mid needles (MF, MS) on a POM 3T plate at [−X−Z] · posts 4 → 6 (second row CH5, CH6) · rear through hole Ø20 + tape recess Ø34 × 0.4 · lid option B (11/10): X walls sloped 41° (top opening X ±44.4) + M3 × 10 countersunk at (±48.5, 0) · 'Config' switches 3T plate / plate B (2- and 4-terminal) · body 104 × 114 × 30.1 · Donghyeon Lee, PNU · <a href='v8.html'>v8.1</a> · <a href='index.html'>v6.2c</a>"></div>
+    <h1 data-ko="빔라인 시료 셀 v8.2b r2 (JLC 가공성 보완, 11-10)" data-en="Beamline sample cell v8.2b r2 (JLC machinability fixes, 11-10)"></h1>
+    <div class="sub" data-ko="r2: 뚜껑 접시 Ø5.8 + DIN 7991 M3 × 10 · 공동·PCB 포켓 모서리 R2.5 · 2줄 포스트 Z ±42.2 · 팔 판·3T 판 누름 탭 바닥면 수직 (팔 판 안쪽 M2 나사가 M3 와셔·머리와 겹침) · v8.1 + 3단자 중간 바늘 2개 (MF·MS, [−X−Z] 자리에 POM 3T 판) · 포스트 4 → 6 (2줄 CH5·CH6) · 뒷벽 관통 Ø20 + 뒷면 테이프 자리 Ø34 × 0.4 · 뚜껑 안 B (11/10): X 벽 41° 경사 (윗면 구멍 X ±44.4) + 가운데 (±48.5, 0) M3 × 10 접시머리 · '구성'에서 3T 판 / 판 B (2단자·4단자) 전환 · 몸체 104 × 114 × 30.1 · 부산대 이동현 · <a href='v8.html'>v8.1</a> · <a href='index.html'>v6.2c</a>"
+      data-en="r2: lid countersink Ø5.8 + DIN 7991 M3 × 10 · cavity and PCB-pocket corners R2.5 · second-row posts Z ±42.2 · clamp taps normal to the plate bottom (inner M2 screw on the arm plates overlaps the M3 washer and head) · v8.1 + two 3-terminal mid needles (MF, MS) on a POM 3T plate at [−X−Z] · posts 4 → 6 (second row CH5, CH6) · rear through hole Ø20 + tape recess Ø34 × 0.4 · lid option B (11/10): X walls sloped 41° (top opening X ±44.4) + M3 × 10 countersunk at (±48.5, 0) · 'Config' switches 3T plate / plate B (2- and 4-terminal) · body 104 × 114 × 30.1 · Donghyeon Lee, PNU · <a href='v8.html'>v8.1</a> · <a href='index.html'>v6.2c</a>"></div>
   </div>
   <div class="top-r"><button id="numsBtn" data-ko="수치" data-en="Numbers"></button> <button id="lang">EN</button></div>
 </header>
@@ -198,7 +198,8 @@ function buildUI() {
   document.querySelectorAll('[data-ko]').forEach((el) => { if (el.tagName !== 'BUTTON' || el.id) el.innerHTML = el.dataset[lang]; });
   document.getElementById('lang').textContent = lang === 'ko' ? 'EN' : '한';
   const rows = [
-    [T('간섭 (측정 자세): 3T 149 부품 / 2T·4T 144 부품', 'Clashes (measuring): 3T 149 parts / 2T·4T 144 parts'), '0 / 0'],
+    [T('간섭 (측정 자세, r2): 3T 149 부품 / 2T·4T 144 부품. 모두 팔 판 안쪽 M2 누름 나사 ↔ M3 스프링 와셔·머리', 'Clashes (measuring, r2): 3T 149 parts / 2T·4T 144 parts, all inner M2 clamp screw vs M3 spring washer and head on the arm plates'), '6 / 8 쌍'],
+    [T('r2 접시머리 머리 윗면–뚜껑 윗면 (DIN 7991 Ø6.0, 접시 Ø5.8)', 'r2 flat head above the lid top (DIN 7991 Ø6.0 in Ø5.8)'), '+0.1'],
     [T('뚜껑 안 B, 검출기 55°: 거리 / 입체각 (v8.1 뚜껑 → 안 B; Ø20 원통·50–55° 가정)', 'Lid option B, detector 55°: distance / solid angle (v8.1 lid → B; Ø20 cylinder, 50–55° assumed)'), '51.4 → 23.9 mm / 113 → 489 msr'],
     [T('3T 바늘 각도 MF / MS', '3T needle angle MF / MS'), '10.4° / 10.2°'],
     [T('3T 바늘 자유 길이 MF / MS', '3T needle free length MF / MS'), '18.5 / 18.7'],
@@ -207,7 +208,7 @@ function buildUI() {
     [T('3T 바늘–필름 틀 / 뚜껑 MF', '3T needle to film frame / lid MF'), '1.09 / 0.96'],
     [T('3T 판–뚜껑', '3T plate to lid'), '2.74'],
     [T('치움 18° 끝: 웨이퍼 밖 MF / MS', 'Swing 18° tip outside wafer MF / MS'), '5.3 / 3.0'],
-    [T('포스트 6 받침 사이 최소 (받침 Ø14 가정)', 'Six posts, min base gap (base Ø14 assumed)'), '1.62'],
+    [T('포스트 6 받침 사이 최소 (받침 Ø14 가정; r2 2줄 Z ±42.2, r1 1.62)', 'Six posts, min base gap (base Ø14 assumed; r2 row B Z ±42.2, r1 1.62)'), '0.89'],
     [T('뒷벽 관통 · 뒷면 자리', 'Rear through hole · tape recess'), 'Ø20 · Ø34 × 0.4'],
     [T('테이프 (0.15 가정)–Grace 판', 'Tape (0.15 assumed) to Grace plate'), '0.25'],
     [T('검출기 40° D / 머리–필름 (±X)', 'Detector 40° D / head–film (±X)'), '15.6 / 2.5'],
@@ -216,7 +217,7 @@ function buildUI() {
     [T('몸체 질량 (v8.1 0.341)', 'Body mass (v8.1 0.341)'), '0.333 kg'],
   ];
   document.getElementById('nums').innerHTML = '<table>' + rows.map((r) => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('') + '</table>' +
-    `<div class="hint">${T('mm. CAD 검사값 (beamline_wholecell_v82_261110.json). 미확인: 중간 패드 실측 위치, POM M2 탭 강도, 포스트 받침 Ø14, 테이프 막음 밀폐.', 'mm. CAD check values (beamline_wholecell_v82_261110.json). Open: measured mid-pad position, POM M2 thread strength, post base Ø14, tape seal.')}</div>`;
+    `<div class="hint">${T('mm. CAD 검사값 (beamline_wholecell_v82_r2_261110.json). 미확인: 중간 패드 실측 위치, POM M2 탭 강도, 포스트 받침 Ø14, 테이프 막음 밀폐.', 'mm. CAD check values (beamline_wholecell_v82_r2_261110.json). Open: measured mid-pad position, POM M2 thread strength, post base Ø14, tape seal.')}</div>`;
 }
 document.getElementById('lang').onclick = () => { lang = lang === 'ko' ? 'en' : 'ko'; document.documentElement.lang = lang; buildUI(); };
 document.getElementById('numsBtn').onclick = () => document.getElementById('nums').classList.toggle('open');
@@ -236,8 +237,8 @@ addEventListener('resize', resize);
 
 buildUI(); resize(); fly(VIEWS.find((v) => v.key === QS.get('view')) || VIEWS[0]); applyCut();
 statusEl.textContent = T('불러오는 중 …', 'Loading …');
-await loadSet('models/v82_3t.glb', 'models/v82_3t_meta.json', '3t', false);
-await loadSet('models/v82_2t.glb', 'models/v82_2t_meta.json', '2t', false);
+await loadSet('models/v82_3t.glb?v=r2', 'models/v82_3t_meta.json?v=r2', '3t', false);
+await loadSet('models/v82_2t.glb?v=r2', 'models/v82_2t_meta.json?v=r2', '2t', false);
 await loadSet('models/v8_det.glb', 'models/v8_det_meta.json', 'det', true);
 applyGroups(); statusEl.hidden = true;
 renderer.setAnimationLoop(() => { controls.update(); renderer.render(scene, camera); });

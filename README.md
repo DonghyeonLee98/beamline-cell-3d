@@ -5,13 +5,15 @@
 부산대 이동현. APS 2-ID-D (2026년 12월) 빔라인 시료 셀 **v6.2 (2026-11-07 초안: 2025 셀 방식 — 곧은 바늘 + 회전 클램프 블록 + 뒷면 PCB 포고, 선·납땜 없음)**의 3D 보기 (현재 **v6.2c**). 이전 판: [v6.0 rev B](https://donghyeonlee98.github.io/beamline-cell-3d/v60.html), [v4.8](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
 Donghyeon Lee, Pusan National University. 3D viewer of the beamline sample cell **v6.2 (draft 2026-11-07: 2025-cell style — straight needles + turnable clamp blocks + rear-PCB spring pins, no wires or solder)** for APS 2-ID-D (December 2026). Earlier viewers: [v6.0 rev B](https://donghyeonlee98.github.io/beamline-cell-3d/v60.html), [v4.8](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
 
-## v8.2b (2026-11-10, 3단자 + 양면 수광 · 3-terminal + bifacial light) — [v82.html](https://donghyeonlee98.github.io/beamline-cell-3d/v82.html)
+## v8.2b r2 (2026-11-10, 3단자 + 양면 수광, JLC 가공성 보완 · 3-terminal + bifacial light, machinability fixes) — [v82.html](https://donghyeonlee98.github.io/beamline-cell-3d/v82.html)
 
 - 한 줄: v8.1에 3단자 중간 전극용 바늘 2개(MF·MS)를 더한 셀. [−X−Z] 스탠드오프의 판 B 자리에 POM 3T 판(V홈 2, 누름 띠 2)을 끼우고, 2단자·4단자 시료는 판 B를 다시 끼운다. 페이지의 '구성' 버튼으로 두 경우를 본다.
 - 포스트 4 → 6: 1줄 CH2·CH1·CH3·CH4 그대로, 2줄(Y −4) CH5 (Z −43)·CH6 (Z +43), 각각 자리파기 Ø16. 접지 탭을 (Y 12.6, Z −48.5)로 옮김.
 - 뒷벽 가운데 관통 Ø20 + 뒷면 얕은 자리 Ø34 × 0.4. 단면 수광은 흑색 Al 포일 + PI 테이프, 양면 수광은 PET 필름 + PI 테이프로 막는다. 인서트에는 3T 바늘이 넘는 ㄱ자 홈 0.4.
 - 검사 (CAD): 간섭 0 (3T 149 부품, 2T 144 부품). 3T 바늘 10.4° / 10.2°, 바늘끼리 2.01, 인서트 테두리 0.69 / 0.43. 몸체 0.333 kg.
 - 뚜껑 안 B (11/10 저녁): X 벽 41° 경사(윗면 구멍 X ±44.4), 가운데 (±48.5, 0) 나사 2개는 M3 × 10 접시머리(Ø6.8 × 90°). v8.1 뚜껑을 대체. 55°에서 검출기 거리 51.4 → 23.9 mm, 입체각 113 → 489 msr (검출기 Ø20 원통·각도 50–55°는 가정). 다시 빌드한 조립에서도 간섭 0 (3T 149, 2T 144), 뚜껑–가장 가까운 앞 바늘 0.82.
+- r2 (11/10 밤, JLC 가공성 보완): 가공 STEP 6종(몸체·뚜껑·인서트·3T 판·팔 판 A/B)을 r2로 바꿈. 뚜껑 가운데 접시 Ø5.8 + DIN 7991 M3 × 10 (머리 Ø6.0, 뚜껑 윗면 위 0.1), 공동·PCB 포켓 모서리 R2.5, 납땜 릴리프 Ø7 장공, 2줄 포스트 Z ±42.2 (받침 사이 1.62 → 0.89), 인서트 릴리프·치움 홈·R0.5, 3T 판·팔 판 누름 탭을 바닥면에 수직으로 (띠·나사·링 단자도 새 탭 자리). 간섭: 3T 6쌍 / 2T 8쌍, 모두 팔 판 안쪽 M2 누름 나사 (r −3.3, n ±1)가 M3 스프링 와셔 Ø6.2·머리 Ø5.5와 겹침. 3T 판은 간섭 없음.
+- r2 (Nov 10, JLC machinability fixes): the six machined parts are the r2 STEPs. Centre lid pair: countersink Ø5.8 + DIN 7991 M3 × 10 (head 0.1 above the lid top); cavity and PCB-pocket corners R2.5; second-row posts at Z ±42.2 (base gap 1.62 → 0.89); clamp taps normal to the plate bottom, strips and screws moved onto them. Clashes: 6 (3T) / 8 (2T) pairs, all the inner M2 clamp screw (r −3.3, n ±1) against the M3 spring washer and head on the brass arm plates; the 3T plate is clear.
 - 남은 확인: 중간 패드 실측 위치, POM M2 탭 강도, 포스트 받침 Ø14, 테이프 막음의 밀폐, Grace 판 가운데 구멍(Ø17 제안).
 - One line: v8.1 plus two needles for the 3-terminal mid contact (MF, MS) on a POM 3T plate that replaces plate B at [−X−Z]; plate B goes back for 2- and 4-terminal samples ('Config' buttons). Six binding posts (second row CH5, CH6), rear through hole Ø20 with a Ø34 × 0.4 tape recess (black Al foil or PET film + PI tape). CAD checks: 0 clashes (3T 149 parts, 2T 144 parts). Lid option B (11/10 evening): X walls sloped 41°, centre pair M3 × 10 countersunk; at 55° the detector distance goes 51.4 → 23.9 mm, solid angle 113 → 489 msr (Ø20 cylinder detector and 50–55° assumed); rebuilt assembly still 0 clashes. Models: `models/v82_3t.glb`, `models/v82_2t.glb` + `*_meta.json` (detector dummy from v8).
 
