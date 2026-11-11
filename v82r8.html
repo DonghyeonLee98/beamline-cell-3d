@@ -62,6 +62,16 @@ button[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-i
   #issues { top: auto; bottom: 8px; left: 8px; right: 8px; width: auto; max-height: 52%; z-index: 7; font-size: 13px; background: var(--bg1); box-shadow: 0 -2px 12px rgba(0,0,0,0.25); } #issues:not(.open) { display: none; }
   #info { top: auto; bottom: 170px; left: 16px; right: 16px; width: auto; } .hint { display: none; } }
 @media (min-width: 601px) { #issues.closed { display: none; } }
+/* 261112: electrical-path / gas-flow overlay (paths.js) */
+.pbtn.elec[aria-pressed="true"] { background: #ff4d1a; color: #fff; } .pbtn.gas[aria-pressed="true"] { background: #00a8d6; color: #fff; }
+#legend { position: fixed; right: 16px; top: 74px; width: min(380px, calc(100% - 32px)); max-height: calc(100% - 300px); overflow-y: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 8px 10px; font-size: 12px; z-index: 6; }
+#legend .lh { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; } #legend .lh button { font-size: 11px; padding: 2px 8px; }
+#legend.fold .lb { display: none; }
+#legend .lt { font-weight: 650; margin: 6px 0 2px; } #legend .lr { display: flex; gap: 6px; align-items: flex-start; padding: 2px 0; border-bottom: 1px solid var(--line); }
+#legend .sw { flex: none; width: 14px; height: 6px; border-radius: 3px; margin-top: 6px; } #legend .ln { color: var(--ink2); font-size: 11px; margin-top: 4px; }
+#legend .mq { flex: none; font-size: 10.5px; font-weight: 700; color: #fff; background: #d62020; border-radius: 4px; padding: 0 4px; margin-top: 1px; }
+#marks .plab { position: absolute; transform: translate(-50%, -150%); font-size: 11px; font-weight: 650; color: #fff; background: rgba(20,24,28,0.78); padding: 1px 5px; border-radius: 5px; white-space: nowrap; } #marks .plab.below { transform: translate(-50%, 60%); }
+@media (max-width: 600px) { #legend { top: auto; bottom: 262px; left: 8px; right: 8px; width: auto; max-height: 30%; font-size: 11.5px; padding: 6px 10px; } }
 </style>
 </head>
 <body>
@@ -79,7 +89,9 @@ button[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-i
 <div id="issues"><h2><span id="issuesTitle">문제점</span><button id="issuesClose" data-ko="닫기" data-en="Close"></button></h2><ol id="issueList"></ol><div class="hint" id="issuesHint"></div></div>
 <div id="status">…</div>
 <div id="info" hidden></div>
+<div id="legend" hidden></div>
 <div id="panel">
+  <div class="row" id="pathsRow"><span class="lab" data-ko="경로" data-en="Paths"></span></div>
   <div class="row" id="toggles"><span class="lab" data-ko="표시" data-en="Show"></span></div>
   <div class="row" id="config"><span class="lab" data-ko="구성" data-en="Config"></span></div>
   <div class="row" id="views"><span class="lab" data-ko="보기" data-en="View"></span></div>
@@ -87,8 +99,8 @@ button[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-i
     <div class="sl"><span class="lab" data-ko="분해" data-en="Explode"></span><input id="explode" type="range" min="0" max="100" value="0"><output id="o-ex">0 %</output></div>
     <div class="sl"><span class="lab" data-ko="단면 X" data-en="Cut X"></span><input id="cut" type="range" min="-140" max="55" value="55" step="0.5"><output id="o-cut">–</output></div>
   </div>
-  <div class="hint" data-ko="끌어서 회전 · 두 손가락/휠 확대 · 부품을 누르면 이름 · 번호나 '문제점' 목록을 누르면 그 자리로 가서 설명이 보인다. '3T' = [−X−Z] 자리에 3T 판(흰 POM, 바늘 2개 → 중간 패드 MF·MS), '2T·4T' = 판 B. 번호는 해당 구성에서만 보인다. '해결된 곳'으로 초록 번호를 끄고 켠다."
-    data-en="Drag to rotate · pinch/wheel to zoom · tap a part for its name · tap a number or a 'Problems' entry to fly there and read it. '3T' = 3T plate at [−X−Z]; '2T·4T' = plate B. Numbers show only in the configuration they apply to. 'Solved' toggles the green numbers."></div>
+  <div class="hint" data-ko="끌어서 회전 · 두 손가락/휠 확대 · 부품을 누르면 이름 · 번호나 '문제점' 목록을 누르면 그 자리로 가서 설명이 보인다. '3T' = [−X−Z] 자리에 3T 판(흰 POM, 바늘 2개 → 중간 패드 MF·MS), '2T·4T' = 판 B. 번호는 해당 구성에서만 보인다. '해결된 곳'으로 초록 번호를 끄고 켠다. '전기 경로'·'기체 흐름'을 켜면 부품이 반투명해지고 경로가 위에 그려진다(범례에 채널 → 포스트, 미확인 표시)."
+    data-en="Drag to rotate · pinch/wheel to zoom · tap a part for its name · tap a number or a 'Problems' entry to fly there and read it. '3T' = 3T plate at [−X−Z]; '2T·4T' = plate B. Numbers show only in the configuration they apply to. 'Solved' toggles the green numbers. 'Electrical paths' / 'Gas flow' make the parts see-through and draw the routes on top (legend: channel → post, unconfirmed items marked)."></div>
 </div>
 <script type="importmap">
 { "imports": {
@@ -102,6 +114,8 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { toCreasedNormals } from 'three/addons/utils/BufferGeometryUtils.js';
+import { initPaths } from './paths.js';   // 261112: electrical paths + gas flow overlay
+let paths = null;
 
 let lang = 'ko';
 const T = (ko, en) => (lang === 'ko' ? ko : en);
@@ -265,7 +279,7 @@ function namePart(re) { const s = re.source.replace(/^\^/, ''); return s; }
 const _v = new THREE.Vector3();
 function placeMarks() {
   for (const k of markObjs) {
-    const vis = k.it.cfg.includes(cfg) && (!k.it.ok || showOk || selIssue === k.it); k.obj.visible = vis;
+    const vis = k.it.cfg.includes(cfg) && (!k.it.ok || showOk || selIssue === k.it) && !(paths && (paths.on.elec || paths.on.gas)); k.obj.visible = vis;   // 261112: numbers hide under the path overlay
     if (!vis) { k.el.style.display = 'none'; continue; }
     k.obj.getWorldPosition(_v); _v.project(camera);
     if (_v.z > 1) { k.el.style.display = 'none'; continue; }
@@ -362,7 +376,7 @@ function buildUI() {
     `<div class="hint">${T('mm. CAD 검사값 (beamline_wholecell_v82_r8_261111.json, r8 보고, A 보고).', 'mm. CAD check values (beamline_wholecell_v82_r8_261111.json, r8 report, report A).')}</div>`;
   buildIssues();
 }
-document.getElementById('lang').onclick = () => { lang = lang === 'ko' ? 'en' : 'ko'; document.documentElement.lang = lang; buildUI(); };
+document.getElementById('lang').onclick = () => { lang = lang === 'ko' ? 'en' : 'ko'; document.documentElement.lang = lang; buildUI(); if (paths) paths.rebuild(); };
 document.getElementById('numsBtn').onclick = () => document.getElementById('nums').classList.toggle('open');
 document.getElementById('issuesBtn').onclick = () => { const e = document.getElementById('issues'); const narrow = innerWidth <= 600;
   if (narrow) e.classList.toggle('open'); else e.classList.toggle('closed'); updOffset(); };
@@ -390,7 +404,12 @@ await loadSet('models/v82r8_2t.glb', 'models/v82r8_2t_meta.json', '2t', false);
 await loadSet('models/v8_det.glb', 'models/v8_det_meta.json', 'det', true);
 applyGroups(); statusEl.hidden = true;
 const qi = ISSUES.find((i) => i.n === QS.get('issue')); if (qi) selectIssue(qi, true);   // v82r8.html?issue=2c (or R1) opens one problem
-renderer.setAnimationLoop(() => { controls.update(); renderer.render(scene, camera); placeMarks(); });
+// paths drawn at the assembled position: turning one on resets the explode slider; they hide while exploded (?paths=elec,gas)
+paths = await initPaths({ root, parts, camera, getCfg: () => cfg, getLang: () => lang, row: document.getElementById('pathsRow'),
+  legend: document.getElementById('legend'), marks: marksEl, exploded: () => +exEl.value > 0,
+  beforeOn: () => { if (+exEl.value > 0) { exEl.value = 0; applyExplode(); } } });
+for (const k of (QS.get('paths') || '').split(',')) if (paths.on[k] === false) document.querySelector('#pathsRow .pbtn.' + k).click();
+renderer.setAnimationLoop(() => { controls.update(); paths.tick(); renderer.render(scene, camera); placeMarks(); });
 </script>
 </body>
 </html>
