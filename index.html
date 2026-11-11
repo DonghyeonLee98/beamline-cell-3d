@@ -3,117 +3,93 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>빔라인 시료 셀 v6.2c</title>
-<meta name="description" content="APS 2-ID-D beamline sample cell v6.2c (straight needles in brass clamp blocks that turn and tilt on glued flat POM seats, rear PCB spring pins as the contacts, no wires or solder in the cell) — 3D viewer with real materials, block rotation, section cut and close-ups.">
+<title>빔라인 시료 셀 v8.2b r8 · 문제점</title>
+<meta name="description" content="APS 2-ID-D beamline sample cell v8.2b r8 (2026-11-11): order set r8 assembled, 3T / 2T toggle, open problems (red) and problems solved since r6 (green) marked on the model.">
 <style>
-:root {
-  --bg1: #eef0f2; --bg2: #c9ced4; --ink: #15181c; --ink2: #4a525c; --panel: rgba(255,255,255,0.86); --line: rgba(20,24,28,0.12);
-  --chip: rgba(20,24,28,0.06); --chip-on: #15181c; --chip-on-ink: #fff; --accent: #c2410c;
-}
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --bg1: #2a2e34; --bg2: #0e1013; --ink: #eef1f4; --ink2: #a3acb7; --panel: rgba(22,25,29,0.86); --line: rgba(255,255,255,0.12);
-  --chip: rgba(255,255,255,0.08); --chip-on: #eef1f4; --chip-on-ink: #111; --accent: #fb923c; } }
-:root[data-theme="dark"] {
-  --bg1: #2a2e34; --bg2: #0e1013; --ink: #eef1f4; --ink2: #a3acb7; --panel: rgba(22,25,29,0.86); --line: rgba(255,255,255,0.12);
-  --chip: rgba(255,255,255,0.08); --chip-on: #eef1f4; --chip-on-ink: #111; --accent: #fb923c; }
+:root { --bg1: #eef0f2; --bg2: #c9ced4; --ink: #15181c; --ink2: #4a525c; --panel: rgba(255,255,255,0.88); --line: rgba(20,24,28,0.12);
+  --chip: rgba(20,24,28,0.06); --chip-on: #15181c; --chip-on-ink: #fff; --accent: #c2410c; }
+@media (prefers-color-scheme: dark) { :root { --bg1: #2a2e34; --bg2: #0e1013; --ink: #eef1f4; --ink2: #a3acb7; --panel: rgba(22,25,29,0.88);
+  --line: rgba(255,255,255,0.12); --chip: rgba(255,255,255,0.08); --chip-on: #eef1f4; --chip-on-ink: #111; --accent: #fb923c; } }
 * { box-sizing: border-box; }
 html, body { margin: 0; height: 100%; overflow: hidden; }
 body { background: radial-gradient(120% 90% at 50% 30%, var(--bg1), var(--bg2)); color: var(--ink);
   font: 14px/1.45 system-ui, -apple-system, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; }
 #c { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
-header { position: fixed; top: 12px; left: 16px; right: 16px; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; pointer-events: none; }
-header .t { pointer-events: auto; }
-h1 { margin: 0; font-size: 18px; letter-spacing: -0.01em; }
-.sub { color: var(--ink2); font-size: 12.5px; margin-top: 2px; }
+header { position: fixed; z-index: 4; top: 12px; left: 16px; right: 16px; display: flex; justify-content: space-between; gap: 12px; pointer-events: none; }
+header .t, .top-r { pointer-events: auto; }
+h1 { margin: 0; font-size: 18px; }
+.sub { color: var(--ink2); font-size: 12.5px; margin-top: 2px; max-width: 760px; }
 .sub a { color: inherit; }
-.top-r { display: flex; gap: 6px; pointer-events: auto; flex: none; }
 button { font: inherit; color: var(--ink); background: var(--chip); border: 1px solid var(--line); border-radius: 999px; padding: 5px 11px; cursor: pointer; white-space: nowrap; }
 button[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-ink); border-color: transparent; }
-button:disabled { opacity: 0.35; cursor: default; }
-.sw { display: inline-block; width: 10px; height: 10px; border-radius: 3px; background: #ff6a00; margin-right: 5px; vertical-align: -1px; }
-#tintbtn[aria-pressed="false"] .sw { background: transparent; border: 1.5px solid #ff6a00; }
-#info table.cmp { font-size: 11.5px; table-layout: fixed; }
-#info table.cmp td { overflow-wrap: anywhere; }
-#info table.cmp col.c-n { width: 46%; } #info table.cmp col.c-q { width: 12%; } #info table.cmp.b3 col.c-n { width: 50%; } #info table.cmp.b3 col.c-q { width: 25%; }
-#info table.cmp td:first-child { white-space: normal; word-break: break-all; font-weight: 600; }
-#info table.cmp td.q { text-align: right; font-variant-numeric: tabular-nums; overflow-wrap: normal; }
-#info table.cmp tr.h td { font-weight: 650; color: var(--ink2); border-top: none; }
-#info table.cmp tr.d td { color: var(--accent); }
-#info .cost { margin: 6px 0 2px; font-size: 12px; }
-#info .cost b { font-variant-numeric: tabular-nums; }
-#info h4 { margin: 10px 0 0; font-size: 12.5px; }
-#panel { position: fixed; left: 50%; bottom: 12px; transform: translateX(-50%); width: min(880px, calc(100% - 24px)); background: var(--panel);
+#panel { position: fixed; left: 50%; bottom: 12px; transform: translateX(-50%); width: min(860px, calc(100% - 24px)); background: var(--panel);
   backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; }
 .row { display: flex; gap: 6px; align-items: center; overflow-x: auto; scrollbar-width: none; padding: 2px 0; }
 .row::-webkit-scrollbar { display: none; }
-.row + .row, .more > .row:first-child { margin-top: 6px; }
+.row + .row { margin-top: 6px; }
+#issues, #panel { z-index: 5; }
 .lab { color: var(--ink2); font-size: 12px; min-width: 34px; flex: none; }
 .sl { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 150px; }
 .sl input { flex: 1; accent-color: var(--accent); }
 .sl output { font-variant-numeric: tabular-nums; color: var(--ink2); font-size: 12px; width: 52px; text-align: right; }
-#o-rot { width: 96px; }
-#o-rot.warn { color: var(--accent); }
-#hide { margin-left: auto; }
-#lidinfo { font-size: 11.5px; color: var(--ink2); margin-top: 4px; line-height: 1.4; }
-#lidinfo b { color: var(--ink); font-variant-numeric: tabular-nums; }
-#lidinfo .w { color: var(--accent); }
-#lidinfo .hl { color: var(--accent); font-weight: 650; }
-.blk-link { color: var(--accent); font-size: 12.5px; white-space: nowrap; text-decoration: none; padding: 0 4px; }
-#panel.min .more { display: none; }
-#info { position: fixed; right: 16px; top: 64px; width: min(360px, calc(100% - 32px)); max-height: calc(100% - 260px); overflow-y: auto; background: var(--panel); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; font-size: 13px; }
-#info .k { font-weight: 650; }
-#info .m { color: var(--accent); font-size: 12px; margin: 2px 0 4px; }
-#info .n { color: var(--ink2); font-size: 12px; word-break: keep-all; }
-#info .x { float: right; padding: 0 8px; border-radius: 6px; }
-#info table { border-collapse: collapse; width: 100%; font-size: 12px; margin-top: 4px; }
-#info td { border-top: 1px solid var(--line); padding: 3px 4px; vertical-align: top; word-break: keep-all; }
-#info td:first-child { font-weight: 600; white-space: nowrap; }
+#info { position: fixed; right: 16px; top: 74px; width: min(340px, calc(100% - 32px)); background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; font-size: 13px; }
+#info .k { font-weight: 650; } #info .n { color: var(--ink2); font-size: 12px; }
+#nums { position: fixed; left: 16px; top: 92px; width: min(330px, calc(100% - 32px)); background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 8px 10px; font-size: 12px; }
+#nums table { border-collapse: collapse; width: 100%; } #nums td { padding: 1px 4px; border-bottom: 1px solid var(--line); } #nums td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
 #status { position: fixed; left: 50%; top: 45%; transform: translate(-50%, -50%); color: var(--ink2); background: var(--panel); padding: 8px 14px; border-radius: 10px; border: 1px solid var(--line); }
 .hint { color: var(--ink2); font-size: 11.5px; margin-top: 6px; }
-@media (max-width: 600px) {
-  h1 { font-size: 15px; } .sub { font-size: 11.5px; }
-  .top-r { flex-direction: column; align-items: flex-end; }
-  #info { top: auto; bottom: calc(var(--ph, 160px) + 20px); left: 16px; right: 16px; width: auto; max-height: 45%; }
-  .hint { display: none; }
-}
+#nums { display: none; } #nums.open { display: block; z-index: 6; }
+#issues { position: fixed; overflow-x: hidden; left: 16px; top: 92px; width: min(360px, calc(100% - 32px)); max-height: calc(100% - 310px); overflow-y: auto; background: var(--panel); border: 1px solid var(--line);
+  border-radius: 12px; padding: 8px 10px; font-size: 12.5px; z-index: 5; }
+#issues h2 { margin: 0 0 4px; font-size: 14px; color: #c81e1e; display: flex; justify-content: space-between; align-items: center; }
+#issues h2 button { font-size: 11px; padding: 2px 8px; }
+#issues ol { list-style: none; margin: 0; padding: 0; }
+#issues li { padding: 5px 4px; border-bottom: 1px solid var(--line); cursor: pointer; border-radius: 6px; }
+#issues li.sel { background: rgba(200,30,30,0.10); }
+#issues li .h { font-weight: 650; } #issues li .d { color: var(--ink2); margin-top: 2px; display: none; } #issues li.sel .d { display: block; }
+#issues li .w { color: var(--ink2); font-size: 11px; }
+.bn { display: inline-block; min-width: 20px; height: 20px; padding: 0 4px; border-radius: 10px; background: #d62020; color: #fff; font-size: 11px; font-weight: 700; line-height: 20px; text-align: center; margin-right: 6px; vertical-align: 1px; }
+#marks { position: fixed; inset: 0; pointer-events: none; z-index: 3; }
+#marks .bn { position: absolute; transform: translate(-50%, -50%); pointer-events: auto; cursor: pointer; box-shadow: 0 0 0 2px #fff, 0 1px 4px rgba(0,0,0,0.5); margin: 0; }
+#marks .bn.sel { background: #ffd400; color: #111; }
+#issuesBtn { color: #fff; background: #d62020; border-color: transparent; }
+.bn.ok { background: #1e9e48; }
+#marks .bn.ok { background: #1e9e48; } #marks .bn.ok.sel { background: #ffd400; color: #111; }
+#issues .grp { margin: 8px 0 2px; padding-top: 6px; border-top: 2px solid var(--line); color: var(--ink2); font-weight: 650; font-size: 12.5px; }
+#issues li.ok { color: var(--ink2); } #issues li.ok .h { font-weight: 600; } #issues li.ok.sel { background: rgba(30,158,72,0.12); }
+@media (max-width: 600px) { header .t { min-width: 0; flex: 1; } #panel .row:has(.sl) { flex-wrap: wrap; } .sl { min-width: 0; flex: 1 1 100%; } .sl output { width: 44px; white-space: nowrap; } h1 { font-size: 15px; } .top-r { flex: none; }
+  .sub { font-size: 11px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; } #nums.open { top: auto; bottom: 170px; left: 16px; right: 16px; width: auto; max-height: 50%; overflow-y: auto; }
+  #issues { top: auto; bottom: 8px; left: 8px; right: 8px; width: auto; max-height: 52%; z-index: 7; font-size: 13px; background: var(--bg1); box-shadow: 0 -2px 12px rgba(0,0,0,0.25); } #issues:not(.open) { display: none; }
+  #info { top: auto; bottom: 170px; left: 16px; right: 16px; width: auto; } .hint { display: none; } }
+@media (min-width: 601px) { #issues.closed { display: none; } }
 </style>
 </head>
 <body>
 <canvas id="c"></canvas>
 <header>
   <div class="t">
-    <h1 data-ko="빔라인 시료 셀 v6.2c — 곧은 바늘 + 회전·기울기 클램프 블록 (블록당 나사 2개) + 평평한 POM 시트 (에폭시) + 뒷면 PCB 포고, 선·납땜 없음 (초안, 11/07)" data-en="Beamline sample cell v6.2c — straight needles + turn-and-tilt clamp blocks (2 screws per block) + flat glued POM seats + rear-PCB spring pins, no wires or solder (draft, 11/07)"></h1>
-    <div class="sub" data-ko="APS 2-ID-D · 2026년 12월 · 몸체 80 × 77 × 19 + 뚜껑 3 + PCB 1.6 + 뒷판 5 · 부산대 이동현 · <a href='v82r8.html'>최신 v8.2b r8 (문제점 표시)</a> · <a href='v82r6.html'>r6</a> · <a href='v8.html'>v8 (11/09 검토안)</a> · <a href='v60.html'>이전 v6.0</a> · <a href='v48.html'>v4.8</a> · <a href='v33.html'>v3.3</a>"
-      data-en="APS 2-ID-D · Dec 2026 · body 80 × 77 × 19 + lid 3 + PCB 1.6 + back plate 5 · Donghyeon Lee, PNU · <a href='v82r8.html'>latest v8.2b r8 (problems marked)</a> · <a href='v82r6.html'>r6</a> · <a href='v8.html'>v8 (11/09 review)</a> · <a href='v60.html'>earlier v6.0</a> · <a href='v48.html'>v4.8</a> · <a href='v33.html'>v3.3</a>"></div>
+    <h1 data-ko="빔라인 시료 셀 v8.2b r8 (발주 세트 r8, 11-11)" data-en="Beamline sample cell v8.2b r8 (order set r8, 11-11)"></h1>
+    <div class="sub" data-ko="r8 = 가공 부품 8종 조립. r6에서 인서트(윗면 낮춤, 누름 나사 탭, 뒷핀 자리파기 Ø2.2, NTC 구멍 Ø2.6, 방향 표시 모따기)와 3T 판 들기 탭(n 5.3)이 바뀌고 나머지 6종은 같다. 간섭 0 (3T 156 부품, 2T·4T 150 부품). 빨간 번호 = 남은 문제점, 초록 번호 = r6 → r8에서 해결된 곳 · 부산대 이동현 · 이전 판 <a href='v82r6.html'>r6</a> · <a href='v82.html'>r2</a> · <a href='v8.html'>v8.1</a> · <a href='v62c.html'>v6.2c</a> · <a href='v60.html'>v6.0</a> · <a href='v48.html'>v4.8</a> · <a href='v33.html'>v3.3</a>"
+      data-en="r8 = the eight machined parts assembled. Since r6 the insert (lower top, clamp-screw taps, Ø2.2 rear-pin counterbores, Ø2.6 NTC hole, orientation chamfer) and the 3T-plate lift tap (n 5.3) changed; the other six parts are the same. 0 clashes (3T 156 parts, 2T/4T 150). Red = open problems, green = solved from r6 to r8 · Donghyeon Lee, PNU · earlier <a href='v82r6.html'>r6</a> · <a href='v82.html'>r2</a> · <a href='v8.html'>v8.1</a> · <a href='v62c.html'>v6.2c</a> · <a href='v60.html'>v6.0</a> · <a href='v48.html'>v4.8</a> · <a href='v33.html'>v3.3</a>"></div>
   </div>
-  <div class="top-r"><button id="cmp" data-ko="비교" data-en="Compare"></button><button id="mat" data-ko="재질" data-en="Materials"></button><button id="lang">EN</button></div>
+  <div class="top-r"><button id="issuesBtn" data-ko="문제점" data-en="Problems"></button> <button id="numsBtn" data-ko="수치" data-en="Numbers"></button> <button id="lang">EN</button></div>
 </header>
+<div id="nums"></div>
+<div id="marks"></div>
+<div id="issues"><h2><span id="issuesTitle">문제점</span><button id="issuesClose" data-ko="닫기" data-en="Close"></button></h2><ol id="issueList"></ol><div class="hint" id="issuesHint"></div></div>
 <div id="status">…</div>
 <div id="info" hidden></div>
 <div id="panel">
-  <div class="row" id="sets"><span class="lab" data-ko="세트" data-en="Set"></span><button id="tintbtn" aria-pressed="true" data-ko="<span class='sw'></span>추가분" data-en="<span class='sw'></span>extras"></button></div>
-  <div class="row" id="variants"><span class="lab" data-ko="셀" data-en="Cell"></span></div>
-  <div class="row" id="lids"><span class="lab" data-ko="뚜껑" data-en="Lid"></span></div>
-  <div class="row" id="clear"><span class="lab" data-ko="간섭" data-en="Clear"></span></div>
-  <div id="lidinfo"></div>
-  <div class="row" id="views"><span class="lab" data-ko="보기" data-en="View"></span><button id="lidbtn"></button></div>
-  <div class="more">
-    <div class="row" id="sites"><span class="lab" data-ko="블록" data-en="Block"></span></div>
-    <div class="row">
-      <div class="sl"><span class="lab" data-ko="회전" data-en="Turn"></span><input id="rot" type="range" min="-15" max="15" value="0" step="0.5"><output id="o-rot">0°</output></div>
-    </div>
-    <div class="row">
-      <div class="sl"><span class="lab" data-ko="분해" data-en="Explode"></span><input id="explode" type="range" min="0" max="100" value="0"><output id="o-ex">0 %</output></div>
-      <div class="sl"><span class="lab" data-ko="단면" data-en="Section"></span><input id="cut" type="range" min="-75" max="41" value="41" step="0.5"><output id="o-cut">–</output></div>
-    </div>
-    <div class="row" id="toggles"><span class="lab" data-ko="표시" data-en="Show"></span></div>
-    <div class="hint" data-ko="끌어서 회전 · 두 손가락/휠 확대 · 부품을 누르면 이름과 재질 · 두 번 누르면 그 부품 중심으로 돌림. '블록'에서 자리를 고르고 '회전'을 밀면 그 블록이 수직 M2 당김 나사 축으로 돈다; 범위 밖(옆 바늘·바닥 0.3 mm 미만, json checks)은 주황색. 블록 하나에 나사 2개: 가운데 당김 나사 = 회전 축·잠금, 뒤 M1.6 세트스크류 = 기울기 (1회전 ≈ 5.0°, 1/4회전 = 팁 0.34 mm; 예압은 이것으로). 형상은 v6.2c 빌드 모델(초안, 발주 전). '세트'의 최소 = 12월 2T 전용 발주(시트·블록 4곳, 빈 리세스 6곳, SMA J1–J4, 퍽·마개 없음), 전체 = 14종 전부; 전체에서 최소 세트에 없는 부품은 주황색('추가분'으로 끄고 켬). '비교'는 두 세트의 수량·비용 표."
-      data-en="Drag to rotate · pinch/wheel to zoom · tap a part for its name and material · double-tap to orbit around it. Pick a site under 'Block' and move 'Turn': that block turns about its vertical M2 pull-screw axis; outside the checked range (neighbour needle or floor < 0.3 mm, json checks) the value turns orange. Two screws per block: the centre pull screw = turn axis + lock, the rear set screw = tilt (1 turn ≈ 5.0°, 1/4 turn = 0.34 mm of tip travel; preload is set with it). Geometry is the v6.2c build model (draft, not ordered). 'Set': minimal = the December 2T-only order (seats and blocks at 4 sites, 6 empty recesses, SMA J1–J4, no puck or plug); full = all 14 CNC designs; in full, parts the minimal set lacks are orange ('extras' toggles the tint). 'Compare' lists quantities and costs of both sets."></div>
+  <div class="row" id="toggles"><span class="lab" data-ko="표시" data-en="Show"></span></div>
+  <div class="row" id="config"><span class="lab" data-ko="구성" data-en="Config"></span></div>
+  <div class="row" id="views"><span class="lab" data-ko="보기" data-en="View"></span></div>
+  <div class="row">
+    <div class="sl"><span class="lab" data-ko="분해" data-en="Explode"></span><input id="explode" type="range" min="0" max="100" value="0"><output id="o-ex">0 %</output></div>
+    <div class="sl"><span class="lab" data-ko="단면 X" data-en="Cut X"></span><input id="cut" type="range" min="-140" max="55" value="55" step="0.5"><output id="o-cut">–</output></div>
   </div>
-  <div class="row" style="margin-top:6px"><button id="hide" data-ko="접기" data-en="Less"></button></div>
+  <div class="hint" data-ko="끌어서 회전 · 두 손가락/휠 확대 · 부품을 누르면 이름 · 번호나 '문제점' 목록을 누르면 그 자리로 가서 설명이 보인다. '3T' = [−X−Z] 자리에 3T 판(흰 POM, 바늘 2개 → 중간 패드 MF·MS), '2T·4T' = 판 B. 번호는 해당 구성에서만 보인다. '해결된 곳'으로 초록 번호를 끄고 켠다."
+    data-en="Drag to rotate · pinch/wheel to zoom · tap a part for its name · tap a number or a 'Problems' entry to fly there and read it. '3T' = 3T plate at [−X−Z]; '2T·4T' = plate B. Numbers show only in the configuration they apply to. 'Solved' toggles the green numbers."></div>
 </div>
-
 <script type="importmap">
 { "imports": {
   "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
@@ -127,591 +103,294 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { toCreasedNormals } from 'three/addons/utils/BufferGeometryUtils.js';
 
-// CAD frame: X right (seen from the beam), Y = beam direction (front of the cell is −Y), Z up. three.js: (x, z, −y).
-const cad = (x, y, z) => new THREE.Vector3(x, z, -y);
 let lang = 'ko';
-try { const s = localStorage.getItem('bc46-lang'); if (s === 'en' || s === 'ko') lang = s; } catch (e) {}
-
-const VARIANTS = [   // site variant in the build json: a = 2T, c = 3T, b = single
-  { key: '3t', v: 'c', ko: '탠덤 3T (기본)', en: 'Tandem 3T (base)' },
-  { key: '2t', v: 'a', ko: '탠덤 2T', en: 'Tandem 2T' },
-  { key: '2t_dark', v: 'a', ko: '2T · 마개', en: '2T · dark plug' },
-  { key: 'single', v: 'b', ko: '싱글 ITO (b1)', en: 'Single ITO (b1)' },
-  { key: 'single_b2', v: 'b', ko: '싱글 FTO (b2)', en: 'Single FTO (b2)' },
-];
-// order sets (cnc_v62c/order/261107_v62c_revB_발주): min = December 2T-only order, full = all 14 CNC designs
-const SETS = [ { key: 'min', ko: '최소 (12월 2T)', en: 'Minimal (Dec 2T)' }, { key: 'full', ko: '전체', en: 'Full' } ];
-let setMode = 'full', cfg = '3t', tintOn = true;
-// lid choice (v6.2c rev C1 variants, cnc_v62c/variant_lidB3; draft 11/08): now = rev C lid (film plane Y -2.3), b3 / b3l = slot lid with the film 0.94 / 0.64 above the wafer. B3 is 2T / 3T only.
-const LIDS = [ { key: 'now', ko: '현재', en: 'Current' }, { key: 'b3', ko: 'B3 슬롯', en: 'B3 slot' }, { key: 'b3l', ko: 'B3L', en: 'B3L' }, { key: 'b3b', ko: 'B3b (권장)', en: 'B3b (recommended)' } ];
-let lidSel = 'b3b', lidUser = false, snoutDeg = 0, xeOn = false;   // 11/09: B3b rev1 is the default lid for 2T / 3T (#...&now still opens the current lid)
-let lidInfo = null;   // models/lid_b3_info.json
-const isSingle = (k) => k === 'single' || k === 'single_b2';
-const effLid = () => (isSingle(cfg) ? 'now' : lidSel);                  // singles keep the current lid
-const lidGLB = {};
-const effKey = () => (setMode === 'min' ? 'min' : cfg);                 // GLB key: min = v62_min.glb; 3t = v62_full.glb (3T + seats at all 10 sites + extras beside the cell)
-const fileOf = (k) => (k === '3t' ? 'full' : k);
-const TINT = new THREE.Color(0xff6a00);
-const VIEWS = [   // lid: true/false = closed/open
-  { key: 'iso', ko: '비스듬히', en: '3/4', t: [-10, 0, 100], c: [265, -345, 240], lid: true },
-  { key: 'front', ko: '정면 (빔 쪽)', en: 'Front (beam side)', t: [-10, 0, 111], c: [-10, -300, 118], lid: true },
-  { key: 'probe', ko: '바늘·블록 (뚜껑 열음)', en: 'Needles + blocks (lid off)', t: [-5, -3, 111], c: [70, -135, 210], lid: false },
-  { key: 'block', ko: '블록 확대', en: 'Block close-up', t: [3, -2, 130], c: [48, -78, 178], lid: false },
-  { key: 'wafer', ko: '웨이퍼 확대', en: 'Wafer close-up', t: [0, -1, 111], c: [22, -64, 132], lid: false },
-  { key: 'lidsec', ko: '뚜껑 단면 X +6.45 (비탈 껍질)', en: 'Lid section X +6.45 (ramp shell)', t: [6.45, -4, 111], c: [80, -12, 121], cut: 6.45, lid: true },
-  { key: 'section', ko: '단면 X 6.45 (바늘 면)', en: 'Section X 6.45 (needle plane)', t: [0, 2, 111], c: [165, -55, 150], cut: 6.45 },
-  { key: 'pcb', ko: '뒷면 PCB (뒷판 뗌)', en: 'Rear PCB (back plate off)', t: [-15, 10, 111], c: [-90, 230, 170], back: false },
-  { key: 'back', ko: '뒷면', en: 'Back', t: [-10, 12, 105], c: [-100, 240, 155], back: true },
-  { key: 'mount', ko: '판·브래킷', en: 'Plate + bracket', t: [0, 10, 70], c: [220, -210, 150], lid: true },
-  { key: 'extra', ko: '추가분 (전체 세트)', en: 'Full-set extras', t: [60, 25, 80], c: [305, -380, 215], lid: true, full: true },
-];
-
-// real-material look per CAD "kind" (from the build script) — physically based
+const T = (ko, en) => (lang === 'ko' ? ko : en);
+// materials by CAD kind (colour, metalness, roughness, opacity)
 const M = {
-  al_black: { color: 0x17181b, metalness: 0.55, roughness: 0.42, clearcoat: 0.25, clearcoatRoughness: 0.5, ko: 'Al 6061 흑색 아노다이징', en: 'Al 6061, black anodised' },
-  al: { color: 0x9a9fa6, metalness: 1, roughness: 0.3, ko: 'Al 6061 (가공면)', en: 'Al 6061 (machined)' },
-  brass: { color: 0xc9a24a, metalness: 1, roughness: 0.3, ko: '황동 H59 (C3604 상당, 가공 그대로, 도전)', en: 'brass H59 (C3604 equivalent, as machined, conductive)' },
-  pom: { color: 0x2a2b2e, metalness: 0, roughness: 0.55, ko: 'POM (검정)', en: 'POM (black)' },
-  sus: { color: 0xc4c7cb, metalness: 1, roughness: 0.22, ko: 'SUS 303 (가공 그대로, 도전)', en: 'SUS 303 stainless (as machined, conductive)' },
-  peek: { color: 0xc6a97f, metalness: 0, roughness: 0.52, sheen: 0.2, ko: 'PEEK (자연색, 연갈색)', en: 'PEEK (natural, pale brown)' },
-  fr4: { color: 0x1d6b3c, metalness: 0, roughness: 0.42, clearcoat: 0.4, clearcoatRoughness: 0.4, ko: 'FR-4 1.6 (초록 마스크, ENIG 패드)', en: 'FR-4 1.6 (green mask, ENIG pads)' },
-  solder: { color: 0xc9cbce, metalness: 1, roughness: 0.35, ko: '땜납', en: 'solder' },
-  screw: { color: 0xb8bcc2, metalness: 1, roughness: 0.28, ko: '스테인리스 나사', en: 'stainless screw' },
-  steel: { color: 0xb8bcc2, metalness: 1, roughness: 0.3, ko: '스테인리스', en: 'stainless steel' },
-  pin: { color: 0xdcb55c, metalness: 1, roughness: 0.22, ko: '금 도금', en: 'gold-plated' },
-  gold: { color: 0xdcb55c, metalness: 1, roughness: 0.22, ko: '금 도금', en: 'gold-plated' },
-  sma: { color: 0xdcb55c, metalness: 1, roughness: 0.25, ko: '금 도금 황동', en: 'gold-plated brass' },
-  silver: { color: 0xdedfe2, metalness: 1, roughness: 0.3, ko: 'Ag', en: 'Ag' },
-  becu: { color: 0xc99760, metalness: 1, roughness: 0.26, ko: 'BeCu (베릴륨 구리)', en: 'BeCu' },
-  si: { color: 0x1c2131, metalness: 0.2, roughness: 0.32, clearcoat: 0.7, clearcoatRoughness: 0.15, ko: '탠덤 웨이퍼', en: 'tandem wafer' },
-  layer: { color: 0x3a4a78, metalness: 0, roughness: 0.15, opacity: 0.14, ko: '투명 전극층', en: 'transparent electrode' },
-  cpi: { color: 0x5a4a8a, metalness: 0, roughness: 0.08, opacity: 0.1, ko: '반사방지막', en: 'anti-reflection layer' },
-  pet: { color: 0xffffff, metalness: 0, roughness: 0.04, opacity: 0.1, film: true, ko: 'PET 필름 12 µm', en: 'PET film 12 µm' },
-  kapton: { color: 0xc8771c, metalness: 0, roughness: 0.15, opacity: 0.6, ko: 'Kapton', en: 'Kapton' },
-  glass: { color: 0xf4f6f8, metalness: 0, roughness: 0.85, opacity: 0.72, ko: '확산판', en: 'diffuser' },
-  glass_cell: { color: 0xcde3e3, metalness: 0, roughness: 0.05, opacity: 0.4, ko: '유리 (ITO/FTO)', en: 'glass (ITO/FTO)' },
-  db9: { color: 0x1f2023, metalness: 0, roughness: 0.55, ko: '수지 (전자 부품)', en: 'plastic (electronic part)' },
-  jst: { color: 0xf1ede2, metalness: 0, roughness: 0.5, ko: '나일론 커넥터', en: 'nylon connector' },
-  strip: { color: 0x1f2023, metalness: 0, roughness: 0.55, ko: '핀 헤더', en: 'pin header' },
-  wire: { color: 0xece5d8, metalness: 0, roughness: 0.6, ko: 'PTFE 피복 선', en: 'PTFE-insulated wire' },
-  cable: { color: 0x1a1a1b, metalness: 0, roughness: 0.6, ko: 'USB 케이블', en: 'USB cable' },
-  cablew: { color: 0x2d3036, metalness: 0, roughness: 0.6, ko: '선', en: 'wire' },
-  barb: { color: 0x2a2c30, metalness: 0.1, roughness: 0.45, ko: '원터치 피팅 (수지 + 황동 니켈)', en: 'push-in fitting' },
-  fitg: { color: 0x2a2c30, metalness: 0.1, roughness: 0.45, ko: '원터치 피팅', en: 'push-in fitting' },
-  tube: { color: 0x3b7fd4, metalness: 0, roughness: 0.3, opacity: 0.8, ko: 'PU 관 Ø4', en: 'PU tube Ø4' },
-  petg: { color: 0xcfd0cb, metalness: 0, roughness: 0.72, ko: 'PETG (3D 프린트)', en: 'PETG (3D print)' },
-  cover: { color: 0xcfd0cb, metalness: 0, roughness: 0.72, ko: 'PETG (3D 프린트)', en: 'PETG (3D print)' },
-  resin: { color: 0x2b2d31, metalness: 0, roughness: 0.6, ko: 'PETG (검정)', en: 'PETG (black)' },
-  grace: { color: 0x8d9197, metalness: 0, roughness: 0.7, ko: '레진 (Grace 판, 가정)', en: 'resin (Grace plate, assumed)' },
-  grace2: { color: 0xa3a8ae, metalness: 0.2, roughness: 0.6, ko: 'Grace 2025 브래킷', en: 'Grace 2025 bracket' },
-  lox: { color: 0xb8bcc2, metalness: 1, roughness: 0.3, ko: 'O₂ 센서 (스테인리스)', en: 'O₂ sensor (stainless)' },
-  d6f: { color: 0x2a2c31, metalness: 0, roughness: 0.5, ko: '유량 센서', en: 'flow sensor' },
-  pcb: { color: 0x1d6b3c, metalness: 0, roughness: 0.45, ko: 'PCB', en: 'PCB' },
-  pcbr: { color: 0x15161a, metalness: 0, roughness: 0.45, ko: 'PCB (검정)', en: 'PCB (black)' },
-  adsb: { color: 0x15161a, metalness: 0, roughness: 0.45, ko: 'PCB (검정)', en: 'PCB (black)' },
-  perf: { color: 0x2f7a3e, metalness: 0, roughness: 0.5, ko: '만능 기판', en: 'perfboard' },
-  pico: { color: 0x1d6b3c, metalness: 0, roughness: 0.45, ko: 'Raspberry Pi Pico', en: 'Raspberry Pi Pico' },
-  usbm: { color: 0xc7cacf, metalness: 1, roughness: 0.3, ko: '금속', en: 'metal' },
-  sil: { color: 0xf0eee6, metalness: 0, roughness: 0.75, opacity: 0.88, ko: '실리콘', en: 'silicone' },
-  silicone: { color: 0xe8e4da, metalness: 0, roughness: 0.8, opacity: 0.9, ko: '실리콘 (가스켓 시트 0.5)', en: 'silicone (0.5 gasket sheet)' },
-  brass: { color: 0xc8a052, metalness: 1, roughness: 0.34, ko: '황동', en: 'brass' },
-  misc: { color: 0x8a9099, metalness: 0, roughness: 0.6, ko: '', en: '' },
+  al_black: [0x2b2c30, 0.6, 0.45], lid: [0x34353a, 0.6, 0.45], pom: [0xeeeeea, 0, 0.55], fr4: [0x1f5c2e, 0, 0.5], sample: [0x23262e, 0.3, 0.25],
+  pad: [0xd6d8dc, 0.9, 0.25], pin: [0xd4af37, 1, 0.3], screw: [0x9a9ca0, 0.9, 0.35], solder: [0xb8babd, 0.8, 0.4], silicone: [0xdcdcd0, 0, 0.8],
+  kapton: [0xd98a1e, 0, 0.4, 0.85], brass: [0xc8641e, 0.85, 0.35], becu: [0x8a5a2b, 0.9, 0.3], peek: [0xcdb48a, 0, 0.6], ceramic: [0xf4f3ee, 0, 0.35],
+  pet: [0xcfe6f5, 0, 0.1, 0.3], gasket: [0x9c3b30, 0, 0.8], tube: [0x55575c, 0.4, 0.5], wire: [0x3b6aa8, 0, 0.6], detector: [0x4c74b0, 0.2, 0.5, 0.45], misc: [0x888888, 0, 0.6],
+  al: [0xbfc1c4, 0.7, 0.4], post_red: [0xb51a14, 0, 0.45], post_black: [0x1e1e20, 0, 0.45], adapter: [0x3a3b3f, 0.2, 0.5], plug: [0x8c8e92, 0.6, 0.4],
 };
-const OVR = [   // name-based refinements over kind
-  [/^KIER (뒷면|앞면) Ag/, 'silver'], [/^NTC 구슬/, { color: 0x3b2418, metalness: 0, roughness: 0.25, clearcoat: 0.8, ko: 'NTC 유리 구슬', en: 'NTC glass bead' }],
-  [/^PU 관/, 'tube'], [/^3T Ag mid/, 'silver'], [/^뚜껑/, 'al_black'], [/^누름 판/, 'al_black'],
-  [/^Ossila 바늘/, { color: 0xc99760, metalness: 1, roughness: 0.26, ko: 'Ossila T3008 Ø0.508 (W: A1·B1 / BeCu: C1; 10° 자리는 W 권장 — 모델은 BeCu 색)', en: 'Ossila T3008 Ø0.508 (tungsten A1/B1 or BeCu C1; W advised on the 10° sites — drawn in BeCu colour)' }],
-  [/^포고 Mill-Max/, { color: 0xdcb55c, metalness: 1, roughness: 0.22, ko: 'Mill-Max 0929-7 스프링 핀 (금 도금)', en: 'Mill-Max 0929-7 spring pin (gold-plated)' }],
-  [/^뒷핀 Mill-Max/, { color: 0xdcb55c, metalness: 1, roughness: 0.22, ko: 'Mill-Max 0908-7 스프링 핀 (금 도금)', en: 'Mill-Max 0908-7 spring pin (gold-plated)' }],
-];
-const EN = [[/^셀 몸체/, 'cell body, Al (flat cavity floor, seat recesses Ø6.20 H7 for the loose-fit glued seats, spring-pin holes Ø2.8)'], [/^POM 시트/, 'POM seat Ø6.10 loose fit + epoxy (flat, 0.1 chamfer, M2 tap, spring-pin hole Ø1.4)'], [/^POM 인서트/, 'POM insert'],
-  [/^클램프 블록/, 'clamp block, brass H59 5.8 × 6 × 2 (needle groove on top, R0.5 pivot edge, rear M1.6 tilt-screw tap)'], [/^누름판/, 'clamp plate, brass H59 5.8 × 6 wedge (1.0 rear to 2.23 front, top parallel to the seat)'], [/^M2 냄비/, 'M2×6 pan-head pull screw = turn axis + lock (into the POM seat)'], [/^M1.6 기울기/, 'M1.6×3 cup-point tilt set screw (tip on the POM seat; 1 turn ≈ 5.0°)'],
-  [/^Ossila 바늘/, 'straight needle Ossila T3008 Ø0.508'], [/^포고 Mill-Max/, 'spring pin Mill-Max 0929-7 (PCB → block bottom = contact)'], [/^뒷핀 Mill-Max/, 'rear spring pins Mill-Max 0908-7 (wafer rear pads)'],
-  [/^뒷면 PCB/, 'rear PCB, FR-4 1.6 (10 spring pins, SMA ×6, JST-SH, SHT45)'], [/^뒷판/, 'back plate, Al black anodised 80 × 77 × 5'], [/^SHT45/, 'SHT45 bare die on the PCB (sensor pocket in the body)'],
-  [/^0402/, '0402 passives'], [/^SMA 엣지 잭 J5/, 'SMA edge jacks J5/J6 (CH5–6, full set only)'], [/^SMA 엣지 잭 x4/, 'SMA edge jacks J1–J4 (CH1–4; minimal set: J5/J6 left empty)'], [/^\[추가분\] PL/, 'PL adapter plate (full set only, laid beside the cell)'], [/^\[추가분\] 누름 판/, 'single-cell hold-down plate (full set only, laid beside the cell)'], [/^\[추가분\] PEEK 인서트 b1/, 'PEEK insert b1-w, single ITO (full set only, laid beside the cell)'], [/^\[추가분\] PEEK 인서트 b2/, 'PEEK insert b2-w, single FTO (full set only, laid beside the cell)'], [/^\[추가분\] 어두움 마개/, 'dark plug (full set only, laid beside the cell)'], [/^SMA 엣지/,'SMA edge jacks ×6 (CH1–6)'], [/^JST-SH/, 'JST-SH 6-pin (I2C + NTC)'], [/^PCB 뒷면 땜납/, 'solder (NTC wires)'],
-  [/^PEEK 인서트/, 'PEEK insert'], [/^누름 판/, 'hold-down plate, Al'], [/^멈춤 링/, 'PEEK stop ring'], [/^뚜껑/, 'lid, Al (window boss, film ledge Y −2.3)'], [/^M3 널링 손나사/, 'M3×8 thumb screws'],
-  [/^실리콘 가스켓/, 'silicone gasket strip'], [/^다월 핀/, 'dowel pins Ø2 × 7.5'], [/^가스 KQ2H04-M5 입구/, 'N₂ inlet, −X side (push-in M5)'], [/^가스 KQ2L04/, 'N₂ outlet elbow, −X side'],
-  [/^NTC 선/, 'NTC wires'], [/^NTC/, 'NTC thermistor'], [/^PET 필름/, 'PET 12 µm film window (taped on the lid ledge)'], [/^Grace 새 세로판/, 'Grace plate (reprint)'], [/^Grace 2025/, 'Grace 2025 angle bracket'],
-  [/^뒤 빛 퍽/, 'rear 940 nm light puck'], [/^퍽 /, 'puck heat-spreader disc'], [/^940 nm/, '940 nm LED'], [/^VBPW/, 'monitor photodiode'], [/^확산판/, 'diffuser Ø20'], [/^JST/, 'JST connector'],
-  [/^어두움 마개|^마개/, 'dark plug'], [/^KIER 웨이퍼/, 'KIER tandem wafer 25 × 25'], [/^KIER 뒷면/, 'KIER rear Ag pads'], [/^KIER 앞면 IZO/, 'KIER front IZO'], [/^KIER 앞면 Ag/, 'KIER front Ag'], [/^KIER 앞면 MgF2/, 'KIER front MgF₂'],
-  [/^단일 셀 유리/, 'single-cell glass'], [/^단일 셀 패드/, 'single-cell pads'], [/^3T/, '3T mid contact'], [/^\[배기 블록/, 'exhaust sensor block'], [/^M\d/, 'screws']];
-const enOf = (n) => { for (const [re, s] of EN) if (re.test(n)) return s; return ''; };
-const MATS = [   // material table (cnc_v62 + PCB)
-  ['Al 6061', '몸체·뚜껑·뒷판 (흑색 아노다이징), 누름 판·퍽 원판', 'body, lid, back plate (black anodised); hold-down plate, puck disc'],
-  ['황동 H59', '클램프 블록 5.8 × 6 × 2 + 쐐기 누름판 5.8 × 6 × 1.0–2.23 (도전: 포고 → 블록 → 바늘)', 'clamp block 5.8 × 6 × 2 + clamp plate 5.8 × 6 × 1 (conductive: spring pin → block → needle)'],
-  ['POM', '평평한 시트 Ø6.10 (헐거운 끼움 + 에폭시, M2 탭), 인서트 a-w', 'flat seats Ø6.10 (loose fit + epoxy, M2 tap), insert a-w'],
-  ['PEEK', '멈춤 링 (인서트 b1-w·b2-w는 전체 세트, 아직 PEEK)', 'stop ring (insert b1-w / b2-w, full set, still PEEK)'],
-  ['FR-4', '뒷면 PCB 1.6, 2층 (포고 10, SMA 6, JST-SH 6, SHT45)', 'rear PCB 1.6, 2 layers (10 spring pins, 6 SMA, JST-SH 6, SHT45)'],
-  ['BeCu / W', 'Ossila T3008 곧은 바늘 Ø0.508 (C1 BeCu, A1·B1 W); 스프링 핀 Mill-Max 0929-7·0908-7 (금 도금)', 'straight Ossila T3008 needles Ø0.508 (C1 BeCu, A1/B1 W); Mill-Max 0929-7 and 0908-7 spring pins (gold-plated)'],
-];
-
-// exploded offsets at 100 % (CAD mm) by build-script layer
-// v6.2 layers: 0 body · 2 insert/rear pins · 3 sample · 4 hold-down · 5 seats + blocks + needles · 6 lid/thumb screws/gasket/dowels · 7 PET film · 8 gas fittings
-//   · 10 exhaust block · 11 dark plug · 12 rear light puck · 14 SHT45 on the PCB · 15 PCB, spring pins, SMA, JST · 16 back plate · −2/−3 Grace plate + bracket
-const EXPL = { 0: [0, 0, 0], 2: [0, -16, 0], 3: [0, -32, 0], 4: [0, -48, 0], 5: [0, -64, 0], 6: [0, -96, 0], 7: [0, -96, 0], 8: [-22, 0, 0],
-  10: [0, 0, -30], 14: [0, 26, 0], 15: [0, 26, 0], 16: [0, 44, 0], 11: [0, 62, 0], 12: [0, 62, 0], [-2]: [0, 80, 0], [-3]: [0, 80, 0] };
-const LID_OPEN = [0, -42, 0];   // lid travel before it is hidden
-const isLid = (m) => m.layer === 6 || m.layer === 7;
+const standoff = /^스탠드오프/;   // brass, but keep the accent for plates + needles only
 const GROUPS = [
-  { key: 'pcb', ko: 'PCB', en: 'PCB', on: true, test: (m) => m.layer === 15 && !/^포고/.test(m.name) },
-  { key: 'back', ko: '뒷판', en: 'Back plate', on: true, test: (m) => m.layer === 16 },
-  { key: 'block', ko: '블록', en: 'Blocks', on: true, test: (m) => m.layer === 5 && !/^POM 시트/.test(m.name) },
-  { key: 'seat', ko: '시트', en: 'Seats', on: true, test: (m) => /^POM 시트/.test(m.name) },
-  { key: 'pogo', ko: '포고', en: 'Spring pins', on: true, test: (m) => /^포고/.test(m.name) },
-  { key: 'rearpin', ko: '뒷핀', en: 'Rear pins', on: true, test: (m) => /^뒷핀/.test(m.name) },
-  { key: 'sensor', ko: '센서', en: 'Sensor', on: true, test: (m) => m.layer === 14 },
-  { key: 'mount', ko: 'Grace 판·브래킷', en: 'Grace plate + bracket', on: true, test: (m) => m.layer === -2 || m.layer === -3 },
-  { key: 'exhaust', ko: '배기 블록', en: 'Exhaust block', on: true, test: (m) => m.layer === 10 },
-  { key: 'puck', ko: '뒤 빛·마개', en: 'Rear light / plug', on: true, test: (m) => m.layer === 12 || m.layer === 11 },
-  { key: 'tray', ko: '따로 놓은 추가분', en: 'Extras beside the cell', on: true, test: (m) => m.layer === 20 },
+  { key: 'lid', ko: '뚜껑 + 필름 + 가스켓', en: 'Lid + film + gasket', on: true, test: (m) => m.layer === 3 || m.layer === 4 },
+  { key: 'arms', ko: '팔 (측정 자세)', en: 'Arms (measuring)', on: true, test: (m) => m.layer === 5 },
+  { key: 'pcb', ko: 'PCB · 바인딩 포스트 · 인서트 고정', en: 'PCB + binding posts + insert screws', on: true, test: (m) => m.layer === 15 },
+  { key: 'adapt', ko: '어댑터 · 바나나 플러그 (가정)', en: 'Adapters + banana plugs (assumed)', on: true, test: (m) => m.layer === 16 },
+  { key: 'gas', ko: '가스 피팅', en: 'Gas fittings', on: true, test: (m) => m.layer === 10 },
+  { key: 'tape', ko: '뒷면 테이프', en: 'Rear tape', on: true, test: (m) => /^뒷면 테이프/.test(m.name) },
+  { key: 'det', ko: '검출기 40° ±X', en: 'Detector 40° ±X', on: false, test: (m) => m.set === 'det' },
 ];
-const groupOn = Object.fromEntries(GROUPS.map((g) => [g.key, g.on]));
+const on = Object.fromEntries(GROUPS.map((g) => [g.key, g.on]));
+const QS = new URLSearchParams(location.search);
+let cfg = QS.get('cfg') === '2t' ? '2t' : '3t';   // v82r8.html?cfg=2t&view=arm opens a given config / view
+const CONFIGS = [{ key: '3t', ko: '3T (3T 판)', en: '3T (3T plate)' }, { key: '2t', ko: '2T·4T (판 B)', en: '2T·4T (plate B)' }];
+// Problems for order set r8 (2026-11-11). Numbers from order_v82_r8_261111/r8_보고.md and verify_final_261111 A / B reports.
+// marks = CAD points (X, Y, Z) mm read from the r8 assembly meshes (beamline_wholecell_v82_r8_261111[_2t].glb, same frame as the STEP);
+// part = regex whose explode offset the marker follows; cfg = configs it applies to; ok = solved r6 -> r8 (green, grey list group).
+const BOTH = ['3t', '2t'];
+const ISSUES = [
+  { n: '1', cfg: ['3t'], lid: false, part: /^팔 판/, marks: [[-18.8, -4.0, -33.0]],
+    ko: ['3T POM 판 크기 미달', '31.6 × 12 × 5로 JLC 플라스틱 최소 크기 30 × 20 × 8에 못 미친다. 주문 비고(T1)에 "큰 소재에서 깎거나, 안 되면 거절하지 말고 알려 달라"고 적었다.', '3T 판 [−X−Z]'],
+    en: ['3T POM plate below minimum size', '31.6 × 12 × 5, below the JLC plastic minimum 30 × 20 × 8. Order note T1: cut it from larger stock, or tell us instead of rejecting.', '3T plate [−X−Z]'] },
+  { n: '2a', cfg: BOTH, part: /^셀 몸체/, marks: [[-48.5, -5.75, 0]],
+    ko: ['얇은 벽: 몸체 M3 탭 옆 0.75', '뚜껑 M3 탭 (X −48.5, Z 0)의 끝 2.5 구간이 −X 자리파기와 0.75 (금속 0.8 지침 미만). 뚫려도 받기로 함 (비고 B4).', '몸체 −X 림, (−48.5, 0)'],
+    en: ['Thin wall: body M3 tap 0.75', 'The lid tap at (X −48.5, Z 0) is 0.75 from the −X recess over its last 2.5 mm. Breakthrough accepted (note B4).', 'Body −X rim, (−48.5, 0)'] },
+  { n: '2b', cfg: BOTH, part: /^뚜껑/, marks: [[51.7, -16.8, 0]],
+    ko: ['얇은 벽: 뚜껑 접시머리 옆 0.60', '접시 Ø5.8 × 90°가 뚜껑 윗면에서 바깥 가장자리와 0.60 (비고 L3). (±48.5, 0) 두 곳 같음.', '뚜껑 +X 가장자리 (−X도 같음)'],
+    en: ['Thin wall: lid countersink 0.60', 'The Ø5.8 × 90° countersink leaves 0.60 to the outer edge at the lid top (note L3); same at both (±48.5, 0).', 'Lid +X edge (−X the same)'] },
+  { n: '2c', cfg: BOTH, lid: false, part: /^인서트 POM/, marks: [[5.38, 9.4, 5.38], [-5.38, 9.4, 5.38], [5.38, 9.4, -5.38], [-5.38, 9.4, -5.38]],
+    ko: ['얇은 벽: 인서트 뒷면 자리파기–창 0.82 (네 곳)', '뒷핀 자리파기 Ø2.2 × 1.2와 창 Ø14.4 사이 0.822 (STEP 면 사이), 높이 1.2 구간(Y 8.8 ~ 10, PCB가 받치는 쪽). 플라스틱 1.0 지침보다 얇은 곳은 인서트에서 이 네 곳뿐이다. 구멍이 큰 쪽으로 나오면 0.72 ~ 0.77.', '인서트 뒷면, 뒷핀 네 곳 창 쪽'],
+    en: ['Thin wall: insert counterbore to window 0.82 (four)', '0.822 between each Ø2.2 × 1.2 rear-pin counterbore and the Ø14.4 window over the 1.2 height (Y 8.8–10, backed by the PCB); the only places under the 1.0 plastic guide.', 'Insert rear, four pin counterbores'] },
+  { n: '3', cfg: BOTH, lid: false, part: /^팔 판/, marks: [[-34.9, -0.2, -28.575], [-34.9, -0.2, 28.575]],
+    ko: ['팔 판 손가락–포스트 스터드 끝 0.13~0.22', '−X 쪽 두 판(3T 구성에서는 [−X−Z]가 3T 판) 손가락과 CH2·CH4 스터드 끝 틈: 멈춘 자리 0.15 ~ 0.22, 든 채 치움 3°에서 0.125. PCB가 포켓에서 0.2 움직이면 닿을 수 있다 → 스터드를 벽 안쪽 면에서 9.5 이하로 잘라야 함 (9.5면 0.62).', '−X 쪽 두 판, Z ±28.6'],
+    en: ['Arm-plate finger to post stud end 0.13–0.22', 'On the two −X plates the finger clears the CH2 / CH4 stud end by 0.15–0.22 at rest, 0.125 lifted and swung 3°; the PCB floats 0.2, so cut the studs to ≤ 9.5 from the inner wall (0.62 then).', 'Two −X plates, Z ±28.6'] },
+  { n: '4', cfg: BOTH, lid: false, part: /^스탠드오프/, marks: [[17, 15.0, 31.5]],
+    ko: ['스탠드오프 수나사를 잘라야 함', 'Harwin 스탠드오프 수나사 실물 6.00 ±0.20. 너트 자리 아래 밑 구멍 Ø4.0 × 1.2 + 뒤 Al 1.0뿐이라 4.0 ~ 5.4로 잘라야 한다. 5.6이면 바닥에 닿아 PCB가 뜬다. 4개 모두 버니어로 잰다.', '스탠드오프 아래 (네 곳 같음)'],
+    en: ['Standoff male thread must be cut', 'Real thread 6.00 ±0.20; below the nut seat there is only a Ø4.0 × 1.2 hole + 1.0 Al, so cut to 4.0–5.4. At 5.6 it bottoms and lifts the PCB.', 'Under the standoffs (all four)'] },
+  { n: '5', cfg: BOTH, lid: false, part: /^M3 너트/, marks: [[17, 13.0, -31.5]],
+    ko: ['너트 자리 모서리 R2.875 < R3.0, 너트 절연', '긴 구멍 5.75 × 9.2의 끝 R2.875가 림에서 27.9 깊이에 대한 JLC 규칙 R3.0보다 작다 (안 되면 Ø7 둥근 자리, 비고 B1). 너트–Al 벽 절연은 아노다이징 + 캡톤 0.06에 의존한다. PCB를 넣은 뒤 스탠드오프–몸체 저항이 네 개 모두 열림인지 잰다.', '몸체 너트 자리 (±17, ±31.5)'],
+    en: ['Nut-seat corner R2.875 < R3.0, nut insulation', 'Obround 5.75 × 9.2 with R2.875 ends, below the JLC R3.0 rule at 27.9 depth (fallback Ø7 round pocket, note B1). Nut-to-Al insulation relies on anodising + 0.06 Kapton: check standoff-to-body is open on all four after fitting.', 'Body nut seats (±17, ±31.5)'] },
+  { n: '6', cfg: BOTH, lid: false, part: /^스톱 나일론/, marks: [[32.85, -6.8, 26.89]],
+    ko: ['멈춤 나사가 놀 수 있음', '나일론 M2 × 20: 머리는 손가락 위 0.2, 끝은 탭 바닥 위 0.8 떠 있어 조여지는 면이 없다 → 무르고 탭에서 놀 수 있다 (놀면 나사 고정제). 판은 가볍게 대고 손을 뗀다: 0.3 N에 끝이 0.64 휘어 바늘이 패드 밖으로 간다. 바깥지름 1.93 가정 (실물 미측정).', '멈춤 나사 (네 곳)'],
+    en: ['Stop screw can wobble', 'Nylon M2 × 20 is not clamped (head 0.2 above the finger, tip 0.8 above the tap bottom), soft and may wobble (threadlocker if so). Touch the plate on lightly: 0.3 N bends it 0.64 at the tip. Ø1.93 assumed.', 'Stop screws (four)'] },
+  { n: '7', cfg: BOTH, lid: false, part: /^탠덤 웨이퍼/, marks: [[6.45, 0.48, -6.45]],
+    ko: ['바늘 끝: 테이퍼 미확인, 패드를 팜', 'Ossila 바늘 테이퍼 길이 미확인 (모델 2.0 가정). 2.5 이상이어야 늘 끝점이 닿고, 짧으면 원뿔 어깨가 먼저 닿아 패드 밖이 된다. 뾰족한 끝이 Ag 패드를 파므로 접촉이 잡힌 뒤 0.1 ~ 0.2만 더 누른다 (들기 나사 18 ~ 36°, 힘 0.03 ~ 0.06 N).', '바늘 끝 · Ag 패드 [+X−Z]'],
+    en: ['Needle tip: taper unknown, digs the pad', 'Ossila taper length unknown (2.0 assumed); ≥ 2.5 needed or the cone shoulder touches first. The sharp tip digs the Ag pad: press only 0.1–0.2 past first contact (lift screw 18–36°).', 'Needle tip · Ag pad [+X−Z]'] },
+  { n: '8', cfg: BOTH, lid: false, part: /^W 바늘/, marks: [[11.6, -1.9, 15.3]],
+    ko: ['판을 든 채로도 뚜껑이 닫힘', '들기 1바퀴 (3.8°)에서 판–뚜껑 0.12 ~ 0.33이라 판을 든 채로도 뚜껑이 닫힌다 (4.3° 넘으면 닿음). 접촉 없이 닫힐 수 있으니 닫기 전에 네 판이 모두 멈춤 나사에 닿았는지, 네 채널 접촉 저항이 잡히는지 본다.', '팔 판 앞쪽 바늘–뚜껑 틀 (측정 자세 1.12)'],
+    en: ['Lid closes over a lifted plate', 'At one lift turn (3.8°) plate-to-lid is 0.12–0.33, so the lid closes over lifted plates (contact above 4.3°). Check all four plates are down and every channel reads contact before closing.', 'Front of an arm plate, needle to lid frame (1.12 measuring)'] },
+  { n: '9', cfg: BOTH, lid: false, part: /^뒷핀/, marks: [[6.45, 11.75, 6.45]],
+    ko: ['뒷핀은 인서트를 끼운 채 납땜 (필수)', '미리 납땜한 핀에 인서트를 끼우면 위치 오차 합(0.21 ~ 0.23)이 몸통 틈 0.124보다 커서 걸릴 수 있다. 인서트를 끼운 채 납땜하면 여유 +0.06 ~ +0.09. 인서트를 내릴 때 핀이 1° 넘게 기울면 자리파기 턱(폭 0.2, 직각)에 걸린다. 납땜은 인서트 윗면을 유리판에 엎고 PCB를 191 gf 이상으로 눌러서 한다.', '뒷핀 꼬리 (PCB 아랫면, 네 곳)'],
+    en: ['Solder the rear pins with the insert fitted (required)', 'Pre-soldered pins can jam the insert (stack-up 0.21–0.23 > body gap 0.124); soldering with the insert on leaves +0.06–0.09. A pin tilted over 1° catches the square counterbore step. Press the PCB ≥ 191 gf on a glass plate while soldering.', 'Rear-pin tails (PCB underside, four)'] },
+  { n: '10', cfg: BOTH, lid: false, part: /^NTC/, marks: [[0, 3.0, 11.25], [15.0, 0.55, 15.0]],
+    ko: ['NTC: 머리 치수 가정, 납땜 순서, 인서트 방향', '인서트 NTC 구멍 Ø2.6 +0.1/0, 센서 머리 Ø2.41 max × 6.5 max 가정(데이터시트·유통사 값, 보유 센서 실물 미확인 — 재야 함). 반지름 틈 0.095 ~ 0.145라 세운 머리가 약 1° 넘게 기울면 인서트가 얹힌다. NTC는 인서트를 얹기 전에 PCB 윗면에 세워 납땜한다(머리 끝 PCB 위 7.0 이하). 인서트는 180° 돌려도 끼워지므로 (+X, +Z) 모서리의 큰 모따기 3.0(나머지 1.2)이 RT1 쪽 변에 오게 한다.', 'NTC (0, Z 11.25) · 인서트 (+X, +Z) 모서리'],
+    en: ['NTC: head size assumed, solder order, insert orientation', 'Insert hole Ø2.6 +0.1/0 for a head Ø2.41 max × 6.5 max (datasheet value, own sensors not measured); radial gap 0.095–0.145, so a head tilted over ~1° lifts the insert. Solder the NTC upright before fitting the insert (tip ≤ 7.0 above the PCB). The large 3.0 chamfer at (+X, +Z) marks the insert orientation.', 'NTC (0, Z 11.25) · insert (+X, +Z) corner'] },
+  { n: '11', cfg: BOTH, lid: false, part: /^웨이퍼 누름/, marks: [[0, -2.0, 14.5], [0, -2.0, -14.5]],
+    ko: ['웨이퍼 누름 나사: 교체마다 2개를 풂', '시료를 바꿀 때마다 누름 나사 2개를 빼야 한다. 판 4개를 모두 18°쯤 치운 뒤에만 푼다(먼저 풀면 뒷핀이 웨이퍼를 0.71 밀어 올려 바늘에 닿음, 3T MS는 3.8° 들어도 0.26). 권장 나일론 M2 팬헤드 + 나일론 와셔는 구매 목록에 없어 추가 구매. 구매해 둔 SCB2-6(머리 2.0)이면 머리–필름 0.48 (팬헤드 1.6이면 0.88).', '누름 나사 (0, Z ±14.5)'],
+    en: ['Wafer clamp screws: two to undo per exchange', 'Both clamp screws come out at every sample change; only after all four plates are swung ~18° (else the rear pins lift the wafer 0.71 into the needles). The recommended nylon pan heads + washers still need buying; with the stocked SCB2-6 (2.0 head) the head clears the film by 0.48.', 'Clamp screws (0, Z ±14.5)'] },
+  // solved r6 -> r8
+  { n: 'R1', ok: true, cfg: BOTH, lid: false, part: /^탠덤 웨이퍼/, marks: [[-12.5, 0.5, 12.5]],
+    ko: ['웨이퍼 뜸', '뒷핀(스프링 75: 초기 25 g, 0.7 mm 눌림에서 60 g) 4개 2.37 N이 바늘 4개(0.83 N)보다 세서 r6에서는 웨이퍼가 0.39 떴다. r8은 인서트 윗면을 낮춰 웨이퍼 앞면이 윗면보다 0.05 높고(공차 −0.025 ~ +0.125), 누름 나사 2개 + 모서리 캡톤이 잡는다. 활성 영역 뜸 0.004 ~ 0.03 (누름 나사만이면 Si 0.05 안팎, 유리 0.11까지) — 모두 추정, 실측 아님.', '웨이퍼 모서리 [−X+Z]'],
+    en: ['Wafer lifting', 'Four rear pins (2.37 N) beat four needles (0.83 N), so r6 lifted the wafer 0.39. r8 lowers the insert top (wafer front 0.05 above it) and holds the wafer with two clamp screws + corner Kapton: 0.004–0.03 estimated at the active area (not measured).', 'Wafer corner [−X+Z]'] },
+  { n: 'R2', ok: true, cfg: BOTH, lid: false, part: /^인서트 POM/, marks: [[-5.6, 5.4, 5.6], [-14.4, 6.8, 14.4], [0, 1.3, 11.25]],
+    ko: ['인서트 얇은 벽 0.62 / 0.74 / 0.80, NTC 막 0.5', 'r6의 뒷핀 구멍·M2 구멍 옆 벽 0.62 / 0.74 / 0.80은 외곽 33.0 · 핀 구멍 Ø1.8 한 지름으로 없어졌다(0.5 미만 벽 0, 1.0 미만은 2c의 0.82 네 곳뿐). NTC 구멍 위 막 0.5 → 1.0.', '인서트 핀 구멍·M2 구멍 옆, NTC 위'],
+    en: ['Insert thin walls 0.62 / 0.74 / 0.80, NTC skin 0.5', 'Gone with the 33.0 outline and single-diameter Ø1.8 pin holes (no wall under 0.5; under 1.0 only the four 0.82 in 2c). NTC skin 0.5 → 1.0.', 'Insert pin / M2 holes, over the NTC'] },
+  { n: 'R3', ok: true, cfg: ['3t'], lid: false, part: /^팔 판/, marks: [[-10.84, -3.3, -31.45]],
+    ko: ['3T 판 들기 탭–MS 홈 벽 0.74', '들기 탭을 n 5.0 → 5.3으로 옮겨 벽 0.74 → 1.03 (앞면까지 1.05). 들기 나사 끝은 PCB의 마스크 덮인 자리에 닿고 열린 구리까지 1.97.', '3T 판 들기 탭'],
+    en: ['3T plate lift tap to MS groove 0.74', 'Lift tap moved n 5.0 → 5.3: wall 0.74 → 1.03 (1.05 to the front face); the screw tip still lands on solder-masked PCB, 1.97 from bare copper.', '3T plate lift tap'] },
+  { n: 'R4', ok: true, cfg: BOTH, lid: false, part: /^뒷핀/, marks: [[6.45, 9.6, -6.45]],
+    ko: ['뒷핀 플랜지 Ø1.83이 구멍에 걸림', '이전 안은 플랜지 Ø1.83이 핀 구멍 Ø1.8에 걸렸다 (C 보고 B1). r8은 뒷면 자리파기 Ø2.2 × 1.2: 반지름 틈 0.185 (최대 지름 핀 0.160), 몸통 Ø1.50–구멍 Ø1.8 0.150 (최대 0.124).', '뒷핀 플랜지 (인서트 뒷면, 네 곳 같음)'],
+    en: ['Rear-pin flange Ø1.83 caught in the hole', 'The earlier draft had the Ø1.83 flange against a Ø1.8 hole; r8 adds a Ø2.2 × 1.2 rear counterbore: 0.185 radial (0.160 worst), body-to-hole 0.150 (0.124).', 'Rear-pin flange (insert rear, all four)'] },
+];
+let selIssue = null;
 
-// ---------- renderer / scene
 const canvas = document.getElementById('c');
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-renderer.outputColorSpace = THREE.SRGBColorSpace;
-renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
-renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-renderer.localClippingEnabled = true;
+renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.localClippingEnabled = true;
 const scene = new THREE.Scene();
 const pmrem = new THREE.PMREMGenerator(renderer);
-scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.04).texture;
-scene.environmentIntensity = 0.75;
+scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.04).texture; scene.environmentIntensity = 0.8;
 const camera = new THREE.PerspectiveCamera(30, 1, 0.5, 4000);
-const controls = new OrbitControls(camera, canvas);
-controls.enableDamping = true; controls.dampingFactor = 0.08; controls.minDistance = 8; controls.maxDistance = 900; controls.zoomSpeed = 1.1;
-
-const key = new THREE.DirectionalLight(0xffffff, 1.6); key.position.set(-160, 260, 220); key.castShadow = true;
-key.shadow.mapSize.set(2048, 2048); key.shadow.bias = -0.0004; key.shadow.normalBias = 0.25; key.shadow.radius = 4;
-Object.assign(key.shadow.camera, { left: -140, right: 140, top: 200, bottom: -60, near: 50, far: 800 });
-key.target.position.set(0, 90, 0); scene.add(key, key.target);
-const rim = new THREE.DirectionalLight(0xdfe8ff, 0.5); rim.position.set(200, 120, -220); scene.add(rim);
-const ground = new THREE.Mesh(new THREE.PlaneGeometry(1400, 1400), new THREE.ShadowMaterial({ opacity: 0.22 }));
-ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
-
-const root = new THREE.Group(); root.rotation.x = -Math.PI / 2; scene.add(root);   // CAD → three
-const cutPlane = new THREE.Plane(new THREE.Vector3(-1, 0, 0), 1e4);   // keep x ≤ cut
-let cutOn = false;
-
-// ---------- loading
-const meta = await fetch('models/v62_meta.json').then((r) => r.json());   // rows[variant] = [kind, layer] per GLB node; sites[v][key] = {B0, U, ...}; ranges[v][key] = [lo, hi]
-const sets = await fetch('models/v62_sets.json').then((r) => r.json());
-lidInfo = await fetch('models/lid_b3_info.json').then((r) => r.json());   // film plane, detector distance D per lid (from lid_B3_params / checks json)   // rows.min / rows.full, extra[model] = node indices absent from the minimal set, table = order numbers
-const loader = new GLTFLoader();
-const cache = {};
-let cur = null, curKey = null;
+const controls = new OrbitControls(camera, canvas); controls.enableDamping = true; controls.minDistance = 10; controls.maxDistance = 900;
+const key = new THREE.DirectionalLight(0xffffff, 1.5); key.position.set(-150, 220, 260); scene.add(key);
+const rim = new THREE.DirectionalLight(0xdfe8ff, 0.5); rim.position.set(200, 100, -220); scene.add(rim);
+const root = new THREE.Group(); root.rotation.x = -Math.PI / 2; scene.add(root);    // CAD (X, Y, Z) -> three (x, z, -y): Z up, front (-Y) toward +z
+const cutPlane = new THREE.Plane(new THREE.Vector3(-1, 0, 0), 1e4);
+const parts = [];
 const statusEl = document.getElementById('status');
-const rotDeg = {};   // per site key, degrees (shared across variants)
-let lidT = 0, lidOpen = false;   // 0 closed … 1 open (hidden)
 
-function makeMat(spec) {
-  const p = { color: spec.color, metalness: spec.metalness ?? 0, roughness: spec.roughness ?? 0.6, envMapIntensity: 1, clippingPlanes: [cutPlane] };
-  if (spec.clearcoat) { p.clearcoat = spec.clearcoat; p.clearcoatRoughness = spec.clearcoatRoughness ?? 0.3; }
-  if (spec.sheen) { p.sheen = spec.sheen; p.sheenRoughness = 0.8; p.sheenColor = new THREE.Color(0xffffff); }
-  if (spec.opacity !== undefined) { p.transparent = true; p.opacity = spec.opacity; p.depthWrite = false; p.side = THREE.DoubleSide; }
-  if (spec.film) { p.specularIntensity = 1; p.ior = 1.57; }
+function mat(kind, name, ghost) {
+  const s = (standoff.test(name) ? [0xb08a4a, 0.85, 0.35] : (M[kind] || M.misc));
+  const p = { color: s[0], metalness: s[1], roughness: s[2], clippingPlanes: [cutPlane] };
+  const op = ghost ? 0.38 : s[3];
+  if (op !== undefined) Object.assign(p, { transparent: true, opacity: op, depthWrite: false, side: THREE.DoubleSide });
   return new THREE.MeshPhysicalMaterial(p);
 }
-function specOf(name, kind) {
-  for (const [re, o] of OVR) if (re.test(name)) return typeof o === 'string' ? M[o] : o;
-  return M[kind] || M.misc;
-}
-const vOf = (k) => (k === 'min' ? 'a' : VARIANTS.find((x) => x.key === k).v);
-function splitSMA(geo, zc) {   // non-indexed geometry -> [J1–J4 part, J5/J6 part] by triangle centre Z (CAD)
-  const p = geo.attributes.position.array, n = geo.attributes.normal.array, A = [[], []], B = [[], []];
-  for (let t = 0; t < p.length; t += 9) {
-    const z = (p[t + 2] + p[t + 5] + p[t + 8]) / 3, d = z > zc ? B : A;
-    for (let i = 0; i < 9; i++) { d[0].push(p[t + i]); d[1].push(n[t + i]); }
-  }
-  return [A, B].map(([P, N]) => { const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(P, 3)); g.setAttribute('normal', new THREE.Float32BufferAttribute(N, 3)); return g; });
-}
-
-function mkMesh(pg, name, kind, layer, isExtra, sites, matrixWorld) {
-  const spec = specOf(name, kind);
-  const m = new THREE.Mesh(pg, makeMat(spec));
-  m.applyMatrix4(matrixWorld);
-  const opaque = spec.opacity === undefined;
-  m.castShadow = opaque; m.receiveShadow = opaque;
-  // turning parts of a site: block, clamp plate, M2 pull + tilt screws, needle (the PEEK seat and the spring pin stay)
-  const sm = name.match(/\[([^\]]+)\]/), site = sm && layer === 5 && !/^POM 시트/.test(name) && sites[sm[1]] ? sm[1] : null;
-  m.userData = { name, kind, layer, spec, base: m.position.clone(), baseQ: m.quaternion.clone(), opaque, site, extra: isExtra, color0: m.material.color.clone() };
-  if (opaque) {   // back faces drawn flat = solid-looking cut face when the section plane is on
-    const capC = new THREE.Color(spec.color).multiplyScalar(0.62);
-    const cap = new THREE.Mesh(pg, new THREE.MeshBasicMaterial({ color: capC, side: THREE.BackSide, clippingPlanes: [cutPlane] }));
-    cap.visible = false; cap.userData.cap = true; m.add(cap);
-  }
-  return m;
-}
-// B3 / B3L lid (+ tape + PET film) of the selected variant, added once per loaded config; shown instead of the current lid by effLid()
-async function ensureLid(c) {
-  const lk = effLid(); if (lk === 'now' || c.lids[lk]) return;
-  if (!lidGLB[lk]) { statusEl.hidden = false; statusEl.textContent = lang === 'ko' ? '뚜껑 불러오는 중 …' : 'Loading lid …'; lidGLB[lk] = await loader.loadAsync('models/lid_' + lk + '.glb'); statusEl.hidden = true; }
-  if (c.lids[lk]) return;
-  const gl = lidGLB[lk]; gl.scene.updateMatrixWorld(true);
-  const KL = [['al', 6], ['silicone', 7], ['pet', 7]];
-  gl.scene.children.slice().forEach((n, i) => {
-    const mesh = n.isMesh ? n : n.getObjectByProperty('isMesh', true); if (!mesh) return;
-    let geo = mesh.geometry.clone(); geo.deleteAttribute('color'); geo.deleteAttribute('normal');
-    geo = toCreasedNormals(geo, THREE.MathUtils.degToRad(32));
-    const as = gl.parser.associations.get(n), jn = as && as.nodes !== undefined ? gl.parser.json.nodes[as.nodes] : null;
-    const m = mkMesh(geo, (jn && jn.name) || n.name, KL[i][0], KL[i][1], false, {}, n.matrixWorld);
-    m.userData.lidVar = lk; c.g.add(m); c.parts.push(m);
-  });
-  c.lids[lk] = true;
-}
-
-async function load(k) {
-  if (cache[k]) return cache[k];
-  statusEl.hidden = false; statusEl.textContent = (lang === 'ko' ? '불러오는 중 … ' : 'Loading … ');
-  const gltf = await loader.loadAsync('models/v62_' + fileOf(k) + '.glb', (e) => { if (e.total) statusEl.textContent = (lang === 'ko' ? '불러오는 중 ' : 'Loading ') + Math.round(100 * e.loaded / e.total) + ' %'; });
-  const g = new THREE.Group(); const rows = k === 'min' ? sets.rows.min : k === '3t' ? sets.rows.full : meta.rows[k]; const parts = []; const sites = meta.sites[vOf(k)] || {};
-  const extra = new Set(sets.extra[fileOf(k)] || []);
+async function loadSet(file, metaFile, set, ghost) {
+  const meta = await fetch(metaFile).then((r) => r.json());
+  const byId = Object.fromEntries(meta.map((r) => [r.id, r]));
+  const gltf = await new GLTFLoader().loadAsync(file, (e) => { if (e.total) statusEl.textContent = T('불러오는 중 ', 'Loading ') + Math.round(100 * e.loaded / e.total) + ' %'; });
   gltf.scene.updateMatrixWorld(true);
-  const nodes = gltf.scene.children.slice();
-  nodes.forEach((n, i) => {
-    const mesh = n.isMesh ? n : n.getObjectByProperty('isMesh', true); if (!mesh) return;
-    let geo = mesh.geometry; geo.deleteAttribute('color'); geo.deleteAttribute('normal');
-    geo = toCreasedNormals(geo, THREE.MathUtils.degToRad(32));
-    const as = gltf.parser.associations.get(n), jn = as && as.nodes !== undefined ? gltf.parser.json.nodes[as.nodes] : null;
-    const name0 = (jn && jn.name) || (n.name || mesh.name).replace(/_/g, ' '), [kind, layer] = rows[i] || ['misc', 0];
-    let pieces = [[geo, name0, extra.has(i)]];
-    if (k !== 'min' && /^SMA 엣지 잭 x6/.test(name0)) {   // J5/J6 exist only in the full set: split the merged jack row (PCB y 13.5 / 22.5 → CAD Z > ZC + 9)
-      const [a, b] = splitSMA(geo, sets.sma_split_z);
-      pieces = [[a, 'SMA 엣지 잭 x4 Samtec SMA-J-P-H-ST-EM1 J1–J4 (CH1–CH4)', false], [b, 'SMA 엣지 잭 J5·J6 Samtec SMA-J-P-H-ST-EM1 (CH5·CH6; 전체 세트에만 — 최소 세트는 자리 비움)', true]];
-    }
-    for (const [pg, name, isExtra] of pieces) {
-      const m = mkMesh(pg, name, kind, layer, isExtra, sites, n.matrixWorld);
-      if ((layer === 6 && /^뚜껑/.test(name)) || (layer === 7 && /^PET 필름/.test(name))) m.userData.lidVar = 'now';   // swapped by the lid toggle
-      g.add(m); parts.push(m);
-    }
+  gltf.scene.traverse((n) => {
+    if (!n.isMesh) return;
+    let id = n.name; let p = n; while (!byId[id] && p.parent) { p = p.parent; id = p.name; }
+    const r = byId[id] || { name: id, kind: 'misc', layer: 0 };
+    let geo = n.geometry; geo.deleteAttribute('color'); geo.deleteAttribute('normal'); geo = toCreasedNormals(geo, THREE.MathUtils.degToRad(32));
+    const m = new THREE.Mesh(geo, mat(r.kind, r.name, ghost)); m.applyMatrix4(n.matrixWorld);
+    m.userData = { name: r.name, kind: r.kind, layer: r.layer, set, base: m.position.clone(), ex: explodeOf(r.name, r.kind, r.layer) };
+    if (/3T/.test(r.name) && kindAccent(r.name)) m.material.emissive = new THREE.Color(0x3a1a00);
+    root.add(m); parts.push(m);
   });
-  cache[k] = { g, parts, lids: {} };
-  statusEl.hidden = true;
-  return cache[k];
 }
-
-let curSite = null;
-function applyTint() {   // full set: parts the minimal set does not have, orange
-  if (!cur) return;
-  for (const m of cur.parts) { const u = m.userData; m.material.color.copy(u.color0); if (u.extra && tintOn) m.material.color.lerp(TINT, 0.72); }
-}
-async function show(k) {   // k = config key (3t, 2t, ...); the minimal set always shows its own 2T model
-  if (setMode === 'min') k = '2t';
-  cfg = k;
-  const ek = effKey(), c = await load(ek);
-  if (cur) root.remove(cur.g);
-  await ensureLid(c);
-  cur = c; curKey = ek; root.add(c.g);
-  select(null); buildSites(); applyPose(); applyGroups(); applyCut(); applyTint(); syncSets(); syncLidUI(); updateAux();
-  document.querySelectorAll('#variants button').forEach((b) => { b.setAttribute('aria-pressed', String(b.dataset.k === cfg)); b.disabled = setMode === 'min' && b.dataset.k !== '2t'; });
-  writeHash();
-  setTimeout(() => { for (const x of ['3t', 'min', '2t', '2t_dark', 'single', 'single_b2']) if (!cache[x]) { load(x); break; } }, 1500);   // warm the others (phone: one at a time)
-}
-async function setSet(s) { if (s === setMode) return; setMode = s; await show(s === 'min' ? '2t' : '3t'); }
-
-// ---------- pose: explode + lid travel + block rotation (all in CAD coordinates, the group frame)
-const exEl = document.getElementById('explode'), cutEl = document.getElementById('cut'), rotEl = document.getElementById('rot'), rotOut = document.getElementById('o-rot');
-const _q = new THREE.Quaternion(), _v = new THREE.Vector3(), _B = new THREE.Vector3(), _U = new THREE.Vector3();
-function applyPose() {
-  const t = exEl.value / 100, e = t * t * (3 - 2 * t), l = lidT * lidT * (3 - 2 * lidT);
+// exploded view: offsets in CAD mm at 100 % (X, Y, Z); front of the cell = -Y, "up" from the PCB toward the lid = -Y as well
+const EXPL = [
+  [/^M3 널링|^다월/, [0, -62, 0]], [/^뚜껑|^실리콘 가스켓|^PET/, [0, -46, 0]],
+  [/^들기/, [0, -34, 0]], [/^M2 x 6/, [0, -30, 0]], [/^누름 띠|^M2 링 단자/, [0, -25, 0]], [/^M3 x|^스프링 와셔/, [0, -21, 0]], [/^팔 판/, [0, -15, 0]],
+  [/^W 바늘/, [0, -11, 0]], [/^스탠드오프|^M3 너트/, [0, -6, 0]],
+  [/^탠덤 웨이퍼|^Ag 앞 패드|^Ag 중간 패드|^캡톤/, [0, -5, 0]], [/^뒷면 테이프/, [0, 30, 0]], [/^인서트 POM/, [0, -3, 0]], [/^뒷핀/, [0, 6, 0]],
+  [/^웨이퍼 누름/, [0, -9, 0]], [/^PCB v8|^JST|^센서 6심|^SHT45|^M2 x 10|^W 패드|^NTC/, [0, 26, 0]], [/^원터치|^PU 튜브/, [0, 0, 12]], [/^접지 링|^M3 x 6 접지/, [-10, 0, 0]], [/^바인딩 포스트|^포스트 /, [-12, 0, 0]], [/^BNC|^바나나/, [-36, 0, 0]], [/^스톱 나일론/, [0, -6, 0]], [/^셀 몸체|^검출기/, [0, 0, 0]],
+];
+function kindAccent(name) { return /^팔 판 3T|^W 바늘/.test(name); }
+function explodeOf(name, kind, layer) { for (const [re, o] of EXPL) if (re.test(name)) return o; return [0, 0, 0]; }
+const exEl = document.getElementById('explode');
+function applyExplode() {
+  const t = exEl.value / 100, e = t * t * (3 - 2 * t);
   document.getElementById('o-ex').textContent = exEl.value + ' %';
-  if (!cur) return;
-  const sites = meta.sites[vOf(curKey)] || {};
-  for (const m of cur.parts) {
-    const u = m.userData, o = EXPL[u.layer] || [0, 0, 0];
-    _v.copy(u.base); m.quaternion.copy(u.baseQ);
-    const d = u.site ? (rotDeg[u.site] || 0) : 0;
-    if (d) {
-      const S = sites[u.site]; _B.set(...S.B0); _U.set(...S.U).normalize();
-      _q.setFromAxisAngle(_U, THREE.MathUtils.degToRad(d));
-      _v.sub(_B).applyQuaternion(_q).add(_B); m.quaternion.premultiply(_q);
-    }
-    m.position.set(_v.x + o[0] * e, _v.y + o[1] * e, _v.z + o[2] * e);
-    if (isLid(u)) m.position.add(_v.set(LID_OPEN[0] * l, LID_OPEN[1] * l, LID_OPEN[2] * l));
+  for (const m of parts) { const o = m.userData.ex, b = m.userData.base; m.position.set(b.x + o[0] * e, b.y + o[1] * e, b.z + o[2] * e); }
+  for (const k of markObjs) { const o = k.ex, b = k.base; k.obj.position.set(b[0] + o[0] * e, b[1] + o[1] * e, b[2] + o[2] * e); }
+}
+// problem markers: red dot in 3D (drawn on top) + numbered HTML badge projected each frame
+const markObjs = [];
+const marksEl = document.getElementById('marks');
+const dotGeo = new THREE.SphereGeometry(0.9, 16, 12);
+const dotMat = new THREE.MeshBasicMaterial({ color: 0xff2020, depthTest: false, transparent: true, opacity: 0.95 });
+const dotSel = new THREE.MeshBasicMaterial({ color: 0xffd400, depthTest: false, transparent: true, opacity: 0.95 });
+const dotOk = new THREE.MeshBasicMaterial({ color: 0x1e9e48, depthTest: false, transparent: true, opacity: 0.95 });
+let showOk = QS.get('ok') !== '0';   // v82r8.html?ok=0 opens with the green (solved) marks hidden
+for (const it of ISSUES) {
+  const nm = it.ko[0];
+  for (const p of it.marks) {
+    const obj = new THREE.Mesh(dotGeo, it.ok ? dotOk : dotMat); obj.position.set(...p); obj.renderOrder = 999; root.add(obj);
+    const el = document.createElement('span'); el.className = it.ok ? 'bn ok' : 'bn'; el.textContent = it.n; el.title = nm;
+    el.onclick = (e) => { e.stopPropagation(); selectIssue(it, true); };
+    marksEl.append(el);
+    markObjs.push({ it, obj, el, base: p, ex: explodeOf(namePart(it.part), '', 0) });
   }
 }
+function namePart(re) { const s = re.source.replace(/^\^/, ''); return s; }
+const _v = new THREE.Vector3();
+function placeMarks() {
+  for (const k of markObjs) {
+    const vis = k.it.cfg.includes(cfg) && (!k.it.ok || showOk || selIssue === k.it); k.obj.visible = vis;
+    if (!vis) { k.el.style.display = 'none'; continue; }
+    k.obj.getWorldPosition(_v); _v.project(camera);
+    if (_v.z > 1) { k.el.style.display = 'none'; continue; }
+    k.el.style.display = ''; k.el.style.left = ((_v.x + 1) / 2 * innerWidth) + 'px'; k.el.style.top = ((1 - _v.y) / 2 * innerHeight - 14) + 'px';
+  }
+}
+function selectIssue(it, go) {
+  selIssue = it;
+  if (!it.cfg.includes(cfg)) { cfg = it.cfg[0]; document.querySelectorAll('#config button').forEach((x, i) => x.setAttribute('aria-pressed', String(CONFIGS[i].key === cfg))); applyGroups(); }
+  for (const k of markObjs) { const s = k.it === it; k.el.classList.toggle('sel', s); k.obj.material = s ? dotSel : (k.it.ok ? dotOk : dotMat); }
+  document.querySelectorAll('#issueList li').forEach((li) => li.classList.toggle('sel', li.dataset.n === it.n));
+  const iss = document.getElementById('issues'); iss.classList.add('open'); iss.classList.remove('closed'); updOffset();
+  const li = document.querySelector(`#issueList li[data-n="${it.n}"]`), box = document.getElementById('issues');   // no scrollIntoView: it would scroll the page sideways
+  if (li) box.scrollTop = Math.max(0, li.offsetTop - 40);
+  if (!go) return;
+  const k = markObjs.find((x) => x.it === it); k.obj.getWorldPosition(_v);
+  const dir = camera.position.clone().sub(controls.target).normalize();
+  const dist = Math.max(1, 1.2 / camera.aspect) * 150;
+  controls.target.copy(_v); camera.position.copy(_v.clone().add(dir.multiplyScalar(dist))); controls.update();
+  if (it.lid === false && on.lid) { on.lid = false; document.querySelectorAll('#toggles button')[0].setAttribute('aria-pressed', 'false'); applyGroups(); }
+}
+function buildIssues() {
+  const open = ISSUES.filter((i) => !i.ok), solved = ISSUES.filter((i) => i.ok);
+  document.getElementById('issuesTitle').textContent = T('문제점', 'Problems') + ` (${new Set(open.map((i) => parseInt(i.n, 10))).size})`;
+  const ol = document.getElementById('issueList'); ol.innerHTML = '';
+  const add = (it) => {
+    const t = lang === 'ko' ? it.ko : it.en, li = document.createElement('li'); li.dataset.n = it.n; if (it.ok) li.classList.add('ok');
+    const only = it.cfg.length === 1 ? (lang === 'ko' ? ' · 3T 구성만' : ' · 3T only') : '';
+    li.innerHTML = `<div class="h"><span class="bn${it.ok ? ' ok' : ''}">${it.n}</span>${t[0]}</div><div class="w">${t[2]}${only}</div><div class="d">${t[1]}</div>`;
+    if (selIssue === it) li.classList.add('sel');
+    li.onclick = () => selectIssue(it, true); ol.append(li);
+  };
+  open.forEach(add);
+  const g = document.createElement('div'); g.className = 'grp'; g.textContent = T(`해결 (r6 → r8) · ${solved.length}건`, `Solved (r6 → r8) · ${solved.length}`); ol.append(g);
+  solved.forEach(add);
+  document.getElementById('issuesHint').textContent = T('mm. 수치는 r8 발주 세트 보고 · A 조립 검증 · B 독립 검증 보고(11-11). 좌표는 r8 조립(beamline_wholecell_v82_r8_261111)에서 구함. 해결 항목의 뜸 값은 추정.',
+    'mm. Values from the r8 order-set report and verification reports A and B (11-11); positions from the r8 assembly. Wafer-lift values for the solved item are estimates.');
+}
+exEl.oninput = applyExplode;
 function applyGroups() {
-  if (!cur) return;
-  for (const m of cur.parts) {
-    let vis = true; for (const g of GROUPS) if (!groupOn[g.key] && g.test(m.userData)) vis = false;
-    if (isLid(m.userData) && lidT >= 0.999) vis = false;
-    if (m.userData.lidVar && m.userData.lidVar !== effLid()) vis = false;
+  for (const m of parts) {
+    const u = m.userData; let vis = true;
+    if (u.set === 'det') vis = on.det;
+    else if (u.set !== cfg) vis = false;
+    else for (const g of GROUPS) if (g.key !== 'det' && g.test(u) && !on[g.key]) vis = false;
     m.visible = vis;
   }
 }
-function applyCut() {
-  const v = +cutEl.value; cutOn = v <= 40;
-  cutPlane.constant = cutOn ? v : 1e4;
-  document.getElementById('o-cut').textContent = cutOn ? 'X ' + v.toFixed(1) : (lang === 'ko' ? '끔' : 'off');
-  if (cur) for (const m of cur.parts) for (const ch of m.children) if (ch.userData.cap) ch.visible = cutOn;
-}
-exEl.addEventListener('input', applyPose);
-cutEl.addEventListener('input', applyCut);
+const cutEl = document.getElementById('cut');
+function applyCut() { const v = +cutEl.value; cutPlane.constant = v >= 55 ? 1e4 : v; document.getElementById('o-cut').textContent = v >= 55 ? T('끔', 'off') : v.toFixed(1); }
+cutEl.oninput = applyCut;
 
-// lid open / close (animated, then hidden)
-const lidBtn = document.getElementById('lidbtn');
-let lidAnim = 0;
-function setLid(open, instant) {
-  lidOpen = open; syncLid();
-  const id = ++lidAnim, t0 = lidT, t1 = open ? 1 : 0, start = performance.now();
-  if (instant) { lidT = t1; applyPose(); applyGroups(); return; }
-  (function step(now) { if (id !== lidAnim) return; const k = Math.min(1, (now - start) / 600); lidT = t0 + (t1 - t0) * k; applyPose(); applyGroups(); if (k < 1) requestAnimationFrame(step); })(start);
-  if (!open) applyGroups();
-}
-function syncLid() { lidBtn.dataset.ko = lidOpen ? '뚜껑 닫기' : '뚜껑 열기'; lidBtn.dataset.en = lidOpen ? 'Close lid' : 'Open lid'; lidBtn.textContent = lidBtn.dataset[lang]; lidBtn.setAttribute('aria-pressed', String(lidOpen)); }
-lidBtn.onclick = () => setLid(!lidOpen);
+const VIEWS = [
+  { key: 'iso', ko: '비스듬히', en: 'Oblique', pos: [-230, 160, 250], tgt: [-30, 0, 0] },
+  { key: 'front', ko: '앞 (빔 쪽)', en: 'Front (beam side)', pos: [0, 0, 260], tgt: [0, 0, 0] },
+  { key: 'arm', ko: '3T 판 가까이 (뚜껑 끔)', en: '3T plate close-up (lid off)', pos: [-55, -70, 80], tgt: [-13, -22, 2], lid: false },
+  { key: 'rear', ko: '뒤 (Grace 쪽)', en: 'Rear (Grace side)', pos: [0, 0, -260], tgt: [0, 0, 0] },
+  { key: 'posts', ko: '포스트 (−X)', en: 'Posts (−X)', pos: [-240, 20, 40], tgt: [0, 0, 0] },
+  { key: 'side', ko: '옆 (+X)', en: 'Side (+X)', pos: [240, 10, 10], tgt: [0, 0, 0] },
+];
+function fly(v) {   // narrow (phone) screens: back the camera off so the cell fits the width
+  const k = Math.max(1, 1.5 / camera.aspect), p = v.pos.map((x, i) => v.tgt[i] + (x - v.tgt[i]) * k);
+  camera.position.set(...p); controls.target.set(...v.tgt); controls.update();
+  if (v.lid === false && on.lid) { on.lid = false; document.querySelectorAll('#toggles button')[0].setAttribute('aria-pressed', 'false'); applyGroups(); } }
 
-// block rotation
-const siteRow = document.getElementById('sites');
-function rangeOf(k) { return ((meta.ranges[vOf(curKey)] || {})[k]) || [-15, 15]; }
-function buildSites() {
-  siteRow.querySelectorAll('button').forEach((b) => b.remove());
-  const sites = meta.sites[vOf(curKey)] || {};
-  const keys = Object.keys(sites);
-  if (!keys.includes(curSite)) curSite = keys[0] || null;
-  for (const k of keys) {
-    const S = sites[k], b = document.createElement('button'); b.dataset.k = k;
-    b.textContent = k + ' · ' + S.ch; b.title = `pad (${S.pad[0]}, ${S.pad[1]}) · ${S.theta}° · L ${S.L}`;
-    b.onclick = () => { curSite = k; syncSites(); syncRot(); flyToSite(k); };
-    siteRow.append(b);
-  }
-  const all = document.createElement('button'); all.dataset.k = '*'; all.dataset.ko = '0°로'; all.dataset.en = 'reset'; all.textContent = all.dataset[lang];
-  all.onclick = () => { for (const k of Object.keys(rotDeg)) rotDeg[k] = 0; syncRot(); applyPose(); };
-  siteRow.append(all);
-  syncSites(); syncRot();
+function buildUI() {
+  const tg = document.getElementById('toggles'); tg.querySelectorAll('button').forEach((b) => b.remove());
+  for (const g of GROUPS) { const b = document.createElement('button'); b.textContent = T(g.ko, g.en); b.setAttribute('aria-pressed', String(on[g.key]));
+    b.onclick = () => { on[g.key] = !on[g.key]; b.setAttribute('aria-pressed', String(on[g.key])); applyGroups(); }; tg.append(b); }
+  { const b = document.createElement('button'); b.textContent = T('해결된 곳 (초록)', 'Solved (green)'); b.setAttribute('aria-pressed', String(showOk));
+    b.onclick = () => { showOk = !showOk; b.setAttribute('aria-pressed', String(showOk)); }; tg.append(b); }
+  const cf = document.getElementById('config'); cf.querySelectorAll('button').forEach((b) => b.remove());
+  for (const c of CONFIGS) { const b = document.createElement('button'); b.textContent = T(c.ko, c.en); b.setAttribute('aria-pressed', String(cfg === c.key));
+    b.onclick = () => { cfg = c.key; cf.querySelectorAll('button').forEach((x, i) => x.setAttribute('aria-pressed', String(CONFIGS[i].key === cfg))); applyGroups(); }; cf.append(b); }
+  const vw = document.getElementById('views'); vw.querySelectorAll('button').forEach((b) => b.remove());
+  for (const v of VIEWS) { const b = document.createElement('button'); b.textContent = T(v.ko, v.en); b.onclick = () => fly(v); vw.append(b); }
+  document.querySelectorAll('[data-ko]').forEach((el) => { if (el.tagName !== 'BUTTON' || el.id) el.innerHTML = el.dataset[lang]; });
+  document.getElementById('lang').textContent = lang === 'ko' ? 'EN' : '한';
+  const rows = [
+    [T('간섭 (측정 자세, r8): 3T 156 부품 / 2T·4T 150 부품', 'Clashes (measuring, r8): 3T 156 parts / 2T·4T 150 parts'), '0 / 0'],
+    [T('웨이퍼 앞면 – 인서트 윗면 (공차 −0.025 ~ +0.125)', 'Wafer front above insert top (tol. −0.025…+0.125)'), '0.05'],
+    [T('뒷핀 눌림 / 힘 (개당)', 'Rear-pin travel / force (each)'), '0.706 / 60.3 gf'],
+    [T('누름 나사 머리–필름 (SCB2-6 / 팬헤드 1.6)', 'Clamp head to film (SCB2-6 / pan 1.6)'), '0.48 / 0.88'],
+    [T('NTC 구멍 / 머리 (가정)', 'NTC hole / head (assumed)'), 'Ø2.6 / Ø2.41'],
+    [T('팔 판 바늘 각 (황동 판 A/B)', 'Needle angle, brass plates A/B'), '10.77°'],
+    [T('3T 바늘 각 MF / MS (자를 길이 28.6 / 29.3)', '3T needle angle MF / MS (cut to 28.6 / 29.3)'), '12.14° / 11.87°'],
+    [T('들기 나사 1바퀴 / 끝 올라감', 'Lift screw per turn / tip rise'), '3.80° / 0.52 mm/°'],
+    [T('바늘–뚜껑 (측정 자세)', 'Needle to lid (measuring)'), '1.12'],
+    [T('포스트 받침 사이 최소 (CH2–CH5, CH4–CH6; 받침 Ø14 가정)', 'Min post base gap (CH2–CH5, CH4–CH6; base Ø14 assumed)'), '0.89'],
+    [T('뒷벽 관통 · 뒷면 자리', 'Rear through hole · tape recess'), 'Ø20 · Ø34 × 0.4'],
+    [T('몸체 질량', 'Body mass'), '0.332 kg'],
+  ];
+  document.getElementById('nums').innerHTML = '<table>' + rows.map((r) => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('') + '</table>' +
+    `<div class="hint">${T('mm. CAD 검사값 (beamline_wholecell_v82_r8_261111.json, r8 보고, A 보고).', 'mm. CAD check values (beamline_wholecell_v82_r8_261111.json, r8 report, report A).')}</div>`;
+  buildIssues();
 }
-function syncSites() { siteRow.querySelectorAll('button').forEach((b) => { if (b.dataset.k !== '*') b.setAttribute('aria-pressed', String(b.dataset.k === curSite)); }); }
-function syncRot() {
-  const d = curSite ? (rotDeg[curSite] || 0) : 0, [lo, hi] = curSite ? rangeOf(curSite) : [-15, 15];
-  rotEl.value = d; rotEl.disabled = !curSite;
-  const out = d < lo - 1e-6 || d > hi + 1e-6;
-  rotOut.textContent = (d > 0 ? '+' : '') + d.toFixed(1) + '°' + (out ? (lang === 'ko' ? ' 범위 밖' : ' out') : '');
-  rotOut.classList.toggle('warn', out);
-  rotOut.title = `checked range ${lo}…${hi}°`;
-}
-rotEl.addEventListener('input', () => { if (!curSite) return; rotDeg[curSite] = +rotEl.value; syncRot(); applyPose(); });
-function flyToSite(k, instant) {
-  const S = (meta.sites[vOf(curKey)] || {})[k]; if (!S) return;
-  const [x, y, z] = S.B0, sz = z > 111 ? 1 : -1;
-  fly({ key: 'block', t: [x, y - 1, z], c: [x + 34, y - 62, z + 44 * sz], lid: false }, instant);
-}
+document.getElementById('lang').onclick = () => { lang = lang === 'ko' ? 'en' : 'ko'; document.documentElement.lang = lang; buildUI(); };
+document.getElementById('numsBtn').onclick = () => document.getElementById('nums').classList.toggle('open');
+document.getElementById('issuesBtn').onclick = () => { const e = document.getElementById('issues'); const narrow = innerWidth <= 600;
+  if (narrow) e.classList.toggle('open'); else e.classList.toggle('closed'); updOffset(); };
+document.getElementById('issuesClose').onclick = () => { const e = document.getElementById('issues'); e.classList.remove('open'); e.classList.add('closed'); updOffset(); };
 
-let anim = 0;
-function fly(v, instant) {
-  const t1 = cad(...v.t), c1 = cad(...v.c);
-  const f = Number.isFinite(camera.aspect) && camera.aspect > 0 ? Math.min(2.2, Math.max(1, 0.95 / camera.aspect)) : 1;   // portrait (phone) screen: step back; aspect is NaN while the tab is hidden (0 × 0)
-  c1.sub(t1).multiplyScalar(f).add(t1);
-  if (!Number.isFinite(camera.position.x)) { camera.position.copy(c1); controls.target.copy(t1); }   // never lerp from a NaN camera
-  if (v.cut !== undefined) { cutEl.value = v.cut; applyCut(); }
-  if (v.key === 'mount') { groupOn.mount = true; }
-  if (v.back !== undefined) { groupOn.back = v.back; }
-  if (v.lid !== undefined && v.lid === lidOpen) setLid(!v.lid, instant);
-  syncToggles(); applyGroups();
-  document.querySelectorAll('#views button').forEach((b) => { if (b.dataset.k) b.setAttribute('aria-pressed', String(b.dataset.k === v.key)); });
-  const t0 = controls.target.clone(), c0 = camera.position.clone(), id = ++anim, start = performance.now();
-  if (instant) { controls.target.copy(t1); camera.position.copy(c1); controls.update(); return; }
-  (function step(now) { if (id !== anim) return; const k = Math.min(1, (now - start) / 700), e = k * k * (3 - 2 * k);
-    controls.target.lerpVectors(t0, t1, e); camera.position.lerpVectors(c0, c1, e); controls.update(); if (k < 1) requestAnimationFrame(step); })(start);
-}
-
-// ---------- picking
-const ray = new THREE.Raycaster(), ptr = new THREE.Vector2(), info = document.getElementById('info');
-let sel = null, down = null, lastTap = 0, matOn = false, cmpOn = false;
-function hit(ev) {
-  const r = canvas.getBoundingClientRect(); ptr.set(((ev.clientX - r.left) / r.width) * 2 - 1, -((ev.clientY - r.top) / r.height) * 2 + 1);
-  ray.setFromCamera(ptr, camera);
-  const hs = ray.intersectObjects(cur ? cur.parts.filter((m) => m.visible) : [], false);
-  for (const h of hs) { if (cutOn && h.point.x > cutPlane.constant + 1e-3) continue; if (h.object.userData.spec.film) continue; return h; }
-  return null;
-}
-function select(m) {
-  if (sel) { sel.material.emissive.setHex(0x000000); }
-  sel = m;
-  if (!m) { if (!matOn && !cmpOn) info.hidden = true; return; }
-  matOn = false; document.getElementById('mat').setAttribute('aria-pressed', 'false');
-  cmpOn = false; document.getElementById('cmp').setAttribute('aria-pressed', 'false');
-  m.material.emissive.setHex(0x2a4cff); m.material.emissiveIntensity = 0.35;
-  const u = m.userData, short = u.name.split(' (')[0].split(':')[0], en = enOf(u.name);
-  info.innerHTML = '<button class="x" aria-label="close">×</button><div class="k"></div><div class="m"></div><div class="n"></div>';
-  info.querySelector('.k').textContent = lang === 'en' && en ? en : short;
-  info.querySelector('.m').textContent = u.spec[lang] || '';
-  info.querySelector('.n').textContent = u.name;
-  info.querySelector('.x').onclick = () => select(null);
-  info.hidden = false;
-  if (u.site) { curSite = u.site; syncSites(); syncRot(); }
-}
-function showMats() {
-  if (sel) select(null);
-  matOn = !matOn; document.getElementById('mat').setAttribute('aria-pressed', String(matOn));
-  cmpOn = false; document.getElementById('cmp').setAttribute('aria-pressed', 'false');
-  if (!matOn) { info.hidden = true; return; }
-  const ko = lang === 'ko';
-  info.innerHTML = '<button class="x" aria-label="close">×</button><div class="k"></div><div class="n"></div><table></table>';
-  info.querySelector('.k').textContent = ko ? '재질 (v6.2c)' : 'Materials (v6.2c)';
-  info.querySelector('.n').textContent = ko ? '2025 셀 방식 — 곧은 바늘 + 회전 클램프 블록 + 뒷면 PCB 포고, 선·납땜 없음. 전기: PCB 포고 → 황동 블록 밑면 → 바늘 → 패드.'
-    : '2025-cell style — straight needles + turnable clamp blocks + rear-PCB spring pins, no wires or solder. Current path: PCB spring pin → brass block bottom → needle → pad.';
-  const tb = info.querySelector('table');
-  for (const r of MATS) { const tr = tb.insertRow(); tr.insertCell().textContent = r[0]; tr.insertCell().textContent = ko ? r[1] : r[2]; }
-  info.querySelector('.x').onclick = () => showMats();
-  info.hidden = false;
-}
-document.getElementById('mat').onclick = showMats;
-const CNC_KO = { V62c_body_Al: '몸체', V60_lid_Al: '뚜껑', V62_backplate_Al: '뒷판', V61_insert_aw_POM: '인서트 a-w (탠덤, POM)', V62_holddown_tandem3T_Al: '누름 판 (탠덤·3T)',
-  V62c_block_brass: '클램프 블록 (황동)', V62c_clamp_plate_brass: '쐐기 누름판 (황동)', V62c_seat_POM: 'POM 시트 (에폭시)', V62_holddown_single_Al: '누름 판 (싱글)', V61_plug_dark_Al: '어두움 마개',
-  V47_insert_b1w_PEEK: '인서트 b1-w (싱글 ITO)', V47_insert_b2w_PEEK: '인서트 b2-w (싱글 FTO)', V47_puck_disc_Al: '퍽 원판', V47_PL_adapter_Al: 'PL 어댑터' };
-function showCompare() {   // numbers from models/v62_sets.json (read from the order CSVs and the purchased-parts md by make_viewer_sets_v62c_261107.py)
-  if (sel) select(null);
-  cmpOn = !cmpOn; document.getElementById('cmp').setAttribute('aria-pressed', String(cmpOn));
-  matOn = false; document.getElementById('mat').setAttribute('aria-pressed', 'false');
-  if (!cmpOn) { info.hidden = true; return; }
-  const ko = lang === 'ko', T = sets.table;
-  info.innerHTML = '<button class="x" aria-label="close">×</button><div class="k"></div><div class="n"></div>';
-  info.querySelector('.k').textContent = ko ? '최소 세트 vs 전체 세트 (v6.2c rev B 발주 묶음)' : 'Minimal vs full set (v6.2c rev B order bundle)';
-  info.querySelector('.n').textContent = ko ? '최소 = 12월 2T 탠덤 전용, 전체 = 3T·싱글·마개·퍽·PL 어댑터 포함. 주황 줄 = 두 세트 수량이 다른 것.'
-    : 'Minimal = December 2T tandem only; full = with 3T, single cells, dark plug, puck and PL adapter. Orange rows differ between the sets.';
-  const tab = (head, rows) => {
-    const tb = document.createElement('table'); tb.className = head.length === 3 ? 'cmp b3' : 'cmp';
-    const cg = tb.appendChild(document.createElement('colgroup')); head.forEach((_, j) => { const c = cg.appendChild(document.createElement('col')); c.className = j === 0 ? 'c-n' : j < 3 ? 'c-q' : 'c-m'; });
-    const h = tb.insertRow(); h.className = 'h'; for (const s of head) h.insertCell().textContent = s;
-    for (const r of rows) { const tr = tb.insertRow(); if (r.d) tr.className = 'd'; r.c.forEach((s, j) => { const td = tr.insertCell(); td.textContent = s; if (j > 0 && j < 3) td.className = 'q'; }); }
-    info.append(tb);
-  };
-  const h4 = (s) => { const e = document.createElement('h4'); e.textContent = s; info.append(e); };
-  const line = (html) => { const e = document.createElement('div'); e.className = 'cost'; e.innerHTML = html; info.append(e); };
-  h4(ko ? 'CNC 부품 (PCBWay)' : 'CNC parts (PCBWay)');
-  tab(ko ? ['부품 (CNC 파일)', '최소', '전체', '재료'] : ['Part (CNC file)', 'Min', 'Full', 'Material'],
-    T.cnc.map((r) => ({ d: r.min !== r.full, c: [(ko && CNC_KO[r.name] ? CNC_KO[r.name] + ' · ' : '') + r.name, String(r.min), String(r.full), r.mat] })));
-  const nk = (a) => a.reduce((s, r) => s + r, 0);
-  line((ko ? '종류 / 개수: 최소 ' : 'Designs / pieces: min ') + `<b>${T.cnc.filter((r) => r.min > 0).length} / ${nk(T.cnc.map((r) => r.min))}</b>` + (ko ? ', 전체 ' : ', full ') + `<b>${T.cnc.filter((r) => r.full > 0).length} / ${nk(T.cnc.map((r) => r.full))}</b>`);
-  line((ko ? 'CNC 비용: 최소 ' : 'CNC cost: min ') + `<b>${T.cnc_cost_usd.min}</b>` + (ko ? ' / 전체 ' : ' / full ') + `<b>${T.cnc_cost_usd.full}</b> (${ko ? T.cnc_cost_usd.note : 'estimate, before quote'})`);
-  h4(ko ? '구매 부품' : 'Purchased parts');
-  tab(ko ? ['부품', '최소', '전체'] : ['Part', 'Min', 'Full'],
-    T.buy.map((r) => ({ d: r.min !== r.full, c: [r.ko, r.min + (r.use_min !== undefined ? (ko ? ` (사용 ${r.use_min})` : ` (use ${r.use_min})`) : ''), r.full + (r.use_full !== undefined ? (ko ? ` (사용 ${r.use_full})` : ` (use ${r.use_full})`) : '')] })));
-  line((ko ? '구매 부품 합계: 최소 ' : 'Purchased total: min ') + `<b>₩${T.buy_total_krw.min}</b>` + (ko ? ' / 전체 ' : ' / full ') + `<b>₩${T.buy_total_krw.full}</b> (${ko ? T.buy_total_krw.note : 'incl. VAT, prices of 11/07'})`);
-  const nt = document.createElement('div'); nt.className = 'n'; nt.style.marginTop = '6px';
-  nt.textContent = ko ? '나사 수량 = 구매 권장 (괄호 = 한 번에 쓰는 수), 01_체결류_목록.csv. ' + T.setscrew_note + '. PCB·바늘·필름은 이 표에 없음.'
-    : 'Screw counts = recommended purchase (brackets = used at once), from 01_체결류_목록.csv. M1.6 set screw: designed cup point; the only SUS M1.6 available in Korea within a week is flat point. PCB, needles and film are not in this table.';
-  info.append(nt);
-  info.querySelector('.x').onclick = () => showCompare();
-  info.hidden = false;
-}
-document.getElementById('cmp').onclick = showCompare;
+const ray = new THREE.Raycaster(), ptr = new THREE.Vector2(), infoEl = document.getElementById('info');
+let down = null;
 canvas.addEventListener('pointerdown', (e) => { down = [e.clientX, e.clientY]; });
 canvas.addEventListener('pointerup', (e) => {
-  if (!down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 6) return;
-  const h = hit(e), now = performance.now();
-  if (h && now - lastTap < 350 && sel === h.object) {   // double tap: orbit around the point
-    const t0 = controls.target.clone(), d = h.point.clone().sub(t0), c0 = camera.position.clone(), id = ++anim, start = now;
-    (function step(n) { if (id !== anim) return; const k = Math.min(1, (n - start) / 500), e2 = k * k * (3 - 2 * k);
-      controls.target.copy(t0).addScaledVector(d, e2); camera.position.copy(c0).addScaledVector(d, e2); controls.update(); if (k < 1) requestAnimationFrame(step); })(start);
-  } else select(h ? h.object : null);
-  lastTap = now;
+  if (!down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 5) return;
+  ptr.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1); ray.setFromCamera(ptr, camera);
+  const hit = ray.intersectObjects(parts.filter((m) => m.visible), false)[0];
+  if (!hit) { infoEl.hidden = true; return; }
+  const u = hit.object.userData; infoEl.hidden = false; infoEl.innerHTML = `<div class="k">${u.name}</div><div class="n">${u.kind}</div>`;
 });
+function resize() { renderer.setSize(innerWidth, innerHeight, false); camera.aspect = innerWidth / innerHeight; updOffset(); }
+// phone: while the problem list covers the lower half, shift the picture up so the selected point stays visible
+function updOffset() { if (innerWidth <= 600 && document.getElementById('issues').classList.contains('open')) camera.setViewOffset(innerWidth, innerHeight, 0, Math.round(innerHeight * 0.24), innerWidth, innerHeight); else camera.clearViewOffset(); camera.updateProjectionMatrix(); }
+addEventListener('resize', resize);
 
-// ---------- lid toggle, detector snout dummy, Xe light cone
-const aux = new THREE.Group(); root.add(aux);   // CAD coordinates (root frame)
-const S0 = new THREE.Vector3(0, 0.5, 111);       // sample centre on the wafer top (tandem, Y_FRONT_A)
-const auxMat = (color, op) => new THREE.MeshStandardMaterial({ color, metalness: 0.2, roughness: 0.5, transparent: true, opacity: op, depthWrite: false, side: THREE.DoubleSide, clippingPlanes: [cutPlane] });
-const Dof = (lk) => (lk === 'now' ? lidInfo.D_now : lidInfo[lk].D);
-function updateAux() {
-  while (aux.children.length) { const o = aux.children.pop(); if (o.geometry) o.geometry.dispose(); }
-  if (isSingle(cfg)) return;   // D and the sample plane are the tandem ones
-  const Y = new THREE.Vector3(0, 1, 0), Q = new THREE.Quaternion();
-  if (snoutDeg) {   // as V60.snout_dummy(): tip Ø10 x 12 + body Ø20 x 30 along the detector axis; D = sample centre to the Ø10 face centre along the detector axis
-    const t = THREE.MathUtils.degToRad(snoutDeg), d = new THREE.Vector3(Math.sin(t), -Math.cos(t), 0), D = Dof(effLid())[String(snoutDeg)];
-    const C = S0.clone().addScaledVector(d, D);   // D = sample centre to the centre of the Ø10 face along the detector axis (its lowest rim point then touches the film plane: D cos t − 5 sin t = film height + 0.0)
-    Q.setFromUnitVectors(Y, d);
-    const part = (r, h, a, op) => { const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, h, 48), auxMat(0x3b7fd4, op)); m.position.copy(C).addScaledVector(d, a + h / 2); m.quaternion.copy(Q); aux.add(m); };
-    part(5, 12, 0, 0.7); part(10, 30, 12, 0.45);
-    aux.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([S0, C]), new THREE.LineBasicMaterial({ color: 0x3b7fd4, clippingPlanes: [cutPlane] })));
-  }
-  if (xeOn) {   // Xe light from -X at 45 deg to the sample normal, converging on the sample centre; half angle 10 deg and the size are ASSUMED
-    const L = 45, u = new THREE.Vector3(-Math.sin(Math.PI / 4), -Math.cos(Math.PI / 4), 0), r = L * Math.tan(THREE.MathUtils.degToRad(10));
-    const m = new THREE.Mesh(new THREE.ConeGeometry(r, L, 48, 1, true), auxMat(0xffc933, 0.28));
-    m.quaternion.setFromUnitVectors(new THREE.Vector3(0, -1, 0), u); m.position.copy(S0).addScaledVector(u, L / 2); aux.add(m);
-    aux.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([S0, S0.clone().addScaledVector(u, L)]), new THREE.LineBasicMaterial({ color: 0xe0a800, clippingPlanes: [cutPlane] })));
-  }
-}
-const lidRow = document.getElementById('lids'), clrRow = document.getElementById('clear'), lidInfoEl = document.getElementById('lidinfo');
-for (const l of LIDS) { const b = document.createElement('button'); b.dataset.k = l.key; b.dataset.ko = l.ko; b.dataset.en = l.en; b.onclick = () => setLidSel(l.key); lidRow.append(b); }
-for (const a of [20, 30, 40]) { const b = document.createElement('button'); b.dataset.k = 'sn' + a; b.dataset.ko = (a === 20 ? '검출기 ' : '') + a + '°'; b.dataset.en = (a === 20 ? 'Detector ' : '') + a + '°'; b.title = '검출기 스노트 Ø10 × 12 + Ø20 몸통, +X 쪽, 시료 법선에서 ' + a + '° / detector snout dummy'; b.onclick = () => { snoutDeg = snoutDeg === a ? 0 : a; syncLidUI(); updateAux(); writeHash(); }; clrRow.append(b); }
-{ const b = document.createElement('button'); b.dataset.k = 'xe'; b.dataset.ko = 'Xe 광'; b.dataset.en = 'Xe light'; b.title = '−X 45° (반각 10°, 크기 가정) / from −X at 45 deg (half angle 10 deg assumed)'; b.onclick = () => { xeOn = !xeOn; syncLidUI(); updateAux(); writeHash(); }; clrRow.append(b); }
-async function setLidSel(k) {
-  lidSel = k; lidUser = true;
-  if (cur) { await ensureLid(cur); applyPose(); applyGroups(); }
-  syncLidUI(); updateAux(); writeHash();
-}
-function syncLidUI() {
-  const ko = lang === 'ko', lk = effLid(), single = isSingle(cfg);
-  lidRow.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.k === lidSel)));
-  clrRow.querySelectorAll('button').forEach((b) => { const k = b.dataset.k; b.setAttribute('aria-pressed', String(k === 'xe' ? xeOn : k === 'sn' + snoutDeg)); b.disabled = single; });
-  if (!lidInfo) return;
-  const f = lk === 'now' ? 2.8 : lidInfo[lk].land_above_wafer, D = Dof(lk), fmt = (v) => v.toFixed(2);
-  let s = '';
-  if (single && lidSel !== 'now' && lidUser) s += `<span class="w">${ko ? 'B3는 싱글 불가 (B3L도 마찬가지, 2T/3T 전용) — 현재 뚜껑 유지' : 'B3 is not possible for the single cells (nor B3L; 2T/3T only) — current lid kept'}</span><br>`;
-  s += (ko ? '필름 ' : 'Film ') + `<b>${fmt(f)}</b> mm` + (ko ? ' (시료 위' : ' (above wafer') + (lk === 'now' ? (ko ? ', 필름 면 Y −2.3)' : ', film plane Y −2.3)') : (ko ? ', 랜드면)' : ', land face)'));
-  if (single) s += (ko ? ' · 검출기 거리 D는 탠덤 기준이라 싱글에서는 표시 안 함' : ' · detector D is for the tandem cells; not shown for singles');
-  else s += ' · D ' + [20, 30, 40].map((a) => `<span class="${snoutDeg === a ? 'hl' : ''}">${a}° <b>${fmt(D[String(a)])}</b></span>`).join(' · ') + ' mm' + (ko ? ' (시료 중심 ~ Ø10 면 중심, 가장 가까운 위치)' : ' (sample centre to Ø10 face centre, closest)');
-  if (lk === 'b3b' && !single) s += '<br>' + (ko ? `B3b rev1: B3 슬롯과 같은 필름 면, 비탈 바깥 쐐기 없앰 — 비탈 <b>${lidInfo.b3b.ramp_deg}°</b> 껍질 <b>${lidInfo.b3b.shell_mm}</b> mm, 단차 없음, ±Z 대칭 (‘뚜껑 단면’ 보기로 바늘과 비교)` : `B3b rev1: same film plane as B3, outer wedge removed — <b>${lidInfo.b3b.ramp_deg}°</b> sloped shell <b>${lidInfo.b3b.shell_mm}</b> mm, no steps, symmetric ±Z (see the 'Lid section' view against the needles)`);
-  if (!single && xeOn) s += '<br>' + (ko ? 'Xe 광: −X 45°, 원뿔 반각 10°·크기는 가정 (광원 실측 전)' : 'Xe light: from −X at 45°; cone half angle 10° and size assumed (source not measured)');
-  lidInfoEl.innerHTML = s;
-}
-
-// ---------- UI
-const vRow = document.getElementById('variants'), wRow = document.getElementById('views'), tRow = document.getElementById('toggles');
-for (const v of VARIANTS) { const b = document.createElement('button'); b.dataset.k = v.key; b.dataset.ko = v.ko; b.dataset.en = v.en; b.onclick = () => show(v.key); vRow.append(b); }
-for (const v of VIEWS) { const b = document.createElement('button'); b.dataset.k = v.key; b.dataset.ko = v.ko; b.dataset.en = v.en; b.onclick = () => { if (v.cut === undefined && cutOn) { cutEl.value = 41; applyCut(); } if (v.key === 'block' && curSite) flyToSite(curSite); else fly(v); writeHash(v.key); }; wRow.append(b);  if (v.key === 'block') { const l = document.createElement('a'); l.href = 'block.html'; l.className = 'blk-link'; l.dataset.ko = '↗ 블록 직접 조작'; l.dataset.en = '↗ try the block'; wRow.append(l); } }
-const sRow = document.getElementById('sets'), tintBtn = document.getElementById('tintbtn');
-for (const s of SETS) { const b = document.createElement('button'); b.dataset.k = s.key; b.dataset.ko = s.ko; b.dataset.en = s.en; b.onclick = () => setSet(s.key); sRow.insertBefore(b, tintBtn); }
-tintBtn.onclick = () => { tintOn = !tintOn; tintBtn.setAttribute('aria-pressed', String(tintOn)); applyTint(); };
-tintBtn.title = '최소 세트에 없는 부품 (전체 세트 추가분) 주황 표시 / parts the minimal set does not have, in orange';
-function syncSets() {
-  sRow.querySelectorAll('button[data-k]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.k === setMode)));
-  tintBtn.hidden = setMode !== 'full';
-  wRow.querySelectorAll('button[data-k]').forEach((b) => { const v = VIEWS.find((x) => x.key === b.dataset.k); if (v && v.full) b.hidden = setMode !== 'full'; });
-}
-for (const g of GROUPS) { const b = document.createElement('button'); b.dataset.k = g.key; b.dataset.ko = g.ko; b.dataset.en = g.en; b.onclick = () => { groupOn[g.key] = !groupOn[g.key]; syncToggles(); applyGroups(); }; tRow.append(b); }
-function syncToggles() { tRow.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(groupOn[b.dataset.k]))); }
-syncToggles();
-function applyLang() {
-  document.documentElement.lang = lang;
-  document.querySelectorAll('[data-ko]').forEach((el) => { const s = el.dataset[lang]; if (/</.test(s)) el.innerHTML = s; else el.textContent = s; });
-  document.getElementById('lang').textContent = lang === 'ko' ? 'EN' : '한국어';
-  document.title = lang === 'ko' ? '빔라인 시료 셀 v6.2c' : 'Beamline cell v6.2c';
-  syncLid(); applyCut(); syncLidUI(); if (curKey) syncRot();
-  if (sel) select(sel); else if (matOn) { matOn = false; showMats(); } else if (cmpOn) { cmpOn = false; showCompare(); }
-}
-document.getElementById('lang').onclick = () => { lang = lang === 'ko' ? 'en' : 'ko'; try { localStorage.setItem('bc46-lang', lang); } catch (e) {} applyLang(); };
-const panel = document.getElementById('panel');
-document.getElementById('hide').onclick = () => { panel.classList.toggle('min'); const b = document.getElementById('hide'); b.dataset.ko = panel.classList.contains('min') ? '더 보기' : '접기'; b.dataset.en = panel.classList.contains('min') ? 'More' : 'Less'; applyLang(); resize(); };
-let curView = 'iso';
-function writeHash(view) { if (view) curView = view; try { history.replaceState(null, '', '#' + cfg + '&' + curView + '&' + setMode + '&' + lidSel + '&sn' + snoutDeg + '&xe' + (xeOn ? 1 : 0)); } catch (e) {} }   // #config&view&set&lid&snN&xeN (set = min | full; lid = now | b3 | b3l; sn = detector snout dummy 0 | 20 | 30 | 40; xe = Xe cone 0 | 1; old links without them = full / now / off)
-
-function resize() {
-  const w = window.innerWidth, h = window.innerHeight;
-  if (!(w > 0 && h > 0)) return;   // hidden tab: keep the last finite aspect
-  renderer.setSize(w, h, false); camera.aspect = w / h;
-  camera.setViewOffset(w, h, 0, Math.min(h * 0.12, panel.offsetHeight * 0.45), w, h);   // keep the model above the panel
-  camera.updateProjectionMatrix();
-  document.documentElement.style.setProperty('--ph', panel.offsetHeight + 'px');
-}
-window.addEventListener('resize', resize);
-
-if (window.innerWidth < 600 || window.innerHeight < 700) { panel.classList.add('min'); const hb = document.getElementById('hide'); hb.dataset.ko = '더 보기'; hb.dataset.en = 'More'; }
-applyLang(); resize();
-const [h0, h1, h2, h3, h4, h5] = location.hash.slice(1).split('&');
-if (LIDS.some((l) => l.key === h3)) { lidSel = h3; lidUser = true; }
-if ([20, 30, 40].includes(+(h4 || '').slice(2))) snoutDeg = +h4.slice(2);
-if (h5 === 'xe1') xeOn = true;
-if (h2 === 'min') setMode = 'min';
-let startK = VARIANTS.some((v) => v.key === h0) ? h0 : '3t', startV = VIEWS.find((v) => v.key === h1) || VIEWS[0];
-if (setMode === 'min' && startV.full) startV = VIEWS[0];
-await show(startK); if (startV.key === 'block' && curSite) flyToSite(curSite, true); else fly(startV, true); writeHash(startV.key);
-
-window.__bc = { camera, controls, root, renderer, scene, meta, rotDeg, applyPose, get cur() { return cur; } };   // for console inspection
-renderer.setAnimationLoop(() => { controls.update(); renderer.render(scene, camera); });
+buildUI(); resize(); fly(VIEWS.find((v) => v.key === QS.get('view')) || VIEWS[0]); applyCut();
+statusEl.textContent = T('불러오는 중 …', 'Loading …');
+await loadSet('models/v82r8_3t.glb', 'models/v82r8_3t_meta.json', '3t', false);
+await loadSet('models/v82r8_2t.glb', 'models/v82r8_2t_meta.json', '2t', false);
+await loadSet('models/v8_det.glb', 'models/v8_det_meta.json', 'det', true);
+applyGroups(); statusEl.hidden = true;
+const qi = ISSUES.find((i) => i.n === QS.get('issue')); if (qi) selectIssue(qi, true);   // v82r8.html?issue=2c (or R1) opens one problem
+renderer.setAnimationLoop(() => { controls.update(); renderer.render(scene, camera); placeMarks(); });
 </script>
 </body>
 </html>

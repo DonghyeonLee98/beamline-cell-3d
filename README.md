@@ -2,6 +2,9 @@
 
 보기 / View: https://donghyeonlee98.github.io/beamline-cell-3d/
 
+11/12부터 첫 화면은 **v8.2b r8** (발주 세트 r8, 문제점 표시; `v82r8.html`과 같은 내용)입니다. 아래 v6.2 설명은 이전 판 보기 [v62c.html](https://donghyeonlee98.github.io/beamline-cell-3d/v62c.html)에 해당합니다.
+From 11/12 the front page shows **v8.2b r8** (order set r8, problems marked; same as `v82r8.html`). The v6.2 text below belongs to the earlier viewer [v62c.html](https://donghyeonlee98.github.io/beamline-cell-3d/v62c.html).
+
 부산대 이동현. APS 2-ID-D (2026년 12월) 빔라인 시료 셀 **v6.2 (2026-11-07 초안: 2025 셀 방식 — 곧은 바늘 + 회전 클램프 블록 + 뒷면 PCB 포고, 선·납땜 없음)**의 3D 보기 (현재 **v6.2c**). 이전 판: [v6.0 rev B](https://donghyeonlee98.github.io/beamline-cell-3d/v60.html), [v4.8](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
 Donghyeon Lee, Pusan National University. 3D viewer of the beamline sample cell **v6.2 (draft 2026-11-07: 2025-cell style — straight needles + turnable clamp blocks + rear-PCB spring pins, no wires or solder)** for APS 2-ID-D (December 2026). Earlier viewers: [v6.0 rev B](https://donghyeonlee98.github.io/beamline-cell-3d/v60.html), [v4.8](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
 
@@ -182,7 +185,8 @@ APS 2-ID-D beamline sample cell v3.3 — 25 mm cell mounted whole; rear 4 spring
 
 ## 파일 / Files
 
-- `index.html` — v6.2 보기 (three.js 0.160) / v6.2 viewer (three.js 0.160)
+- `index.html` — v8.2b r8 보기 (`v82r8.html`과 같고, 이전 판 링크만 v62c·v60·v48·v33로 이어짐, 11/12) / v8.2b r8 viewer (same as `v82r8.html`, earlier-version links point to v62c / v60 / v48 / v33)
+- `v62c.html` — v6.2c 보기 (11/12까지의 index.html, three.js 0.160) / v6.2c viewer (index.html until 11/12)
 - `models/v62_*.glb`, `models/v62_meta.json` — v6.2 셀 5종 GLB, 부품 재질·층, 자리별 회전 축(B0, U)과 검사 범위 (`make_viewer_meta_v62_261107.py`가 설계 폴더의 json에서 만듦) / the five v6.2 GLBs, per-part material and layer, per-site rotation axis and checked range
 - `models/lid_b3b.glb` — B3b rev1 뚜껑 / B3b rev1 lid
 - `models/lid_b3.glb`, `models/lid_b3l.glb`, `models/lid_b3_info.json` — B3 / B3L 슬롯 뚜껑 (뚜껑·테이프·필름 3개 노드), 필름 높이와 검출기 거리 D (`make_viewer_lid_b3_261108.py`) / B3 and B3L slot lids, film height and detector distance D
