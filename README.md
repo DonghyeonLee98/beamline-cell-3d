@@ -5,6 +5,14 @@
 부산대 이동현. APS 2-ID-D (2026년 12월) 빔라인 시료 셀 **v6.2 (2026-11-07 초안: 2025 셀 방식 — 곧은 바늘 + 회전 클램프 블록 + 뒷면 PCB 포고, 선·납땜 없음)**의 3D 보기 (현재 **v6.2c**). 이전 판: [v6.0 rev B](https://donghyeonlee98.github.io/beamline-cell-3d/v60.html), [v4.8](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
 Donghyeon Lee, Pusan National University. 3D viewer of the beamline sample cell **v6.2 (draft 2026-11-07: 2025-cell style — straight needles + turnable clamp blocks + rear-PCB spring pins, no wires or solder)** for APS 2-ID-D (December 2026). Earlier viewers: [v6.0 rev B](https://donghyeonlee98.github.io/beamline-cell-3d/v60.html), [v4.8](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
 
+## v8.2b r8 (2026-11-11, 발주 세트 r8 + 문제점 표시 · order set r8, problems marked) — [v82r8.html](https://donghyeonlee98.github.io/beamline-cell-3d/v82r8.html)
+
+- 한 줄: 가공 부품 8종의 r8 조립. r6에서 인서트(윗면 낮춤, 누름 나사 탭, 뒷핀 자리파기 Ø2.2, NTC 구멍 Ø2.6, 방향 표시 모따기)와 3T 판 들기 탭(n 5.3)만 바뀌었다. 간섭 0 (3T 156 부품, 2T·4T 150 부품).
+- 빨간 번호 = 남은 문제점 11가지, 초록 번호 = r6 → r8에서 해결된 4가지(목록 아래 회색 묶음, '해결된 곳' 단추로 끄고 켬). `v82r8.html?issue=2c`, `?issue=R1`처럼 번호를 주소에 넣으면 그 자리로 바로 연다. `?ok=0`이면 초록 번호를 끈 채로 연다.
+- 남은 문제점: 1 3T POM 판 31.6 × 12 × 5 < JLC 최소 30 × 20 × 8 (3T만) · 2 얇은 벽(몸체 탭 0.75, 뚜껑 접시머리 0.60, 인서트 자리파기–창 0.82 네 곳) · 3 손가락–스터드 끝 0.13~0.22(스터드 9.5 이하로 자름) · 4 스탠드오프 수나사 6.0 → 4.0~5.4 · 5 너트 자리 R2.875 < R3.0, 너트 절연(아노다이징 + 캡톤, 저항 확인) · 6 나일론 멈춤 나사가 놀 수 있음 · 7 바늘 테이퍼 미확인, 끝이 패드를 팜 · 8 판을 든 채로도 뚜껑이 닫힘 · 9 뒷핀은 인서트를 끼운 채 납땜 · 10 NTC 머리 Ø2.41 가정, 인서트 전에 납땜, 방향 표시 모따기 · 11 웨이퍼 누름 나사를 교체마다 2개 풂.
+- 해결: R1 웨이퍼 뜸 0.39 → 0.05 이내(추정) · R2 인서트 얇은 벽 0.62 / 0.74 / 0.80, NTC 막 0.5 → 1.0 · R3 3T 들기 탭–홈 0.74 → 1.03 · R4 뒷핀 플랜지 Ø1.83 걸림 → 자리파기 Ø2.2.
+- One line: r8 assembly of the eight machined parts. Red = 11 open problems, green = 4 solved since r6 (toggle 'Solved'). Models: `models/v82r8_3t.glb`, `models/v82r8_2t.glb` + `*_meta.json`.
+
 ## v8.2b r6 (2026-11-11, 발주 세트 r6 / r6a + 문제점 표시 · order set r6 / r6a, problems marked) — [v82r6.html](https://donghyeonlee98.github.io/beamline-cell-3d/v82r6.html)
 
 - 한 줄: 가공 부품 8종(몸체·뚜껑·인서트·3T 판·팔 판 A/B·누름 띠 A/B)의 r6 조립. r6a는 도면·주문 비고 글만 고쳤고 형상은 같다. 간섭 0 (3T 150 부품, 2T·4T 144 부품).
@@ -179,6 +187,7 @@ APS 2-ID-D beamline sample cell v3.3 — 25 mm cell mounted whole; rear 4 spring
 - `models/lid_b3b.glb` — B3b rev1 뚜껑 / B3b rev1 lid
 - `models/lid_b3.glb`, `models/lid_b3l.glb`, `models/lid_b3_info.json` — B3 / B3L 슬롯 뚜껑 (뚜껑·테이프·필름 3개 노드), 필름 높이와 검출기 거리 D (`make_viewer_lid_b3_261108.py`) / B3 and B3L slot lids, film height and detector distance D
 - `models/v62_min.glb`, `models/v62_full.glb`, `models/v62_sets.json` — 최소 세트 모델(2T 빌드, 빈 리세스 6곳), 전체 세트 모델(3T 빌드 + 싱글 자리 시트 + 따로 놓은 추가분), 추가분 표시와 비교 표 숫자 (`make_viewer_sets_v62c_261107.py`) / minimal- and full-set models, extra flags and comparison numbers
+- `v82r8.html`, `models/v82r8_*.glb`, `models/v82r8_*_meta.json` — v8.2b r8 보기 + 문제점·해결 표시 (11/11) / v8.2b r8 viewer with open and solved problem markers
 - `v82r6.html`, `models/v82r6_*.glb`, `models/v82r6_*_meta.json` — v8.2b r6 보기 + 문제점 표시 (11/11) / v8.2b r6 viewer with problem markers
 - `v82.html`, `models/v82_*.glb`, `models/v82_*_meta.json` — v8.2b 보기, 3T / 2T 전환 (11/10) / v8.2b viewer with a 3T / 2T switch
 - `v8.html`, `models/v8*.glb`, `models/v8*_meta.json` — v8 검토안 보기 (11/09) / v8 review viewer
