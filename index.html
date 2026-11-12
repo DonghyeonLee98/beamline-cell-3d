@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>빔라인 시료 셀 v8.2b r8 · 문제점</title>
+<title>빔라인 시료 셀 v8.2b r8 · 문제점 · 경사 필름 뚜껑</title>
 <meta name="description" content="APS 2-ID-D beamline sample cell v8.2b r8 (2026-11-11): order set r8 assembled, 3T / 2T toggle, open problems (red) and problems solved since r6 (green) marked on the model.">
 <style>
 :root { --bg1: #eef0f2; --bg2: #c9ced4; --ink: #15181c; --ink2: #4a525c; --panel: rgba(255,255,255,0.88); --line: rgba(20,24,28,0.12);
@@ -71,7 +71,15 @@ button[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-i
 #legend .sw { flex: none; width: 14px; height: 6px; border-radius: 3px; margin-top: 6px; } #legend .ln { color: var(--ink2); font-size: 11px; margin-top: 4px; }
 #legend .mq { flex: none; font-size: 10.5px; font-weight: 700; color: #fff; background: #d62020; border-radius: 4px; padding: 0 4px; margin-top: 1px; }
 #marks .plab { position: absolute; transform: translate(-50%, -150%); font-size: 11px; font-weight: 650; color: #fff; background: rgba(20,24,28,0.78); padding: 1px 5px; border-radius: 5px; white-space: nowrap; } #marks .plab.below { transform: translate(-50%, 60%); }
-@media (max-width: 600px) { #legend { top: auto; bottom: 262px; left: 8px; right: 8px; width: auto; max-height: 30%; font-size: 11.5px; padding: 6px 10px; } }
+@media (max-width: 600px) { #legend { top: auto; bottom: 296px; left: 8px; right: 8px; width: auto; max-height: 30%; font-size: 11.5px; padding: 6px 10px; } }
+/* 261112: lid switch r8 / tilted-film lid + detector head note */
+.lbtn.tilt[aria-pressed="true"] { background: var(--accent); color: #fff; }
+#lidnote { position: fixed; right: 16px; top: 74px; width: min(380px, calc(100% - 32px)); background: var(--panel); border: 1px solid var(--line); border-left: 4px solid var(--accent);
+  border-radius: 12px; padding: 8px 10px; font-size: 12px; z-index: 6; }
+#lidnote .lh { display: flex; justify-content: space-between; align-items: center; gap: 6px; } #lidnote .lh button { font-size: 11px; padding: 2px 8px; }
+#lidnote .tag { display: inline-block; font-size: 10.5px; font-weight: 700; color: #fff; background: var(--accent); border-radius: 4px; padding: 0 5px; margin-left: 4px; vertical-align: 1px; }
+#lidnote p { margin: 4px 0 0; } #lidnote .ln { color: var(--ink2); font-size: 11px; } #lidnote.fold .lb { display: none; }
+@media (max-width: 600px) { #info { bottom: 204px; } #nums.open { bottom: 204px; } #lidnote { top: auto; bottom: 204px; left: 8px; right: 8px; width: auto; font-size: 11.5px; padding: 6px 10px; } }
 </style>
 </head>
 <body>
@@ -79,8 +87,8 @@ button[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-i
 <header>
   <div class="t">
     <h1 data-ko="빔라인 시료 셀 v8.2b r8 (발주 세트 r8, 11-11)" data-en="Beamline sample cell v8.2b r8 (order set r8, 11-11)"></h1>
-    <div class="sub" data-ko="r8 = 가공 부품 8종 조립. r6에서 인서트(윗면 낮춤, 누름 나사 탭, 뒷핀 자리파기 Ø2.2, NTC 구멍 Ø2.6, 방향 표시 모따기)와 3T 판 들기 탭(n 5.3)이 바뀌고 나머지 6종은 같다. 간섭 0 (3T 156 부품, 2T·4T 150 부품). 빨간 번호 = 남은 문제점, 초록 번호 = r6 → r8에서 해결된 곳 · 부산대 이동현 · 이전 판 <a href='v82r6.html'>r6</a> · <a href='v82.html'>r2</a> · <a href='v8.html'>v8.1</a> · <a href='v62c.html'>v6.2c</a> · <a href='v60.html'>v6.0</a> · <a href='v48.html'>v4.8</a> · <a href='v33.html'>v3.3</a>"
-      data-en="r8 = the eight machined parts assembled. Since r6 the insert (lower top, clamp-screw taps, Ø2.2 rear-pin counterbores, Ø2.6 NTC hole, orientation chamfer) and the 3T-plate lift tap (n 5.3) changed; the other six parts are the same. 0 clashes (3T 156 parts, 2T/4T 150). Red = open problems, green = solved from r6 to r8 · Donghyeon Lee, PNU · earlier <a href='v82r6.html'>r6</a> · <a href='v82.html'>r2</a> · <a href='v8.html'>v8.1</a> · <a href='v62c.html'>v6.2c</a> · <a href='v60.html'>v6.0</a> · <a href='v48.html'>v4.8</a> · <a href='v33.html'>v3.3</a>"></div>
+    <div class="sub" data-ko="11-12 추가: 아래 '뚜껑' 줄에서 경사 필름 뚜껑(6.7°, 발주 전 · 검증 완료)으로 바꿔 볼 수 있다. r8 = 가공 부품 8종 조립. r6에서 인서트(윗면 낮춤, 누름 나사 탭, 뒷핀 자리파기 Ø2.2, NTC 구멍 Ø2.6, 방향 표시 모따기)와 3T 판 들기 탭(n 5.3)이 바뀌고 나머지 6종은 같다. 간섭 0 (3T 156 부품, 2T·4T 150 부품). 빨간 번호 = 남은 문제점, 초록 번호 = r6 → r8에서 해결된 곳 · 부산대 이동현 · 이전 판 <a href='v82r6.html'>r6</a> · <a href='v82.html'>r2</a> · <a href='v8.html'>v8.1</a> · <a href='v62c.html'>v6.2c</a> · <a href='v60.html'>v6.0</a> · <a href='v48.html'>v4.8</a> · <a href='v33.html'>v3.3</a>"
+      data-en="Added 11-12: switch to the tilted-film lid (6.7°, not ordered, verified) in the 'Lid' row below. r8 = the eight machined parts assembled. Since r6 the insert (lower top, clamp-screw taps, Ø2.2 rear-pin counterbores, Ø2.6 NTC hole, orientation chamfer) and the 3T-plate lift tap (n 5.3) changed; the other six parts are the same. 0 clashes (3T 156 parts, 2T/4T 150). Red = open problems, green = solved from r6 to r8 · Donghyeon Lee, PNU · earlier <a href='v82r6.html'>r6</a> · <a href='v82.html'>r2</a> · <a href='v8.html'>v8.1</a> · <a href='v62c.html'>v6.2c</a> · <a href='v60.html'>v6.0</a> · <a href='v48.html'>v4.8</a> · <a href='v33.html'>v3.3</a>"></div>
   </div>
   <div class="top-r"><button id="issuesBtn" data-ko="문제점" data-en="Problems"></button> <button id="numsBtn" data-ko="수치" data-en="Numbers"></button> <button id="lang">EN</button></div>
 </header>
@@ -90,7 +98,9 @@ button[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-i
 <div id="status">…</div>
 <div id="info" hidden></div>
 <div id="legend" hidden></div>
+<div id="lidnote" hidden></div>
 <div id="panel">
+  <div class="row" id="lidRow"><span class="lab" data-ko="뚜껑" data-en="Lid"></span></div>
   <div class="row" id="pathsRow"><span class="lab" data-ko="경로" data-en="Paths"></span></div>
   <div class="row" id="toggles"><span class="lab" data-ko="표시" data-en="Show"></span></div>
   <div class="row" id="config"><span class="lab" data-ko="구성" data-en="Config"></span></div>
@@ -99,8 +109,8 @@ button[aria-pressed="true"] { background: var(--chip-on); color: var(--chip-on-i
     <div class="sl"><span class="lab" data-ko="분해" data-en="Explode"></span><input id="explode" type="range" min="0" max="100" value="0"><output id="o-ex">0 %</output></div>
     <div class="sl"><span class="lab" data-ko="단면 X" data-en="Cut X"></span><input id="cut" type="range" min="-140" max="55" value="55" step="0.5"><output id="o-cut">–</output></div>
   </div>
-  <div class="hint" data-ko="끌어서 회전 · 두 손가락/휠 확대 · 부품을 누르면 이름 · 번호나 '문제점' 목록을 누르면 그 자리로 가서 설명이 보인다. '3T' = [−X−Z] 자리에 3T 판(흰 POM, 바늘 2개 → 중간 패드 MF·MS), '2T·4T' = 판 B. 번호는 해당 구성에서만 보인다. '해결된 곳'으로 초록 번호를 끄고 켠다. '전기 경로'·'기체 흐름'을 켜면 부품이 반투명해지고 경로가 위에 그려진다(범례에 채널 → 포스트, 미확인 표시)."
-    data-en="Drag to rotate · pinch/wheel to zoom · tap a part for its name · tap a number or a 'Problems' entry to fly there and read it. '3T' = 3T plate at [−X−Z]; '2T·4T' = plate B. Numbers show only in the configuration they apply to. 'Solved' toggles the green numbers. 'Electrical paths' / 'Gas flow' make the parts see-through and draw the routes on top (legend: channel → post, unconfirmed items marked)."></div>
+  <div class="hint" data-ko="끌어서 회전 · 두 손가락/휠 확대 · 부품을 누르면 이름 · 번호나 '문제점' 목록을 누르면 그 자리로 가서 설명이 보인다. '3T' = [−X−Z] 자리에 3T 판(흰 POM, 바늘 2개 → 중간 패드 MF·MS), '2T·4T' = 판 B. 번호는 해당 구성에서만 보인다. '해결된 곳'으로 초록 번호를 끄고 켠다. '전기 경로'·'기체 흐름'을 켜면 부품이 반투명해지고 경로가 위에 그려진다(범례에 채널 → 포스트, 미확인 표시). '뚜껑' 줄: r8 / 경사 필름 뚜껑. '검출기 머리'는 고른 뚜껑에 맞는 자리(r8 39° D 15.18, 경사 42° D 13.35)에 나오고, 'Z 0 단면 · 검출기' 보기로 거리를 옆에서 본다."
+    data-en="Drag to rotate · pinch/wheel to zoom · tap a part for its name · tap a number or a 'Problems' entry to fly there and read it. '3T' = 3T plate at [−X−Z]; '2T·4T' = plate B. Numbers show only in the configuration they apply to. 'Solved' toggles the green numbers. 'Electrical paths' / 'Gas flow' make the parts see-through and draw the routes on top (legend: channel → post, unconfirmed items marked). 'Lid' row: r8 / tilted-film lid. 'Detector head' sits where it fits the chosen lid (r8 39° D 15.18, tilted 42° D 13.35); the 'Z 0 section · detector' view shows the distance from the side."></div>
 </div>
 <script type="importmap">
 { "imports": {
@@ -135,10 +145,16 @@ const GROUPS = [
   { key: 'adapt', ko: '어댑터 · 바나나 플러그 (가정)', en: 'Adapters + banana plugs (assumed)', on: true, test: (m) => m.layer === 16 },
   { key: 'gas', ko: '가스 피팅', en: 'Gas fittings', on: true, test: (m) => m.layer === 10 },
   { key: 'tape', ko: '뒷면 테이프', en: 'Rear tape', on: true, test: (m) => /^뒷면 테이프/.test(m.name) },
-  { key: 'det', ko: '검출기 40° ±X', en: 'Detector 40° ±X', on: false, test: (m) => m.set === 'det' },
+  { key: 'det', ko: '검출기 머리 +X (가정)', en: 'Detector head +X (assumed)', on: false, test: (m) => m.set === 'det' },   // 261112: was v8_det 40° ±X; now the head matching the lid
 ];
 const on = Object.fromEntries(GROUPS.map((g) => [g.key, g.on]));
 const QS = new URLSearchParams(location.search);
+// 261112: lid switch. 'tilt' = tilted-film lid (frame h 1.8 at X 6.45, 6.7°, +X lower; window Z ±6), design study before ordering, verified.
+// It replaces only the lid, PET film and gasket of the r8 sets and adds two lip Kapton strips (models/v82r8_tiltlid.glb, same in 2T and 3T).
+let lid = QS.get('lid') === 'tilt' ? 'tilt' : 'r8';   // v82r8.html?lid=tilt&det=1 opens the tilted lid with the detector head
+if (QS.get('det') === '1') on.det = true;
+const LIDS = [{ key: 'r8', ko: 'r8 (발주 세트)', en: 'r8 (order set)' }, { key: 'tilt', ko: '경사 필름 6.7° (신규 · 발주 전 · 검증 완료)', en: 'Tilted film 6.7° (new · not ordered · verified)' }];
+const LID_R8 = /^뚜껑|^PET|^실리콘 가스켓/;   // r8 parts the tilted lid set replaces
 let cfg = QS.get('cfg') === '2t' ? '2t' : '3t';   // v82r8.html?cfg=2t&view=arm opens a given config / view
 const CONFIGS = [{ key: '3t', ko: '3T (3T 판)', en: '3T (3T plate)' }, { key: '2t', ko: '2T·4T (판 B)', en: '2T·4T (plate B)' }];
 // Problems for order set r8 (2026-11-11). Numbers from order_v82_r8_261111/r8_보고.md and verify_final_261111 A / B reports.
@@ -214,12 +230,13 @@ const key = new THREE.DirectionalLight(0xffffff, 1.5); key.position.set(-150, 22
 const rim = new THREE.DirectionalLight(0xdfe8ff, 0.5); rim.position.set(200, 100, -220); scene.add(rim);
 const root = new THREE.Group(); root.rotation.x = -Math.PI / 2; scene.add(root);    // CAD (X, Y, Z) -> three (x, z, -y): Z up, front (-Y) toward +z
 const cutPlane = new THREE.Plane(new THREE.Vector3(-1, 0, 0), 1e4);
+const zPlane = new THREE.Plane(new THREE.Vector3(0, -1, 0), 1e4);   // 261112: CAD Z section (three y), used by the detector-section view
 const parts = [];
 const statusEl = document.getElementById('status');
 
 function mat(kind, name, ghost) {
   const s = (standoff.test(name) ? [0xb08a4a, 0.85, 0.35] : (M[kind] || M.misc));
-  const p = { color: s[0], metalness: s[1], roughness: s[2], clippingPlanes: [cutPlane] };
+  const p = { color: s[0], metalness: s[1], roughness: s[2], clippingPlanes: [cutPlane, zPlane] };
   const op = ghost ? 0.38 : s[3];
   if (op !== undefined) Object.assign(p, { transparent: true, opacity: op, depthWrite: false, side: THREE.DoubleSide });
   return new THREE.MeshPhysicalMaterial(p);
@@ -235,14 +252,14 @@ async function loadSet(file, metaFile, set, ghost) {
     const r = byId[id] || { name: id, kind: 'misc', layer: 0 };
     let geo = n.geometry; geo.deleteAttribute('color'); geo.deleteAttribute('normal'); geo = toCreasedNormals(geo, THREE.MathUtils.degToRad(32));
     const m = new THREE.Mesh(geo, mat(r.kind, r.name, ghost)); m.applyMatrix4(n.matrixWorld);
-    m.userData = { name: r.name, kind: r.kind, layer: r.layer, set, base: m.position.clone(), ex: explodeOf(r.name, r.kind, r.layer) };
+    m.userData = { name: r.name, kind: r.kind, layer: r.layer, lid: r.lid, set, base: m.position.clone(), ex: explodeOf(r.name, r.kind, r.layer) };
     if (/3T/.test(r.name) && kindAccent(r.name)) m.material.emissive = new THREE.Color(0x3a1a00);
     root.add(m); parts.push(m);
   });
 }
 // exploded view: offsets in CAD mm at 100 % (X, Y, Z); front of the cell = -Y, "up" from the PCB toward the lid = -Y as well
 const EXPL = [
-  [/^M3 널링|^다월/, [0, -62, 0]], [/^뚜껑|^실리콘 가스켓|^PET/, [0, -46, 0]],
+  [/^M3 널링|^다월/, [0, -62, 0]], [/^뚜껑|^실리콘 가스켓|^PET|^립 밑 캡톤/, [0, -46, 0]],
   [/^들기/, [0, -34, 0]], [/^M2 x 6/, [0, -30, 0]], [/^누름 띠|^M2 링 단자/, [0, -25, 0]], [/^M3 x|^스프링 와셔/, [0, -21, 0]], [/^팔 판/, [0, -15, 0]],
   [/^W 바늘/, [0, -11, 0]], [/^스탠드오프|^M3 너트/, [0, -6, 0]],
   [/^탠덤 웨이퍼|^Ag 앞 패드|^Ag 중간 패드|^캡톤/, [0, -5, 0]], [/^뒷면 테이프/, [0, 30, 0]], [/^인서트 POM/, [0, -3, 0]], [/^뒷핀/, [0, 6, 0]],
@@ -322,9 +339,11 @@ exEl.oninput = applyExplode;
 function applyGroups() {
   for (const m of parts) {
     const u = m.userData; let vis = true;
-    if (u.set === 'det') vis = on.det;
+    if (u.set === 'det') vis = on.det && u.lid === lid;
+    else if (u.set === 'tiltlid') { if (lid !== 'tilt') vis = false; }
     else if (u.set !== cfg) vis = false;
-    else for (const g of GROUPS) if (g.key !== 'det' && g.test(u) && !on[g.key]) vis = false;
+    else if (lid === 'tilt' && LID_R8.test(u.name)) vis = false;
+    if (vis && u.set !== 'det') for (const g of GROUPS) if (g.key !== 'det' && g.test(u) && !on[g.key]) vis = false;
     m.visible = vis;
   }
 }
@@ -339,10 +358,15 @@ const VIEWS = [
   { key: 'rear', ko: '뒤 (Grace 쪽)', en: 'Rear (Grace side)', pos: [0, 0, -260], tgt: [0, 0, 0] },
   { key: 'posts', ko: '포스트 (−X)', en: 'Posts (−X)', pos: [-240, 20, 40], tgt: [0, 0, 0] },
   { key: 'side', ko: '옆 (+X)', en: 'Side (+X)', pos: [240, 10, 10], tgt: [0, 0, 0] },
+  // 261112: CAD Z = 0 section seen from +Z (X-Y plane through the beam point) with the detector head on
+  { key: 'detsec', ko: 'Z 0 단면 · 검출기', en: 'Z 0 section · detector', pos: [18, 270, 29], tgt: [18, 0, 28], zcut: true, det: true },
 ];
+function setGroup(key, val) { on[key] = val; const i = GROUPS.findIndex((g) => g.key === key); document.querySelectorAll('#toggles button')[i].setAttribute('aria-pressed', String(val)); applyGroups(); }
 function fly(v) {   // narrow (phone) screens: back the camera off so the cell fits the width
   const k = Math.max(1, 1.5 / camera.aspect), p = v.pos.map((x, i) => v.tgt[i] + (x - v.tgt[i]) * k);
   camera.position.set(...p); controls.target.set(...v.tgt); controls.update();
+  zPlane.constant = v.zcut ? 0 : 1e4;
+  if (v.det && !on.det) setGroup('det', true);
   if (v.lid === false && on.lid) { on.lid = false; document.querySelectorAll('#toggles button')[0].setAttribute('aria-pressed', 'false'); applyGroups(); } }
 
 function buildUI() {
@@ -354,6 +378,9 @@ function buildUI() {
   const cf = document.getElementById('config'); cf.querySelectorAll('button').forEach((b) => b.remove());
   for (const c of CONFIGS) { const b = document.createElement('button'); b.textContent = T(c.ko, c.en); b.setAttribute('aria-pressed', String(cfg === c.key));
     b.onclick = () => { cfg = c.key; cf.querySelectorAll('button').forEach((x, i) => x.setAttribute('aria-pressed', String(CONFIGS[i].key === cfg))); applyGroups(); }; cf.append(b); }
+  const lr = document.getElementById('lidRow'); lr.querySelectorAll('button').forEach((b) => b.remove());
+  for (const c of LIDS) { const b = document.createElement('button'); b.className = 'lbtn ' + c.key; b.textContent = T(c.ko, c.en); b.setAttribute('aria-pressed', String(lid === c.key));
+    b.onclick = () => { lid = c.key; lr.querySelectorAll('button').forEach((x, i) => x.setAttribute('aria-pressed', String(LIDS[i].key === lid))); applyGroups(); lidNote(); }; lr.append(b); }
   const vw = document.getElementById('views'); vw.querySelectorAll('button').forEach((b) => b.remove());
   for (const v of VIEWS) { const b = document.createElement('button'); b.textContent = T(v.ko, v.en); b.onclick = () => fly(v); vw.append(b); }
   document.querySelectorAll('[data-ko]').forEach((el) => { if (el.tagName !== 'BUTTON' || el.id) el.innerHTML = el.dataset[lang]; });
@@ -371,10 +398,41 @@ function buildUI() {
     [T('포스트 받침 사이 최소 (CH2–CH5, CH4–CH6; 받침 Ø14 가정)', 'Min post base gap (CH2–CH5, CH4–CH6; base Ø14 assumed)'), '0.89'],
     [T('뒷벽 관통 · 뒷면 자리', 'Rear through hole · tape recess'), 'Ø20 · Ø34 × 0.4'],
     [T('몸체 질량', 'Body mass'), '0.332 kg'],
+    // 261112: tilted-film lid (h 1.8), numbers from the independent check 261112
+    [T('경사 뚜껑: 필름 접착면 기울기 (+X 쪽 낮음)', 'Tilted lid: film bond plane tilt (+X lower)'), '6.70°'],
+    [T('경사 뚜껑: 창 X × Z', 'Tilted lid: window X × Z'), '±30.5 × ±6'],
+    [T('경사 뚜껑: 바늘–립 캡톤 (+X 바늘)', 'Tilted lid: needle to lip Kapton (+X needles)'), '1.18'],
+    [T('경사 뚜껑 간섭: 3T 158 / 2T 152 부품', 'Tilted lid clashes: 3T 158 / 2T 152 parts'), '0 / 0'],
+    [T('검출기 D 최소, +X (머리 Ø20 가정): r8 / 경사', 'Detector min D, +X (Ø20 head assumed): r8 / tilted'), '15.18 @39° / 13.35 @42°'],
   ];
   document.getElementById('nums').innerHTML = '<table>' + rows.map((r) => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('') + '</table>' +
     `<div class="hint">${T('mm. CAD 검사값 (beamline_wholecell_v82_r8_261111.json, r8 보고, A 보고).', 'mm. CAD check values (beamline_wholecell_v82_r8_261111.json, r8 report, report A).')}</div>`;
-  buildIssues();
+  buildIssues(); lidNote();
+}
+// 261112: note shown while the tilted lid is on (phones open it folded)
+let noteFold = innerWidth <= 600;
+function lidNote() {
+  const el = document.getElementById('lidnote');
+  if (lid !== 'tilt') { el.hidden = true; return; }
+  el.hidden = false;
+  el.innerHTML = `<div class="lh"><b>${T('경사 필름 뚜껑 (h 1.8, 6.7°)', 'Tilted-film lid (h 1.8, 6.7°)')}<span class="tag">${T('발주 전 · 검증 완료', 'not ordered · verified')}</span></b><button>${noteFold ? T('펼치기', 'Open') : T('접기', 'Fold')}</button></div><div class="lb">` +
+    `<p>${T('필름 틀(PET 접착면)을 바늘 자리(X 6.45, 높이 1.8)를 축으로 검출기 쪽(+X)으로 6.7° 기울이고, 창을 X ±30.5 × Z ±6으로 좁혔다. 판·몸체·인서트는 r8 그대로이고 뚜껑·필름·가스켓만 바뀌며 립 밑 캡톤 띠 2장이 붙는다.',
+      'The film frame (PET bond plane) is tilted 6.7° down toward the detector (+X) about the needle position (X 6.45, height 1.8), and the window is narrowed to X ±30.5 × Z ±6. Plates, body and insert stay r8; only the lid, film and gasket change, plus two Kapton strips under the lip.')}</p>` +
+    `<p>${T('검출기를 42°로 두면 빔 점–머리 앞면 거리 D가 15.18 (r8, 39°) → 13.35 mm로 줄어 신호가 약 1.29배 (1/D²). 40°에 그대로 두면 이득은 거의 없다 (14.25 대 15.57, 빔 통로가 D를 정함).',
+      'With the detector at 42° the beam-point-to-head distance D drops from 15.18 (r8, 39°) to 13.35 mm, about 1.29× signal (1/D²). Kept at 40° the gain is small (14.25 vs 15.57; the beam path sets D).')}</p>` +
+    `<p>${T('주의: 시료 중심에서 벗어난 자리를 잴 때는 머리가 뚜껑 Z 벽에 다가가므로 검출기를 뒤로 물려야 한다.',
+      'Caution: for scan points away from the sample centre the head comes close to the lid Z walls, so the detector must be backed off.')}</p>` +
+    `<p class="ln">${T('검출기 머리 형상·축은 가정 (Ø20 평면 머리 × 40, +X, 축이 빔 점을 지남, X로만 기울임; 빔라인 확인 전). 문제점 번호·수치는 r8 뚜껑 기준. 판을 든 채 닫기: 들기 1바퀴(3.8°)에서 틈 0.08.',
+      'Detector head shape and axis are assumed (flat Ø20 × 40, +X, axis through the beam point, tilted in X only; not yet confirmed with the beamline). Problem numbers and values refer to the r8 lid. Closing over a lifted plate: 0.08 gap at one lift turn (3.8°).')}</p></div>`;
+  el.classList.toggle('fold', noteFold);
+  el.querySelector('.lh button').onclick = () => { noteFold = !noteFold; lidNote(); };
+}
+function stackNote() {   // keep the info / legend boxes clear of the lid note (called every frame, cheap)
+  const n = document.getElementById('lidnote'), h = n.hidden ? 0 : n.offsetHeight + 8, wide = innerWidth > 600;
+  const lg = document.getElementById('legend'), inf = document.getElementById('info');
+  if (wide) { lg.style.top = inf.style.top = (74 + h) + 'px'; lg.style.bottom = inf.style.bottom = n.style.bottom = document.getElementById('nums').style.bottom = ''; }
+  else { const base = document.getElementById('panel').offsetHeight + 18; lg.style.top = inf.style.top = ''; n.style.bottom = base + 'px';
+    inf.style.bottom = (base + h) + 'px'; lg.style.bottom = (base + h) + 'px'; document.getElementById('nums').style.bottom = (base + h) + 'px'; }
 }
 document.getElementById('lang').onclick = () => { lang = lang === 'ko' ? 'en' : 'ko'; document.documentElement.lang = lang; buildUI(); if (paths) paths.rebuild(); };
 document.getElementById('numsBtn').onclick = () => document.getElementById('nums').classList.toggle('open');
@@ -401,7 +459,8 @@ buildUI(); resize(); fly(VIEWS.find((v) => v.key === QS.get('view')) || VIEWS[0]
 statusEl.textContent = T('불러오는 중 …', 'Loading …');
 await loadSet('models/v82r8_3t.glb', 'models/v82r8_3t_meta.json', '3t', false);
 await loadSet('models/v82r8_2t.glb', 'models/v82r8_2t_meta.json', '2t', false);
-await loadSet('models/v8_det.glb', 'models/v8_det_meta.json', 'det', true);
+await loadSet('models/v82r8_tiltlid.glb', 'models/v82r8_tiltlid_meta.json', 'tiltlid', false);   // 261112: tilted-film lid (lid switch)
+await loadSet('models/v82r8_det.glb', 'models/v82r8_det_meta.json', 'det', true);   // 261112: +X head, r8 39° D 15.18 / tilted 42° D 13.35 (assumed head)
 applyGroups(); statusEl.hidden = true;
 const qi = ISSUES.find((i) => i.n === QS.get('issue')); if (qi) selectIssue(qi, true);   // v82r8.html?issue=2c (or R1) opens one problem
 // paths drawn at the assembled position: turning one on resets the explode slider; they hide while exploded (?paths=elec,gas)
@@ -409,7 +468,7 @@ paths = await initPaths({ root, parts, camera, getCfg: () => cfg, getLang: () =>
   legend: document.getElementById('legend'), marks: marksEl, exploded: () => +exEl.value > 0,
   beforeOn: () => { if (+exEl.value > 0) { exEl.value = 0; applyExplode(); } } });
 for (const k of (QS.get('paths') || '').split(',')) if (paths.on[k] === false) document.querySelector('#pathsRow .pbtn.' + k).click();
-renderer.setAnimationLoop(() => { controls.update(); paths.tick(); renderer.render(scene, camera); placeMarks(); });
+renderer.setAnimationLoop(() => { controls.update(); paths.tick(); renderer.render(scene, camera); placeMarks(); stackNote(); });
 </script>
 </body>
 </html>

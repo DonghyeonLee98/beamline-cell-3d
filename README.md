@@ -8,6 +8,12 @@ From 11/12 the front page shows **v8.2b r8** (order set r8, problems marked; sam
 부산대 이동현. APS 2-ID-D (2026년 12월) 빔라인 시료 셀 **v6.2 (2026-11-07 초안: 2025 셀 방식 — 곧은 바늘 + 회전 클램프 블록 + 뒷면 PCB 포고, 선·납땜 없음)**의 3D 보기 (현재 **v6.2c**). 이전 판: [v6.0 rev B](https://donghyeonlee98.github.io/beamline-cell-3d/v60.html), [v4.8](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
 Donghyeon Lee, Pusan National University. 3D viewer of the beamline sample cell **v6.2 (draft 2026-11-07: 2025-cell style — straight needles + turnable clamp blocks + rear-PCB spring pins, no wires or solder)** for APS 2-ID-D (December 2026). Earlier viewers: [v6.0 rev B](https://donghyeonlee98.github.io/beamline-cell-3d/v60.html), [v4.8](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
 
+## 경사 필름 뚜껑 (2026-11-12, 발주 전 · 검증 완료 · tilted-film lid, not ordered, verified) — [index.html?lid=tilt&det=1](https://donghyeonlee98.github.io/beamline-cell-3d/?lid=tilt&det=1)
+
+r8 보기의 '뚜껑' 줄에서 r8 뚜껑과 경사 필름 뚜껑을 바꿔 본다. 필름 틀(PET 접착면)을 바늘 자리(X 6.45, 높이 1.8)를 축으로 검출기 쪽(+X)으로 6.7° 기울이고 창을 X ±30.5 × Z ±6으로 좁혔다. 판·몸체·인서트는 r8 그대로이고 뚜껑·필름·가스켓만 바뀌며 립 밑 캡톤 띠 2장이 붙는다(간섭 0: 3T 158 / 2T 152 부품, 바늘–립 캡톤 1.18). 검출기를 42°로 두면 D가 15.18 (r8, 39°) → 13.35 mm, 신호 약 1.29배(1/D²). 시료 중심에서 벗어난 자리를 잴 때는 검출기를 물려야 한다. '검출기 머리'(Ø20 × 40, +X)와 'Z 0 단면 · 검출기' 보기로 두 뚜껑의 거리를 비교한다. 검출기 머리 형상·축은 가정(빔라인 확인 전).
+
+The 'Lid' row switches between the r8 lid and the tilted-film lid: the film frame is tilted 6.7° down toward the detector (+X) about the needle position (X 6.45, height 1.8) and the window narrowed to X ±30.5 × Z ±6; only the lid, film and gasket change, plus two lip Kapton strips (0 clashes). With the detector at 42°, D drops from 15.18 (r8, 39°) to 13.35 mm, about 1.29× signal. Off-centre scan points need the detector backed off. Detector head shape and axis are assumed.
+
 ## v8.2b r8 (2026-11-11, 발주 세트 r8 + 문제점 표시 · order set r8, problems marked) — [v82r8.html](https://donghyeonlee98.github.io/beamline-cell-3d/v82r8.html)
 
 - 한 줄: 가공 부품 8종의 r8 조립. r6에서 인서트(윗면 낮춤, 누름 나사 탭, 뒷핀 자리파기 Ø2.2, NTC 구멍 Ø2.6, 방향 표시 모따기)와 3T 판 들기 탭(n 5.3)만 바뀌었다. 간섭 0 (3T 156 부품, 2T·4T 150 부품).
