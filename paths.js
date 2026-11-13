@@ -111,6 +111,8 @@ export async function initPaths(ctx) {
       ctx.row.append(b); btn[k] = b;
     }
   }
+  // clean page: only the flow path (first sentence of the note), no fitting part numbers or caveats
+  const gasText = (ko) => { const s = ko ? NOTE_G[0] : NOTE_G[1]; return ctx.clean ? s.split(ko ? /\. (?=피팅은)/ : /\. (?=Fitting)/)[0] + '.' : s; };
   function legend() {
     const lang = ctx.getLang(), ko = lang === 'ko', cfg = ctx.getCfg(), el = ctx.legend;
     if (!on.elec && !on.gas) { el.hidden = true; return; }
@@ -120,10 +122,10 @@ export async function initPaths(ctx) {
     if (on.elec) {
       h += `<div class="lt">${ko ? (cfg === '3t' ? '전기 경로 · 3T (6채널)' : '전기 경로 · 2T·4T (CH1–CH4, CH5·CH6 안 씀)') : (cfg === '3t' ? 'Electrical · 3T (6 channels)' : 'Electrical · 2T/4T (CH1–CH4; CH5, CH6 unused)')}</div>`;
       for (const [k, a, b] of [...LEG[cfg], ...LEG.common]) h += `<div class="lr">${sw(COL[k])}<span>${ko ? a : b}</span></div>`;
-      h += `<div class="lr q"><span class="mq">${ko ? '미확인' : '미확인'}</span><span>${ko ? '계측기 배정 (K2400 HI/LO' + (cfg === '3t' ? ', SMU 2대' : '') + '), BNC 중심/실드 극성, 외부 로거 결선' : 'instrument side (K2400 HI/LO' + (cfg === '3t' ? ', two SMUs' : '') + '), BNC centre/shield polarity, external logger wiring'}</span></div>`;
-      h += `<div class="ln">${ko ? NOTE_E[0] : NOTE_E[1]}</div>`;
+      if (!ctx.clean) h += `<div class="lr q"><span class="mq">${ko ? '미확인' : '미확인'}</span><span>${ko ? '계측기 배정 (K2400 HI/LO' + (cfg === '3t' ? ', SMU 2대' : '') + '), BNC 중심/실드 극성, 외부 로거 결선' : 'instrument side (K2400 HI/LO' + (cfg === '3t' ? ', two SMUs' : '') + '), BNC centre/shield polarity, external logger wiring'}</span></div>`;
+      if (!ctx.clean) h += `<div class="ln">${ko ? NOTE_E[0] : NOTE_E[1]}</div>`;   // clean page: no work notes
     }
-    if (on.gas) h += `<div class="lt">${ko ? '기체 흐름' : 'Gas flow'}</div><div class="lr">${sw(COL.gas)}<span>${ko ? NOTE_G[0] : NOTE_G[1]}</span></div>`;
+    if (on.gas) h += `<div class="lt">${ko ? '기체 흐름' : 'Gas flow'}</div><div class="lr">${sw(COL.gas)}<span>${gasText(ko)}</span></div>`;
     h += '</div>';
     el.innerHTML = h;
     el.classList.toggle('fold', fold);   // phones open folded so the model stays visible

@@ -8,6 +8,11 @@ From 11/12 the front page shows **v8.2b r8** (order set r8, problems marked; sam
 부산대 이동현. APS 2-ID-D (2026년 12월) 빔라인 시료 셀 **v6.2 (2026-11-07 초안: 2025 셀 방식 — 곧은 바늘 + 회전 클램프 블록 + 뒷면 PCB 포고, 선·납땜 없음)**의 3D 보기 (현재 **v6.2c**). 이전 판: [v6.0 rev B](https://donghyeonlee98.github.io/beamline-cell-3d/v60.html), [v4.8](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
 Donghyeon Lee, Pusan National University. 3D viewer of the beamline sample cell **v6.2 (draft 2026-11-07: 2025-cell style — straight needles + turnable clamp blocks + rear-PCB spring pins, no wires or solder)** for APS 2-ID-D (December 2026). Earlier viewers: [v6.0 rev B](https://donghyeonlee98.github.io/beamline-cell-3d/v60.html), [v4.8](https://donghyeonlee98.github.io/beamline-cell-3d/v48.html).
 
+## 보고용 간단 보기 (2026-11-13) — [clean.html](https://donghyeonlee98.github.io/beamline-cell-3d/clean.html)
+
+문제점 표시와 작업 메모를 뺀 보기입니다. 같은 모델 파일(`models/`)을 쓰며 경사 필름 뚜껑과 검출기 머리가 처음부터 켜져 있습니다. 뚜껑 · 전기 경로 · 기체 흐름 · 구성 · 보기 · 분해 · 단면 버튼은 그대로입니다. 문제점 번호가 있는 보기는 위의 첫 화면(index.html)입니다.
+Short viewer without problem markers or work notes (same model files; tilted-film lid and detector head on by default). The version with problem numbers is the front page.
+
 ## 경사 필름 뚜껑 (2026-11-12, 발주 전 · 검증 완료 · tilted-film lid, not ordered, verified) — [index.html?lid=tilt&det=1](https://donghyeonlee98.github.io/beamline-cell-3d/?lid=tilt&det=1)
 
 r8 보기의 '뚜껑' 줄에서 r8 뚜껑과 경사 필름 뚜껑을 바꿔 본다. 필름 틀(PET 접착면)을 바늘 자리(X 6.45, 높이 1.8)를 축으로 검출기 쪽(+X)으로 6.7° 기울이고 창을 X ±30.5 × Z ±6으로 좁혔다. 판·몸체·인서트는 r8 그대로이고 뚜껑·필름·가스켓만 바뀌며 립 밑 캡톤 띠 2장이 붙는다(간섭 0: 3T 158 / 2T 152 부품, 바늘–립 캡톤 1.18). 검출기를 42°로 두면 D가 15.18 (r8, 39°) → 13.35 mm, 신호 약 1.29배(1/D²). 시료 중심에서 벗어난 자리를 잴 때는 검출기를 물려야 한다. '검출기 머리'(Ø20 × 40, +X)와 'Z 0 단면 · 검출기' 보기로 두 뚜껑의 거리를 비교한다. 검출기 머리 형상·축은 가정(빔라인 확인 전).
